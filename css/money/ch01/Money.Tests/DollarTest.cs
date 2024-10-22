@@ -11,7 +11,7 @@ public class DollarTests
     }
 
     [Test]
-    public void TestConstructor()
+    public void TestConstruction()
     {
         var five = new Dollar(5);
         Assert.IsNotNull(five);
@@ -22,7 +22,7 @@ public class DollarTests
     }
 
     [Test]
-    public void TestMultiplation()
+    public void TestMultiplication()
     {
         Dollar five = new Dollar(5);
         five.Times(2);
