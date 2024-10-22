@@ -13,4 +13,9 @@ public class Dollar
     {
         return new Dollar(Amount * multiplier);
     }
+
+    public override bool Equals(object? obj)
+    {
+        return obj is Dollar dollar && Amount == dollar.Amount;
+    }
 }
