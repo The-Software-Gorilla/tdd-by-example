@@ -25,16 +25,15 @@ public class DollarTests
     public void TestMultiplication()
     {
         Dollar five = new Dollar(5);
-        Dollar product = five.Times(2);
-        Assert.That(product.Amount, Is.EqualTo(10));
-        product = five.Times(3);
-        Assert.That(product.Amount, Is.EqualTo(15));
+        Assert.That(new Dollar(10), Is.EqualTo(five.Times(2)));
+        Assert.That(new Dollar(15), Is.EqualTo(five.Times(3)));
     }
 
     [Test]
     public void TestEquality()
     {
-        Assert.That(new Dollar(5), Is.EqualTo(new Dollar(5)));
-        Assert.That(new Dollar(5), Is.Not.EqualTo(new Dollar(6)));
+        Dollar five = new Dollar(5);
+        Assert.That(new Dollar(5), Is.EqualTo(five));
+        Assert.That(new Dollar(6), Is.Not.EqualTo(five));
     }
 }

@@ -7,27 +7,33 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 public class DollarTest {
 
+    // This code is not in the book, but my redular tests always have a construction test
+    // In chapter 4, when we made amount private, we needed to add a getter in the Dollar class.
+    // I could have removed this test because it is tested anyway in the multiplication test, but
+    // I like to have a construction test.
+    // Also, I wanted to keep parity with the C# code where the Amount member is read only.
     @Test
     public void testConstruction() {
         Dollar five = new Dollar(5);
-        assertEquals(5, five.amount);
+        assertNotNull(five);
+        assertEquals(5, five.getAmount());
         Dollar ten = new Dollar(10);
-        assertEquals(10, ten.amount);
+        assertNotNull(ten);
+        assertEquals(10, ten.getAmount());
     }
 
     @Test
     public void testMultiplication() {
         Dollar five = new Dollar(5);
-        Dollar product = five.times(2);
-        assertEquals(10, product.amount);
-        product = five.times(3);
-        assertEquals(15, product.amount);
+        assertEquals(new Dollar(10), five.times(2));
+        assertEquals(new Dollar(15), five.times(3));
     }
 
     @Test
     public void testEquality() {
-        assertEquals(new Dollar(5), new Dollar(5));
-        assertNotEquals(new Dollar(5), new Dollar(6));
+        Dollar five = new Dollar(5);
+        assertEquals(five, new Dollar(5));
+        assertNotEquals(five, new Dollar(6));
     }
 
 }
