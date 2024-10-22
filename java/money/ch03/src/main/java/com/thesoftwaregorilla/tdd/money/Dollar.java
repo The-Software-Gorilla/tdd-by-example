@@ -1,4 +1,4 @@
-package com.thesoftwaregorilla.tdd;
+package com.thesoftwaregorilla.tdd.money;
 
 public class Dollar {
     int amount;
@@ -9,5 +9,10 @@ public class Dollar {
 
     public Dollar times(int multiplier) {
         return new Dollar(amount * multiplier);
+    }
+
+    public boolean equals(Object object) {
+        Dollar dollar = (Dollar) object;
+        return amount == dollar.amount;
     }
 }

@@ -1,4 +1,4 @@
-package com.thesoftwaregorilla.tdd;
+package com.thesoftwaregorilla.tdd.money;
 
 import org.junit.jupiter.api.Test;
 

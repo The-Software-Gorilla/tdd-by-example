@@ -1,7 +1,7 @@
 using NUnit.Framework;
-using Money;
+using TheSoftwareGorilla.TDD.Money;
 
-namespace Money.Tests;
+namespace TheSoftwareGorilla.TDD.Money.Tests;
 
 public class DollarTests
 {
