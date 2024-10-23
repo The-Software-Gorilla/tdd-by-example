@@ -22,6 +22,11 @@ public class MoneyTests
         Assert.That(fiveFranc.Amount, Is.EqualTo(5));
         Assert.That("CHF", Is.EqualTo(fiveFranc.Currency));
 
+        // Had to add this test because I'm South African! :)
+        var fiveRand = Money.Rand(5);
+        Assert.IsNotNull(fiveRand);
+        Assert.That(fiveRand.Amount, Is.EqualTo(5));
+        Assert.That("ZAR", Is.EqualTo(fiveRand.Currency));
     }
 
 
@@ -30,28 +35,25 @@ public class MoneyTests
     {
         Assert.That(Money.Dollar(5), Is.EqualTo(Money.Dollar(5)));
         Assert.That(Money.Dollar(6), Is.Not.EqualTo(Money.Dollar(5)));
-        Assert.That(Money.Franc(5), Is.EqualTo(Money.Franc(5)));
-        Assert.That(Money.Franc(6), Is.Not.EqualTo(Money.Franc(5)));
-
-        // In NUnit, the following line will not compile because .EqualTo type-checks its argument.
-        // I'm commenting the line out to avoid compilation errors, and I added Assert.False below to
-        // be more consistent with the book.
-        // Assert.That(Money.Franc(5), Is.Not.EqualTo(Money.Dollar(5)));
-        Assert.False(Money.Franc(5).Equals(Money.Dollar(5)));
+        Assert.That(Money.Franc(5), Is.Not.EqualTo(Money.Dollar(5)));
    }
 
-   [Test]
-   public void TestDifferentClassEquality()
-   {
-       Assert.That(new Money(10, "CHF"), Is.EqualTo(Money.Franc(10)));
-       Assert.That(new Money(10, "USD"), Is.EqualTo(Money.Dollar(10)));
-   }
 
    [Test]
    public void TestCurrency()
    {
        Assert.That("USD", Is.EqualTo(Money.Dollar(1).Currency));
        Assert.That("CHF", Is.EqualTo(Money.Franc(1).Currency));
+       Assert.That("ZAR", Is.EqualTo(Money.Rand(1).Currency));
    }
+
+    [Test]
+    public void TestMultiplication()
+    {
+        Money fiveDollar = Money.Dollar(5);
+        Assert.That(Money.Dollar(10), Is.EqualTo(fiveDollar.Times(2)));
+        Assert.That(Money.Dollar(15), Is.EqualTo(fiveDollar.Times(3)));
+    }
+
 
 }

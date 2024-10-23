@@ -3,18 +3,22 @@ package com.thesoftwaregorilla.tdd.money;
 public class Money {
 
     public static Money dollar(int amount) {
-        return new Dollar(amount, "USD");
+        return new Money(amount, "USD");
     }
 
     public static Money franc(int amount) {
-        return new Franc(amount, "CHF");
+        return new Money(amount, "CHF");
     }
 
+    // Shout out to all my South African friends!
+    public static Money rand(int amount) {
+        return new Money(amount, "ZAR");
+    }
 
     private final int amount;
     private final String currency;
 
-    protected Money(int amount, String currency) {
+    private Money(int amount, String currency) {
         this.amount = amount;
         this.currency = currency;
     }

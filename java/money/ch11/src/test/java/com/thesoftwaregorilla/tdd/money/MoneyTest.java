@@ -21,26 +21,35 @@ public class MoneyTest {
         assertNotNull(fiveFranc);
         assertEquals(5, fiveFranc.getAmount());
         assertEquals("CHF", fiveFranc.getCurrency());
+
+        // Had to add this because I'm South African :)
+        Money fiveRand = Money.rand(5);
+        assertNotNull(fiveRand);
+        assertEquals(5, fiveRand.getAmount());
+        assertEquals("ZAR", fiveRand.getCurrency());
+
     }
 
     @Test
     public void testEquality() {
         assertTrue(Money.dollar(5).equals(Money.dollar(5)));
         assertFalse(Money.dollar(5).equals(Money.dollar(6)));
-        assertTrue(Money.franc(5).equals(Money.franc(5)));
-        assertFalse(Money.franc(5).equals(Money.franc(6)));
         assertFalse(Money.franc(5).equals(Money.dollar(5)));
     }
 
-    @Test
-    public void testDifferentClassEquality() {
-        assertTrue(new Money(10, "CHF").equals(Money.franc(10)));
-        assertTrue(new Money(10, "USD").equals(Money.dollar(10)));
-    }
 
     @Test
     public void testCurrency() {
         assertEquals("USD", Money.dollar(1).getCurrency());
         assertEquals("CHF", Money.franc(1).getCurrency());
+        assertEquals("ZAR", Money.rand(1).getCurrency());
     }
+
+    @Test
+    public void testMultiplication() {
+        Money five = Money.dollar(5);
+        assertEquals(Money.dollar(10), five.times(2));
+        assertEquals(Money.dollar(15), five.times(3));
+    }
+
 }

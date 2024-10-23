@@ -1,3 +1,5 @@
+using System.Net;
+
 namespace TheSoftwareGorilla.TDD.Money;
 
 public class Money
@@ -5,19 +7,25 @@ public class Money
 
     public static Money Dollar(int amount)
     {
-        return new Dollar(amount, "USD");
+        return new Money(amount, "USD");
     }
 
     public static Money Franc(int amount)
     {
-        return new Franc(amount, "CHF");
+        return new Money(amount, "CHF");
+    }
+
+    // Shout out to my South African friends!
+    public static Money Rand(int amount)
+    {
+        return new Money(amount, "ZAR");
     }
 
     public int Amount { get; }
 
     public string Currency { get; }
 
-    public Money(int amount, string currency)
+    private Money(int amount, string currency)
     {
         Amount = amount;
         Currency = currency;
