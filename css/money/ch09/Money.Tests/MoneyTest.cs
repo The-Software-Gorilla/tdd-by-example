@@ -10,6 +10,21 @@ public class MoneyTests
     {
     }
 
+        [Test]
+    public void TestConstruction()
+    {
+        var fiveDollar = Money.Dollar(5);
+        Assert.IsNotNull(fiveDollar);
+        Assert.That(fiveDollar.Amount, Is.EqualTo(5));
+        Assert.That("USD", Is.EqualTo(fiveDollar.Currency));
+        var fiveFranc = Money.Franc(5);
+        Assert.IsNotNull(fiveFranc);
+        Assert.That(fiveFranc.Amount, Is.EqualTo(5));
+        Assert.That("CHF", Is.EqualTo(fiveFranc.Currency));
+
+    }
+
+
     [Test]
     public void TestEquality()
     {
@@ -23,6 +38,13 @@ public class MoneyTests
         // be more consistent with the book.
         // Assert.That(Money.Franc(5), Is.Not.EqualTo(Money.Dollar(5)));
         Assert.False(Money.Franc(5).Equals(Money.Dollar(5)));
+   }
+
+   [Test]
+   public void TestCurrency()
+   {
+       Assert.That("USD", Is.EqualTo(Money.Dollar(1).Currency));
+       Assert.That("CHF", Is.EqualTo(Money.Franc(1).Currency));
    }
 
 }

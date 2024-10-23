@@ -1,14 +1,22 @@
 package com.thesoftwaregorilla.tdd.money;
 
 public abstract class Money {
-    protected int amount;
 
     public static Money dollar(int amount) {
-        return new Dollar(amount);
+        return new Dollar(amount, "USD");
     }
 
     public static Money franc(int amount) {
-        return new Franc(amount);
+        return new Franc(amount, "CHF");
+    }
+
+
+    private final int amount;
+    private final String currency;
+
+    protected Money(int amount, String currency) {
+        this.amount = amount;
+        this.currency = currency;
     }
 
     public abstract Money times(int multiplier);
@@ -22,6 +30,10 @@ public abstract class Money {
     // See my note in the DollarTest class. I added a getter for amount because I had a constructor test.
     public int getAmount() {
         return amount;
+    }
+
+    public String currency() {
+        return currency;
     }
 
 }

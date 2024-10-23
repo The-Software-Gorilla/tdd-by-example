@@ -10,16 +10,6 @@ public class DollarTests
     {
     }
 
-    [Test]
-    public void TestConstruction()
-    {
-        var five = Money.Dollar(5);
-        Assert.IsNotNull(five);
-        Assert.That(five.Amount, Is.EqualTo(5));
-        var ten = Money.Dollar(10);
-        Assert.IsNotNull(ten);
-        Assert.That(ten.Amount, Is.EqualTo(10));
-    }
 
     [Test]
     public void TestMultiplication()
