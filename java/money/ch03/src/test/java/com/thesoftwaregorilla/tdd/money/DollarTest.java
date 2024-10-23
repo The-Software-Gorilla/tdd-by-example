@@ -1,9 +1,8 @@
 package com.thesoftwaregorilla.tdd.money;
 
 import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
-import static junit.framework.Assert.*;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 public class DollarTest {
 

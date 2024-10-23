@@ -1,13 +1,11 @@
 package com.thesoftwaregorilla.tdd.money;
 
 import org.junit.jupiter.api.Test;
-
-import static junit.framework.Assert.*;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class DollarTest {
 
-    // This code is not in the book, but my redular tests always have a construction test
+    // This code is not in the book, but my regular tests always have a construction test
     // In chapter 4, when we made amount private, we needed to add a getter in the Dollar class.
     // I could have removed this test because it is tested anyway in the multiplication test, but
     // I like to have a construction test.

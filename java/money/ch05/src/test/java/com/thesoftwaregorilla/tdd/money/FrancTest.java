@@ -1,10 +1,8 @@
 package com.thesoftwaregorilla.tdd.money;
 
 import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 public class FrancTest {
 
