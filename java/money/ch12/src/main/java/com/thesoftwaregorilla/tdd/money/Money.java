@@ -1,6 +1,7 @@
 package com.thesoftwaregorilla.tdd.money;
 
-public class Money {
+
+public class Money implements Expression {
 
     public static Money dollar(int amount) {
         return new Money(amount, "USD");
@@ -27,12 +28,17 @@ public class Money {
         return new Money(getAmount() * multiplier, getCurrency());
     };
 
+    public Expression plus(Money addend) {
+        return new Money(getAmount() + addend.getAmount(), getCurrency());
+    }
+
     @Override
     public boolean equals(Object object) {
         Money money = (Money) object;
         return getAmount() == money.getAmount() && getCurrency().equals(money.getCurrency());
     }
 
+    @Override
     public String toString() {
         return amount + " " + currency;
     }

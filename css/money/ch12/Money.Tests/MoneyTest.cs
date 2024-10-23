@@ -55,5 +55,15 @@ public class MoneyTests
         Assert.That(Money.Dollar(15), Is.EqualTo(fiveDollar.Times(3)));
     }
 
+    [Test]
+    public void TestSimpleAddition()
+    {
+        Money five = Money.Dollar(5);
+        Expression sum = five.Plus(five);
+        Bank bank = new Bank();
+        Money reduced = bank.Reduce(sum, "USD");
+        Assert.That(Money.Dollar(10), Is.EqualTo(reduced));
+    }
+
 
 }

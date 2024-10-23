@@ -2,7 +2,7 @@ using System.Net;
 
 namespace TheSoftwareGorilla.TDD.Money;
 
-public class Money
+public class Money : Expression
 {
 
     public static Money Dollar(int amount)
@@ -34,6 +34,11 @@ public class Money
     public virtual Money Times(int multiplier)
     {
         return new Money(Amount * multiplier, Currency);
+    }
+
+    public Expression Plus(Money addend)
+    {
+        return new Money(Amount + addend.Amount, Currency);
     }
 
     public override bool Equals(object? obj)
