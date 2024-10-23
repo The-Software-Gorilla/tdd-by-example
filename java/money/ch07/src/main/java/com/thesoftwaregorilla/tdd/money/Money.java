@@ -5,7 +5,7 @@ public class Money {
 
     public boolean equals(Object object) {
         Money money = (Money) object;
-        return amount == money.amount;
+        return getClass().equals(object.getClass()) && amount == money.amount;
     }
 
     // See my note in the DollarTest class. I added a getter for amount because I had a constructor test.
