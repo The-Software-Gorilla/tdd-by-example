@@ -1,6 +1,6 @@
 package com.thesoftwaregorilla.tdd.money;
 
-public abstract class Money {
+public class Money {
 
     public static Money dollar(int amount) {
         return new Dollar(amount, "USD");
@@ -19,20 +19,28 @@ public abstract class Money {
         this.currency = currency;
     }
 
-    public abstract Money times(int multiplier);
+    public Money times(int multiplier) {
+        return new Money(getAmount() * multiplier, getCurrency());
+    };
 
     @Override
     public boolean equals(Object object) {
         Money money = (Money) object;
-        return getClass().equals(object.getClass()) && amount == money.amount;
+        return getAmount() == money.getAmount() && getCurrency().equals(money.getCurrency());
     }
 
-    // See my note in the DollarTest class. I added a getter for amount because I had a constructor test.
+    public String toString() {
+        return amount + " " + currency;
+    }
+
+    // See my note in the MoneyTest class. I added a getter for amount because I had a constructor test.
     public int getAmount() {
         return amount;
     }
 
-    public String currency() {
+    // I changed the name of this method from "currency" to "getCurrency" to keep consistent with Java standards.
+    // I'm not sure these standards existed when Kent wrote the book.
+    public String getCurrency() {
         return currency;
     }
 

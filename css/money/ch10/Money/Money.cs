@@ -1,16 +1,7 @@
 namespace TheSoftwareGorilla.TDD.Money;
 
-public abstract class Money
+public class Money
 {
-    public int Amount { get; }
-
-    public string Currency { get; }
-
-    protected Money(int amount, string currency)
-    {
-        Amount = amount;
-        Currency = currency;
-    }
 
     public static Money Dollar(int amount)
     {
@@ -22,11 +13,31 @@ public abstract class Money
         return new Franc(amount, "CHF");
     }
 
-    public abstract Money Times(int multiplier);
+    public int Amount { get; }
+
+    public string Currency { get; }
+
+    public Money(int amount, string currency)
+    {
+        Amount = amount;
+        Currency = currency;
+    }
+
+    public virtual Money Times(int multiplier)
+    {
+        return new Money(Amount * multiplier, Currency);
+    }
 
     public override bool Equals(object? obj)
     {
-        return obj is Money money && GetType().Equals(obj.GetType()) && Amount == money.Amount;
+        return obj is Money money 
+            && Amount == money.Amount 
+            && Currency == money.Currency;
+    }
+
+    public override string ToString()
+    {
+        return Amount + " " + Currency;
     }
 
 

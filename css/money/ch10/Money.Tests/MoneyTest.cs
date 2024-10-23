@@ -41,6 +41,13 @@ public class MoneyTests
    }
 
    [Test]
+   public void TestDifferentClassEquality()
+   {
+       Assert.That(new Money(10, "CHF"), Is.EqualTo(Money.Franc(10)));
+       Assert.That(new Money(10, "USD"), Is.EqualTo(Money.Dollar(10)));
+   }
+
+   [Test]
    public void TestCurrency()
    {
        Assert.That("USD", Is.EqualTo(Money.Dollar(1).Currency));

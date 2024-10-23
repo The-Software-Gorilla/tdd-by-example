@@ -7,9 +7,4 @@ public class Dollar : Money
     {
     }
 
-    public override Money Times(int multiplier)
-    {
-        return Money.Dollar(Amount * multiplier);
-    }
-
 }

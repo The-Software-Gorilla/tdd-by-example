@@ -64,3 +64,22 @@ The TDD cycle consists of five main steps:
 1. **Fake it**: Return a constant and gradually replace it with variables until you have real code.
 2. **Use Obvious Implementation**: Type in the real implementation.
 3. **Triangulation**: Use two or more tests to find the right implementation.
+
+### Let the computer answer the reasoning questions
+Chapter 10, page 46, Kent talks about one of the major benefits of a base of clean code with passing tests:
+> Rather than apply minutes of suspect reasoning, we can just ask the computer by making the change and running the tests.
+
+Instead of spending 5 to 10 minutes reasoning out a problem, TDD gives you the ability to ask the computer to solve the problem in 15 seconds. 
+> Without the tests you habe no choice, you have to reason. With the tests you can decide whether an experiment would answer the question faster.
+
+### Code without a test
+Chapter 10, page 47 has a paragraph that starts: "Whoa! Code without a test? Can you do that?" Kent then lays out three reasons 
+why it is OK under certain circumstances to write code without a test:
+1. We're about to see the results of the test on the screen.
+2. Because the toString() method is being used only for debug purposes, the risk of failure is low.
+3. We're in the process of running tests and we have a red bar (test failure). We'd prefer not to write a test when we have a red bar.
+
+Kent then goes on to point out later on the page that the conservative course is to back out a change to get back to green, but in this case there would be no way to move forward without understanding what is making us red.
+
+### Writing a test while red
+Also in Chapter 10, page 47, Kent discusses the idea of writing a test while the tests are red. He goes ahead with it only when we're about to change the real model code and you can never do that without a test.
