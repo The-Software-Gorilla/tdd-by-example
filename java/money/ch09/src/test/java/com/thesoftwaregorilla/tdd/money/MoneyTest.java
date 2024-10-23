@@ -15,12 +15,12 @@ public class MoneyTest {
         Money fiveDollar = Money.dollar(5);
         assertNotNull(fiveDollar);
         assertEquals(5, fiveDollar.getAmount());
-        assertEquals("USD", fiveDollar.currency());
+        assertEquals("USD", fiveDollar.getCurrency());
 
         Money fiveFranc = Money.franc(5);
         assertNotNull(fiveFranc);
         assertEquals(5, fiveFranc.getAmount());
-        assertEquals("CHF", fiveFranc.currency());
+        assertEquals("CHF", fiveFranc.getCurrency());
     }
 
     @Test
@@ -34,7 +34,7 @@ public class MoneyTest {
 
     @Test
     public void testCurrency() {
-        assertEquals("USD", Money.dollar(1).currency());
-        assertEquals("CHF", Money.franc(1).currency());
+        assertEquals("USD", Money.dollar(1).getCurrency());
+        assertEquals("CHF", Money.franc(1).getCurrency());
     }
 }

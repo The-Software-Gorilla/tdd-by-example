@@ -27,12 +27,14 @@ public abstract class Money {
         return getClass().equals(object.getClass()) && amount == money.amount;
     }
 
-    // See my note in the DollarTest class. I added a getter for amount because I had a constructor test.
+    // See my note in the MoneyTest class. I added a getter for amount because I had a constructor test.
     public int getAmount() {
         return amount;
     }
 
-    public String currency() {
+    // I changed the name of this method from "currency" to "getCurrency" to keep consistent with Java standards.
+    // I'm not sure these standards existed when Kent wrote the book.
+    public String getCurrency() {
         return currency;
     }
 
