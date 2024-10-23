@@ -70,7 +70,7 @@ Chapter 10, page 46, Kent talks about one of the major benefits of a base of cle
 > Rather than apply minutes of suspect reasoning, we can just ask the computer by making the change and running the tests.
 
 Instead of spending 5 to 10 minutes reasoning out a problem, TDD gives you the ability to ask the computer to solve the problem in 15 seconds. 
-> Without the tests you habe no choice, you have to reason. With the tests you can decide whether an experiment would answer the question faster.
+> Without the tests you have no choice, you have to reason. With the tests you can decide whether an experiment would answer the question faster.
 
 ### Code without a test
 Chapter 10, page 47 has a paragraph that starts: "Whoa! Code without a test? Can you do that?" Kent then lays out three reasons 
