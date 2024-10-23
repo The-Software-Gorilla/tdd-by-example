@@ -13,10 +13,10 @@ public class DollarTests
     [Test]
     public void TestConstruction()
     {
-        var five = new Dollar(5);
+        var five = Money.Dollar(5);
         Assert.IsNotNull(five);
         Assert.That(five.Amount, Is.EqualTo(5));
-        var ten = new Dollar(10);
+        var ten = Money.Dollar(10);
         Assert.IsNotNull(ten);
         Assert.That(ten.Amount, Is.EqualTo(10));
     }
@@ -24,9 +24,9 @@ public class DollarTests
     [Test]
     public void TestMultiplication()
     {
-        Dollar five = new Dollar(5);
-        Assert.That(new Dollar(10), Is.EqualTo(five.Times(2)));
-        Assert.That(new Dollar(15), Is.EqualTo(five.Times(3)));
+        Money five = Money.Dollar(5);
+        Assert.That(Money.Dollar(10), Is.EqualTo(five.Times(2)));
+        Assert.That(Money.Dollar(15), Is.EqualTo(five.Times(3)));
     }
 
 }

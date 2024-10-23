@@ -13,10 +13,10 @@ public class FrancTests
     [Test]
     public void TestConstruction()
     {
-        var five = new Franc(5);
+        var five = Money.Franc(5);
         Assert.IsNotNull(five);
         Assert.That(five.Amount, Is.EqualTo(5));
-        var ten = new Franc(10);
+        var ten = Money.Franc(10);
         Assert.IsNotNull(ten);
         Assert.That(ten.Amount, Is.EqualTo(10));
     }
@@ -24,9 +24,9 @@ public class FrancTests
     [Test]
     public void TestMultiplication()
     {
-        Franc five = new Franc(5);
-        Assert.That(new Franc(10), Is.EqualTo(five.Times(2)));
-        Assert.That(new Franc(15), Is.EqualTo(five.Times(3)));
+        Money five = Money.Franc(5);
+        Assert.That(Money.Franc(10), Is.EqualTo(five.Times(2)));
+        Assert.That(Money.Franc(15), Is.EqualTo(five.Times(3)));
     }
 
 }

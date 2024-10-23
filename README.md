@@ -11,9 +11,7 @@ A few years later, I was working for a company that was embarking on its Agile j
 advocate for TDD and I have seen the benefits it brings to software development.
 
 In the last few months I have seen a lot of posts about TDD on social media that have made me reflect on my own experiences with it. I decided to go back to the 
-TDD Bible ["Test Driven Development: By Example" by Kent Beck](https://a.co/d/5tOeg2z) and work through the examples again. It's been at least 17 years since I last did it, and I never kept the code from back then.
-
-<iframe type="text/html" sandbox="allow-scripts allow-same-origin allow-popups" width="336" height="550" frameborder="0" allowfullscreen style="max-width:100%" src="https://read.amazon.com/kp/card?asin=B095SQ9WP4&preview=inline&linkCode=kpe&ref_=kip_embed_taf_preview_WZ4954A2RQDFRZBJXH73" ></iframe>
+TDD Bible - ["Test Driven Development: By Example" by Kent Beck](https://a.co/d/5tOeg2z) - and work through the examples again. It's been at least 17 years since I last did it, and I never kept the code from back then.
 
 A quote from the book that really caught my attention was this:
 > You will often be implementing TDD in code that doesn't have adequate tests (at least for the next decode or so).

@@ -14,19 +14,19 @@ public class DollarTest {
     // Also, I wanted to keep parity with the C# code where the Amount member is read only.
     @Test
     public void testConstruction() {
-        Dollar five = new Dollar(5);
+        Money five = Money.dollar(5);
         assertNotNull(five);
         assertEquals(5, five.getAmount());
-        Dollar ten = new Dollar(10);
+        Money ten = Money.dollar(10);
         assertNotNull(ten);
         assertEquals(10, ten.getAmount());
     }
 
     @Test
     public void testMultiplication() {
-        Dollar five = new Dollar(5);
-        assertEquals(new Dollar(10), five.times(2));
-        assertEquals(new Dollar(15), five.times(3));
+        Money five = Money.dollar(5);
+        assertEquals(Money.dollar(10), five.times(2));
+        assertEquals(Money.dollar(15), five.times(3));
     }
 
 }
