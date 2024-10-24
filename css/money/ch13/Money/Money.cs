@@ -25,7 +25,7 @@ public class Money : Expression
 
     public string Currency { get; }
 
-    private Money(int amount, string currency)
+    public Money(int amount, string currency)
     {
         Amount = amount;
         Currency = currency;
@@ -38,7 +38,12 @@ public class Money : Expression
 
     public Expression Plus(Money addend)
     {
-        return new Money(Amount + addend.Amount, Currency);
+        return new Sum(this, addend);
+    }
+
+    public Money Reduce(string to)
+    {
+        return this;
     }
 
     public override bool Equals(object? obj)

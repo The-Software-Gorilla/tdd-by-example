@@ -16,10 +16,11 @@ public class Money implements Expression {
         return new Money(amount, "ZAR");
     }
 
+
     private final int amount;
     private final String currency;
 
-    private Money(int amount, String currency) {
+    Money(int amount, String currency) {
         this.amount = amount;
         this.currency = currency;
     }
@@ -29,7 +30,11 @@ public class Money implements Expression {
     };
 
     public Expression plus(Money addend) {
-        return new Money(getAmount() + addend.getAmount(), getCurrency());
+        return new Sum(this, addend);
+    }
+
+    public Money reduce(String to) {
+        return this;
     }
 
     @Override

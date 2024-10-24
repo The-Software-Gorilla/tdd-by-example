@@ -67,5 +67,30 @@ public class MoneyTests
         Assert.That(Money.Dollar(10), Is.EqualTo(reduced));
     }
 
+    [Test]
+    public void TestPlusReturnsSum()
+    {
+        Expression result = _fiveDollar.Plus(_fiveDollar);
+        Sum sum = (Sum) result;
+        Assert.That(_fiveDollar, Is.EqualTo(sum.Augend));
+        Assert.That(_fiveDollar, Is.EqualTo(sum.Addend));
+    }
+
+    [Test]
+    public void TestReduceSum()
+    {
+        Expression sum = new Sum(Money.Dollar(3), Money.Dollar(4));
+        Bank bank = new Bank();
+        Money result = bank.Reduce(sum, "USD");
+        Assert.That(Money.Dollar(7), Is.EqualTo(result));
+    }
+
+    [Test]
+    public void TestReduceMoney()
+    {
+        Bank bank = new Bank();
+        Money result = bank.Reduce(Money.Dollar(1), "USD");
+        Assert.That(Money.Dollar(1), Is.EqualTo(result));
+    }
 
 }
