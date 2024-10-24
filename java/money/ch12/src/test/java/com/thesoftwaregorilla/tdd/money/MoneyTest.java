@@ -5,6 +5,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class MoneyTest {
 
+    private final Money fiveDollar = Money.dollar(5);
+
     // This code is not in the book, but my regular tests always have a construction test
     // In chapter 4, when we made amount private, we needed to add a getter in the Dollar class.
     // I could have removed this test because it is tested anyway in the multiplication test, but
@@ -12,7 +14,6 @@ public class MoneyTest {
     // Also, I wanted to keep parity with the C# code where the Amount member is read only.
     @Test
     public void testConstruction() {
-        Money fiveDollar = Money.dollar(5);
         assertNotNull(fiveDollar);
         assertEquals(5, fiveDollar.getAmount());
         assertEquals("USD", fiveDollar.getCurrency());
@@ -32,9 +33,9 @@ public class MoneyTest {
 
     @Test
     public void testEquality() {
-        assertTrue(Money.dollar(5).equals(Money.dollar(5)));
-        assertFalse(Money.dollar(5).equals(Money.dollar(6)));
-        assertFalse(Money.franc(5).equals(Money.dollar(5)));
+        assertTrue(fiveDollar.equals(Money.dollar(5)));
+        assertFalse(fiveDollar.equals(Money.dollar(6)));
+        assertFalse(Money.franc(5).equals(fiveDollar));
     }
 
 
@@ -47,15 +48,13 @@ public class MoneyTest {
 
     @Test
     public void testMultiplication() {
-        Money five = Money.dollar(5);
-        assertEquals(Money.dollar(10), five.times(2));
-        assertEquals(Money.dollar(15), five.times(3));
+        assertEquals(Money.dollar(10), fiveDollar.times(2));
+        assertEquals(Money.dollar(15), fiveDollar.times(3));
     }
 
     @Test
     public void testSimpleAddition() {
-        Money five = Money.dollar(5);
-        Expression sum = five.plus(five);
+        Expression sum = fiveDollar.plus(fiveDollar);
         Bank bank = new Bank();
         Money reduced = bank.reduce(sum, "USD");
         assertEquals(Money.dollar(10), reduced);
