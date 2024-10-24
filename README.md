@@ -14,7 +14,7 @@ In the last few months I have seen a lot of posts about TDD on social media that
 TDD Bible - ["Test Driven Development: By Example" by Kent Beck](https://a.co/d/5tOeg2z) - and work through the examples again. It's been at least 17 years since I last did it, and I never kept the code from back then.
 
 A quote from the book that really caught my attention was this:
-> You will often be implementing TDD in code that doesn't have adequate tests (at least for the next decode or so).
+> You will often be implementing TDD in code that doesn't have adequate tests (at least for the next decade or so).
 > - Kent Beck, "Test Driven Development: By Example," Chapter 6, page 29, (c) 2003
 
 The book was written in 2002. I have worked at several companies since then and I think it is true to say that many codebases
