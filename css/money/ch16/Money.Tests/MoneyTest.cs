@@ -153,5 +153,37 @@ public class MoneyTests
         Assert.That(result, Is.EqualTo(Money.Dollar(10)));
     }
 
+    [Test]
+    public void TestSumPlusMoney()
+    {
+        Expression fiveBucks = _fiveDollar;
+        Expression tenFrancs = Money.Franc(10);
+        Bank bank = new Bank();
+        bank.AddRate("CHF", "USD", 2);
+        Expression sum = new Sum(fiveBucks, tenFrancs).Plus(fiveBucks);
+        Money result = bank.Reduce(sum, "USD");
+        Assert.That(result, Is.EqualTo(Money.Dollar(15)));
+    }
+
+    [Test]
+    public void TestSumTimes()
+    {
+        Expression fiveBucks = _fiveDollar;
+        Expression tenFrancs = Money.Franc(10);
+        Bank bank = new Bank();
+        bank.AddRate("CHF", "USD", 2);
+        Expression sum = new Sum(fiveBucks, tenFrancs).Times(2);
+        Money result = bank.Reduce(sum, "USD");
+        Assert.That(result, Is.EqualTo(Money.Dollar(20)));
+    }
+
+    // This test is discussed at the end of Chapter 16, but there is no clean implementation for how to fix make it pass in the book.
+    // The test is commented out because it will fail. We'll come back to it later.
+    // [Test]
+    // public void TestPlusSameCurrencyReturnsMoney()
+    // {
+    //     Expression sum = Money.Dollar(1).Plus(Money.Dollar(1));
+    //     Assert.That(sum, Is.InstanceOf<Money>());
+    // }
 
 }
