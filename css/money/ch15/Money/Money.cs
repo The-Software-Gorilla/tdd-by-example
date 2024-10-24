@@ -31,12 +31,12 @@ public class Money : Expression
         Currency = currency;
     }
 
-    public virtual Money Times(int multiplier)
+    public Expression Times(int multiplier)
     {
         return new Money(Amount * multiplier, Currency);
     }
 
-    public Expression Plus(Money addend)
+    public Expression Plus(Expression addend)
     {
         return new Sum(this, addend);
     }

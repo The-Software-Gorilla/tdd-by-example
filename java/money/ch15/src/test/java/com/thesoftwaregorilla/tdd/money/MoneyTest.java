@@ -1,11 +1,23 @@
 package com.thesoftwaregorilla.tdd.money;
 
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class MoneyTest {
 
-    private final Money fiveDollar = Money.dollar(5);
+    private Money fiveDollar;
+
+    @BeforeEach
+    public void beforeEachSetUp() {
+        fiveDollar = Money.dollar(5);
+    }
+
+    @AfterEach
+    public void afterEachTearDown() {
+        fiveDollar = null;
+    }
 
     // This code is not in the book, but my regular tests always have a construction test
     // In chapter 4, when we made amount private, we needed to add a getter in the Dollar class.
@@ -120,6 +132,16 @@ public class MoneyTest {
     public void testIdentityRate() {
         assertEquals(1, new Bank().rate("USD", "USD"));
         assertEquals(0, new Bank().rate("GBP", "ZAR")); // No rate defined, should return 0
+    }
+
+    @Test
+    public void testMixedAddition() {
+        Expression fiveBucks = fiveDollar;
+        Expression tenFrancs = Money.franc(10);
+        Bank bank = new Bank();
+        bank.addRate("CHF", "USD", 2); // 1 CHF = 0.5 USD
+        Money result = bank.reduce(fiveBucks.plus(tenFrancs), "USD");
+        assertEquals(Money.dollar(10), result);
     }
 
 }

@@ -1,15 +1,19 @@
 package com.thesoftwaregorilla.tdd.money;
 
 public class Sum implements Expression {
-    final Money augend;
-    final Money addend;
+    final Expression augend;
+    final Expression addend;
 
-    public Sum(Money augend, Money addend) {
+    public Sum(Expression augend, Expression addend) {
         this.augend = augend;
         this.addend = addend;
     }
 
     public Money reduce(Bank bank, String to) {
-        return new Money(augend.getAmount() + addend.getAmount(), to);
+        return new Money(augend.reduce(bank, to).getAmount() + addend.reduce(bank, to).getAmount(), to);
+    }
+
+    public Expression plus(Expression addend) {
+        return null;
     }
 }

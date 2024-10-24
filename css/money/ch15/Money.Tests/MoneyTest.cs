@@ -3,9 +3,10 @@ using TheSoftwareGorilla.TDD.Money;
 
 namespace TheSoftwareGorilla.TDD.Money.Tests;
 
+[TestFixture]
 public class MoneyTests
 {
-    private Money _fiveDollar;
+    private Money? _fiveDollar;
 
     [SetUp]
     public void Setup()
@@ -13,7 +14,14 @@ public class MoneyTests
         _fiveDollar = Money.Dollar(5);
     }
 
-        [Test]
+    [TearDown]
+    public void TearDown()
+    {
+        _fiveDollar = null;
+    }
+
+
+    [Test]
     public void TestConstruction()
     {
         Assert.IsNotNull(_fiveDollar);
@@ -45,10 +53,9 @@ public class MoneyTests
    [Test]
    public void TestCurrency()
    {
-       Assert.That(Money.Dollar(1).Currency, Is.EqualTo("USD"));
-       Assert.That(Money.Franc(1).Currency, Is.EqualTo("CHF"));
-       Assert.That(Money.Rand(1).Currency, Is.EqualTo("ZAR"));
-       
+        Assert.That(Money.Dollar(1).Currency, Is.EqualTo("USD"));
+        Assert.That(Money.Franc(1).Currency, Is.EqualTo("CHF"));
+        Assert.That(Money.Rand(1).Currency, Is.EqualTo("ZAR"));
    }
 
     [Test]
@@ -134,5 +141,17 @@ public class MoneyTests
         Assert.That(new Bank().Rate("USD", "USD"), Is.EqualTo(1));
         Assert.That(new Bank().Rate("GBP", "ZAR"), Is.EqualTo(0)); // We haven't added this rate to the rate table so make sure it is zero.
     }
+
+    [Test]
+    public void TestMixedAddition()
+    {
+        Expression fiveBucks = _fiveDollar;
+        Expression tenFrancs = Money.Franc(10);
+        Bank bank = new Bank();
+        bank.AddRate("CHF", "USD", 2);
+        Money result = bank.Reduce(fiveBucks.Plus(tenFrancs), "USD");
+        Assert.That(result, Is.EqualTo(Money.Dollar(10)));
+    }
+
 
 }
