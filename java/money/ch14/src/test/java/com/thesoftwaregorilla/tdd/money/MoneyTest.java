@@ -94,9 +94,32 @@ public class MoneyTest {
         assertEquals(fiveDollar, randExchange);
     }
 
+    // On page 69, Kent suggests trying this to see if the test will pass. In 2002, Java did not have
+    // a built-in array equality method test, so the code in the book would not compile, and still fails as a test.
+    // The Java code he suggested then is:
+    // assertEquals(new Object[] {"abc"}, new Object[] {"abc"});
+    // JUnit 5 supports array comparison in 2024, so this test will pass and I am leaving it here for reference.
+    @Test
+    public void testArrayEquals() {
+//        assertEquals(new Object[] {"abc"}, new Object[] {"abc"}); // This test will fail.
+        var expected = new Object[] { "abc" };
+        var actual = new Object[] { "abc" };
+        assertArrayEquals(actual, expected);
+    }
+
+    // This code is not in the book, but when I started adding the CurrencyPair class, I realized we should have
+    // started with a test.
+    @Test
+    public void testCurrencyPairEquals() {
+        var francToDollar = new CurrencyPair("CHF", "USD");
+        assertEquals(francToDollar, new CurrencyPair("CHF", "USD"));
+        assertEquals(francToDollar.hashCode(), new CurrencyPair("CHF", "USD").hashCode());
+    }
+
     @Test
     public void testIdentityRate() {
         assertEquals(1, new Bank().rate("USD", "USD"));
+        assertEquals(0, new Bank().rate("GBP", "ZAR")); // No rate defined, should return 0
     }
 
 }

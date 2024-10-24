@@ -19,6 +19,7 @@ public class CurrencyPair {
         return from.equals(pair.from) && to.equals(pair.to);
     }
 
+    // The book uses zero for a hashCode. Objects.hash is a better way to do this, but was only added to Java 7.
     @Override
     public int hashCode() {
         return Objects.hash(from, to);

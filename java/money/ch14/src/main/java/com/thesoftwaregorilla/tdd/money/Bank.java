@@ -16,7 +16,7 @@ public class Bank {
             return 1;
         }
         Integer rate = rates.get(new CurrencyPair(from, to));
-        return rate;
+        return rate != null ? rate : 0;
     }
 
     public void addRate(String from, String to, int rate) {
