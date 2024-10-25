@@ -9,29 +9,41 @@ import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+//<editor-fold desc="TO DO List">
+//TODO: Add tests to deal with division by zero exceptions in the Money class.
+//TODO: Clean up the arithmetic tests align augend and addend with from and to currency pairs.
+//TODO: Refactor these tests into a nested test structure for the Money class. Basic tests first, then currency arithmetic and conversions.
+//</editor-fold>
+
+
+@DisplayName("Money Class Tests")
 public class MoneyTest {
 
-
+    //<editor-fold desc="Test Setup">
     private static HashMap<String, Function<Integer, Money>> currencyFactories;
     private static final int STD_AMOUNT = 5;
     private static Bank bank;
 
     @BeforeAll
     public static void beforeAllSetUp() {
-        currencyFactories = new HashMap<>();
-        currencyFactories.put("USD", Money::dollar);
-        currencyFactories.put("CHF", Money::franc);
-        currencyFactories.put("ZAR", Money::rand);
-        bank = getBankWithRates();
+        getCurrencyFactories();
+        bank = BankTest.getBankWithRates();
     }
 
-    private static Bank getBankWithRates() {
-        Bank bank = new Bank();
-        bank.addRate("CHF", "USD", 2); // 1 CHF = 0.5 USD
-        bank.addRate("ZAR", "USD", 17); // 1 ZAR = 0.0588 USD
-        bank.addRate("ZAR", "CHF", 20); // 1 ZAR = 0.05 CHF
-        return bank;
+    private static HashMap<String, Function<Integer, Money>> getCurrencyFactories() {
+        if(currencyFactories == null) {
+            currencyFactories = new HashMap<>();
+            currencyFactories.put("USD", Money::dollar);
+            currencyFactories.put("CHF", Money::franc);
+            currencyFactories.put("ZAR", Money::rand);
+        }
+        return currencyFactories;
     }
+
+    public static Function<Integer, Money> getCurrencyFactory(String currency) {
+        return getCurrencyFactories().get(currency);
+    }
+    //</editor-fold>
 
 
     @DisplayName("Money Construction")
@@ -143,51 +155,11 @@ public class MoneyTest {
         assertEquals(currencyFactories.get(toCurrency).apply(amount / rate), result);
     }
 
-    // On page 69, Kent suggests trying this to see if the test will pass. In 2002, Java did not have
-    // a built-in array equality method test, so the code in the book would not compile, and still fails as a test.
-    // The Java code he suggested then is:
-    // assertEquals(new Object[] {"abc"}, new Object[] {"abc"});
-    // JUnit 5 supports array comparison in 2024, so this test will pass and I am leaving it here for reference.
-    @Test
-    @DisplayName("Array Equals test for reference")
-    @Disabled("Test exists to illustrate a change to JUnit since the TDD By Example book was published.")
-    public void testArrayEquals() {
-//        assertEquals(new Object[] {"abc"}, new Object[] {"abc"}); // This test will fail.
-        var expected = new Object[] { "abc" };
-        var actual = new Object[] { "abc" };
-        assertArrayEquals(actual, expected);
-    }
-
-    // This code is not in the book, but when I started adding the CurrencyPair class, I realized we should have
-    // started with a test.
-    @Test
-    @DisplayName("CurrencyPair Equals")
-    public void testCurrencyPairEquals() {
-        var francToDollar = new CurrencyPair("CHF", "USD");
-        assertEquals(francToDollar, new CurrencyPair("CHF", "USD"));
-        assertEquals(francToDollar.hashCode(), new CurrencyPair("CHF", "USD").hashCode());
-    }
-
-    @DisplayName("Unmatched CurrencyPair Equals")
-    @ParameterizedTest(name = "Unmatched CurrencyPair Equals with from = \"{0}\", to = \"{1}\", expected = {2}")
-    @CsvSource({
-            "USD, USD, 1",
-            "CHF, CHF, 1",
-            "ZAR, ZAR, 1",
-            "ZAR, USD, 0",
-            "USD, CHF, 0",
-            "CHF, ZAR, 0",
-            "GBP, ZAR, 0"
-    })
-    public void testIdentityRate(String from, String to, int expected) {
-        assertEquals(expected, new Bank().rate(from, to));
-    }
 
     @Test
     public void testMixedAddition() {
         Expression fiveBucks = Money.dollar(STD_AMOUNT);
         Expression tenFrancs = Money.franc(10);
-        Bank bank = getBankWithRates();
         Money result = bank.reduce(fiveBucks.plus(tenFrancs), "USD");
         assertEquals(Money.dollar(10), result);
     }

@@ -2,11 +2,11 @@ package com.thesoftwaregorilla.tdd.money;
 
 import java.util.Objects;
 
-public class CurrencyPair {
+class CurrencyPair {
     private final String from;
     private final String to;
 
-    public CurrencyPair(String from, String to) {
+    CurrencyPair(String from, String to) {
         this.from = from;
         this.to = to;
     }
@@ -14,8 +14,7 @@ public class CurrencyPair {
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
-        if (!(obj instanceof CurrencyPair)) return false;
-        CurrencyPair pair = (CurrencyPair) obj;
+        if (!(obj instanceof CurrencyPair pair)) return false;
         return from.equals(pair.from) && to.equals(pair.to);
     }
 
