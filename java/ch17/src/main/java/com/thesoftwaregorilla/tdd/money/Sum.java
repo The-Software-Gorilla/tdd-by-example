@@ -1,10 +1,10 @@
 package com.thesoftwaregorilla.tdd.money;
 
-public class Sum implements Expression {
+class Sum implements Expression {
     final Expression augend;
     final Expression addend;
 
-    public Sum(Expression augend, Expression addend) {
+    Sum(Expression augend, Expression addend) {
         this.augend = augend;
         this.addend = addend;
     }

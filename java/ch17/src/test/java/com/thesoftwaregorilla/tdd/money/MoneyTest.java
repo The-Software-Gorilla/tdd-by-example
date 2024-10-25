@@ -114,15 +114,6 @@ public class MoneyTest {
         assertEquals(new Money(STD_AMOUNT + STD_AMOUNT, currency), reduced);
     }
 
-    @Test
-    @DisplayName("Addition Returning a Sum")
-    public void testPlusReturnsSum() {
-        Money fiveDollar = Money.dollar(STD_AMOUNT);
-        Expression result = fiveDollar.plus(fiveDollar);
-        Sum sum = (Sum) result;
-        assertEquals(fiveDollar, sum.augend);
-        assertEquals(fiveDollar, sum.addend);
-    }
 
     @Test
     @DisplayName("Reduce Money")
@@ -192,7 +183,7 @@ public class MoneyTest {
     private void testReduceHarness(String augend, int augendAmt, String addend, int addendAmt, int expected, ITestOperation operation) {
         Expression money1 = currencyFactories.get(augend).apply(augendAmt);
         Expression money2 = currencyFactories.get(addend).apply(addendAmt);
-        Expression sum = operation.doAction(money1, money2);
+        Expression sum = operation.apply(money1, money2);
         Money result = bank.reduce(sum, augend);
         assertEquals(currencyFactories.get(augend).apply(expected), result);
     }
