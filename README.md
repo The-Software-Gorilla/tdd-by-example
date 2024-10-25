@@ -36,7 +36,7 @@ I have created separate examples for each chapter and I have also provided code 
 - Each language folder has a README.md that provides details on how to setup your environment for that language.
 - Each language has folders numbered 'ch00' through 'ch17' and a 'money' folder.
 - The 'ch00' folder contains an empty project for its language that can be used as starting point if you want to follow along yourself.
-- The 'ch17' and 'money' folders contain code that is not in the book. See notes in the [next section]().
+- The 'ch17' and 'money' folders contain code that is not in the book. See notes in the [next section](https://github.com/The-Software-Gorilla/tdd-examples#ch17-and-money-folders).
 - The 'xunit' folder contains example code for chapters 18 to 24 in Python.
 - Each chapter has its own folder with the corresponding code and a README.md specific to that chapter.
 - The code is organized to follow the TDD cycle.
