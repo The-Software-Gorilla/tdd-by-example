@@ -27,14 +27,18 @@ I decided to work through the examples in the book again and create a repository
 
 The code in this repository is the example code that Kent Beck used in his book "Test Driven Development: By Example". 
 It demonstrates the principles of Test Driven Development (TDD) chapter by chapter according to the examples in the book.
-I have created separate examples for each chapter and I have also provided code in Java and C#. I may add a Python version later.
+I have created separate examples for each chapter and I have also provided code in Java and C#. I may add a Python and/or React version later.
 
 ### Structure of the Repository
-- There is a separate folder for C# (css) and Java (java) examples.
-- I separated the examples into the money and xunit folders. 
-- The money folder contains example code for chapters 1 to 17.
-- The xunit folder contains example code for chapters 18 to 24.
-- Each chapter has its own folder with the corresponding code.
+- The money example spans 17 chapters and each language has complete example code for each complete chapter.
+- The C# example is in the 'cs' folder. Development work was done using VSCode and C# 12, .NET 8 and dotnet CLI.
+- The Java example is in the 'java' folder. Development work was done using IntelliJ IDEA, Java 23, JUnit 5 and Maven 3.9.9.
+- Each language folder has a README.md that provides details on how to setup your environment for that language.
+- Each language has folders numbered 'ch00' through 'ch17' and a 'money' folder.
+- The 'ch00' folder contains an empty project for its language that can be used as starting point if you want to follow along yourself.
+- The 'ch17' and 'money' folders contain code that is not in the book. See notes in the [next section]().
+- The 'xunit' folder contains example code for chapters 18 to 24 in Python.
+- Each chapter has its own folder with the corresponding code and a README.md specific to that chapter.
 - The code is organized to follow the TDD cycle.
 - I initially thought about creating a separate branch for each chapter, but I decided against it because:
   - Branches cannot be constrained to a single folder, so I couldn't keep .NET code in one branch and Java in another so the code is easy to navigate.
@@ -42,6 +46,11 @@ I have created separate examples for each chapter and I have also provided code 
   - It would be difficult to see the differences between the Java and C# implementations.
 - As the book is based on Java and JUnit, I had to take some liberties with the C# code because of the subtle differences between C#, Java, NUnit and JUnit.
 - Bear in mind the book was written in 2002, so the Java and JUnit versions it was based on did not have support for lambdas, anonymous functions, etc. We're talking Java 1.4-ish. That said, the concepts are still as relevant today as they were 20-some years ago.
+
+### 'ch17' and 'money' folders
+Chapter 17 of the book is a retrospective on the Money example. In it, Kent suggests a refactor of the Expression interface into a class. I decided to give that a try to see if I can resolve the "plus" duplication. He also suggested a refactor of the unit tests to leverage fixtures. I took that on in the Chapter 17 code.
+
+The 'money' folder contains some additional changes I wanted to experiment with that do not relate to the book at all. I decided to add functionality to the application to fetch realtime currency values from an API at [FreecurrencyAPI](https://freecurrencyapi.com/). I wanted to be able to use the example to retrieve the exchange rates from the API in realtime and do the real conversions. This meant quite a bit of refactoring of currency values to support decimal-based conversions. I also used this section to create a command line utility to convert, add, and multiply currency, and I built some REST service endpoints to enable a web/mobile front-end. I may add the front-end later.
 
 ## Key Concepts from the Book
 
