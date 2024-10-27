@@ -10,7 +10,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 //<editor-fold desc="TO DO List">
-//TODO: Add test for reducing money to different currencies.
 //</editor-fold>
 
 

@@ -6,12 +6,6 @@ using TheSoftwareGorilla.TDD.Money;
 namespace TheSoftwareGorilla.TDD.Money.Tests;
 
 #region TO DO's
-//TODO: Move tests into test classes for CurrenctyPair, Bank, and Sum
-//TODO: Add tests to deal with the division by zero issue in the Money class.
-//TODO: Clean up the arithmetic tests in the MoneyTests class to use from/to instead of augend/addend.
-//TODO: Refactor the tests so that they are appropriately grouped into categories like they are nested in the Java code.
-//TODO: Create parameterized tests for the MoneyTests class.
-//TODO: Get to 100% code coverage.
 #endregion
 [TestFixture]
 [Description("MoneyTest class")]

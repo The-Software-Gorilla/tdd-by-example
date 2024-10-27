@@ -5,6 +5,10 @@ using TheSoftwareGorilla.TDD.Money;
 namespace TheSoftwareGorilla.TDD.Money.Tests;
 
 #region TO DO's
+//TODO: Look into refactoring the code in Sum to use BinaryOperator and/or UnaryOperator instead of Expression.
+// (see issue #1)
+//TODO: Refactor the testPlus and testTimes methods to use a single method with parameters for the operation type.
+// (needs to wait for plus cleanup)
 #endregion  
 
 [TestFixture]

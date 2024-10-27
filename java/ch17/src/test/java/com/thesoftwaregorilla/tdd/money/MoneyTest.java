@@ -12,9 +12,6 @@ import java.util.function.Function;
 import static org.junit.jupiter.api.Assertions.*;
 
 //<editor-fold desc="TO DO List">
-//TODO: (DONE) Add tests to deal with division by zero exceptions in the Money class caused by no exchange rate set.
-//TODO: (DONE) Clean up the arithmetic tests align augend and addend with from and to currency pairs.
-//TODO: (DONE) Refactor these tests into a nested test structure for the Money class. Basic tests first, then currency arithmetic and conversions.
 //</editor-fold>
 
 
