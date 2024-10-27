@@ -1,13 +1,38 @@
+using Microsoft.VisualStudio.TestPlatform.ObjectModel;
 using NUnit.Framework;
 using TheSoftwareGorilla.TDD.Money;
 
 namespace TheSoftwareGorilla.TDD.Money.Tests;
 
+#region TO DO's
+//TODO: Move tests into test classes for CurrenctyPair, Bank, and Sum
+//TODO: Add tests to deal with the division by zero issue in the Money class.
+//TODO: Clean up the arithmetic tests in the MoneyTests class to use from/to instead of augend/addend.
+//TODO: Refactor the tests so that they are appropriately grouped into categories like they are nested in the Java code.
+//TODO: Create parameterized tests for the MoneyTests class.
+//TODO: Get to 100% code coverage.
+#endregion
 [TestFixture]
+[Description("MoneyTest class")]
 public class MoneyTests
 {
-    private Money? _fiveDollar;
+    
+    private static readonly Dictionary<String, Func<int, Money>> _currencyFactories = new Dictionary<string, Func<int, Money>>
+    {
+        { "USD", Money.Dollar },
+        { "CHF", Money.Franc },
+        { "ZAR", Money.Rand }
+    };
+    private const int STD_AMT = 5;
 
+    [OneTimeSetUp]
+    public static void OneTimeSetUp()
+    {
+        // This method is called only once before any of the tests are run.
+    }
+
+    private Money? _fiveDollar;
+    
     [SetUp]
     public void Setup()
     {
@@ -20,42 +45,49 @@ public class MoneyTests
         _fiveDollar = null;
     }
 
-
-    [Test]
-    public void TestConstruction()
+    [TestCase("USD", 5, 5, TestName = "construct USD 5")]
+    [TestCase("CHF", 5, 5, TestName = "construct CHF 5")]
+    [TestCase("ZAR", 5, 5, TestName = "construct ZAR 5")]
+    [Category("construction")]
+    public void TestConstruction(string currency, int amount, int expected)
     {
-        Assert.IsNotNull(_fiveDollar);
-        Assert.That(_fiveDollar.Amount, Is.EqualTo(5));
-        Assert.That(_fiveDollar.Currency, Is.EqualTo("USD"));
-
-        var fiveFranc = Money.Franc(5);
-        Assert.IsNotNull(fiveFranc);
-        Assert.That(fiveFranc.Amount, Is.EqualTo(5));
-        Assert.That(fiveFranc.Currency, Is.EqualTo("CHF"));
-
-        // Had to add this test because I'm South African! :)
-        var fiveRand = Money.Rand(5);
-        Assert.IsNotNull(fiveRand);
-        Assert.That(fiveRand.Amount, Is.EqualTo(5));
-        Assert.That(fiveRand.Currency, Is.EqualTo("ZAR"));
+        var money = _currencyFactories[currency].Invoke(amount);
+        Assert.IsNotNull(money);
+        Assert.That(money.Amount, Is.EqualTo(expected));
+        Assert.That(money.Currency, Is.EqualTo(currency));
     }
 
-
-    [Test]
-    public void TestEquality()
+    [TestCase("USD", 5, TestName = "ToString USD 5")]
+    [TestCase("CHF", 5, TestName = "ToString CHF 10")]
+    [TestCase("ZAR", 5, TestName = "ToString ZAR 20")]
+    [Category("construction")]
+    public void TestToString(string currency, int amount)
     {
-        Assert.That(_fiveDollar, Is.EqualTo(Money.Dollar(5)));
-        Assert.That(Money.Dollar(6), Is.Not.EqualTo(Money.Dollar(5)));
-        Assert.That(Money.Franc(5), Is.Not.EqualTo(Money.Dollar(5)));
+        var money = _currencyFactories[currency].Invoke(amount);
+        Assert.That(money.ToString(), Is.EqualTo(amount + " " + currency));
+    }
+
+    [TestCase("USD", "CHF",  6, TestName = "equality USD 6")]
+    [TestCase("CHF", "ZAR", 7, TestName = "equality CHF 7")]
+    [TestCase("ZAR", "USD", 8, TestName = "equality ZAR 8")]
+    [Category("construction")]
+    public void TestEquality(string currency1, string currency2, int notEqualAmount)
+    {
+        var money1 = _currencyFactories[currency1].Invoke(STD_AMT);
+        var money2 = _currencyFactories[currency2].Invoke(STD_AMT);
+        Assert.That(money1, Is.EqualTo(_currencyFactories[currency1].Invoke(STD_AMT)));
+        Assert.That(money1, Is.Not.EqualTo(_currencyFactories[currency1].Invoke(notEqualAmount)));
+        Assert.That(money2, Is.Not.EqualTo(money1));
    }
 
-
-   [Test]
-   public void TestCurrency()
+    [TestCase("USD", TestName = "currency USD")]
+    [TestCase("CHF", TestName = "currency CHF")]
+    [TestCase("ZAR", TestName = "currency ZAR")]
+    [Category("construction")]
+   public void TestCurrency(string currency)
    {
-        Assert.That(Money.Dollar(1).Currency, Is.EqualTo("USD"));
-        Assert.That(Money.Franc(1).Currency, Is.EqualTo("CHF"));
-        Assert.That(Money.Rand(1).Currency, Is.EqualTo("ZAR"));
+        var money = _currencyFactories[currency].Invoke(STD_AMT);
+        Assert.That(money.Currency, Is.EqualTo(currency));
    }
 
     [Test]
