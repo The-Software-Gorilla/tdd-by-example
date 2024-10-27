@@ -22,28 +22,23 @@ import static org.junit.jupiter.api.Assertions.*;
 public class MoneyTest {
 
     //<editor-fold desc="Test Setup">
-    private static HashMap<String, Function<Integer, Money>> currencyFactories;
+    private static final HashMap<String, Function<Integer, Money>> currencyFactories = new HashMap<>() {
+        {
+            put("USD", Money::dollar);
+            put("CHF", Money::franc);
+            put("ZAR", Money::rand);
+        }
+    };
     private static final int STD_AMOUNT = 5;
     private static Bank bank;
 
     @BeforeAll
     public static void beforeAllSetUp() {
-        getCurrencyFactories();
         bank = BankTest.getBankWithRates();
     }
 
-    private static HashMap<String, Function<Integer, Money>> getCurrencyFactories() {
-        if(currencyFactories == null) {
-            currencyFactories = new HashMap<>();
-            currencyFactories.put("USD", Money::dollar);
-            currencyFactories.put("CHF", Money::franc);
-            currencyFactories.put("ZAR", Money::rand);
-        }
-        return currencyFactories;
-    }
-
     public static Function<Integer, Money> getCurrencyFactory(String currency) {
-        return getCurrencyFactories().get(currency);
+        return currencyFactories.get(currency);
     }
     //</editor-fold>
 
