@@ -215,7 +215,7 @@ public class MoneyTest {
                         (aug, add) -> new Sum(aug, add).times(2));
             }
 
-            private void testReduceHarness(String from, int fromAmt, String to, int toAmt, int expected, BiFunction<Expression, Expression, Expression> operation) {
+            private static void testReduceHarness(String from, int fromAmt, String to, int toAmt, int expected, BiFunction<Expression, Expression, Expression> operation) {
                 Expression money1 = currencyFactories.get(from).apply(fromAmt);
                 Expression money2 = currencyFactories.get(to).apply(toAmt);
                 Expression sum = operation.apply(money1, money2);

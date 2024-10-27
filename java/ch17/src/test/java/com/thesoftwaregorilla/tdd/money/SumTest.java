@@ -39,11 +39,9 @@ class SumTest {
     }
 
     private void testReduce(String fromCurrency, int fromAmount, String toCurrency, int toAmount, int expectedAmount) {
-        Bank bank = BankTest.getBankWithRates();
-        Money from = MoneyTest.getCurrencyFactory(fromCurrency).apply(fromAmount);
-        Money to = MoneyTest.getCurrencyFactory(toCurrency).apply(toAmount);
-        Sum sum = new Sum(from, to);
-        Money reduced = sum.reduce(bank, toCurrency);
+        Sum sum = new Sum(MoneyTest.getCurrencyFactory(fromCurrency).apply(fromAmount),
+                MoneyTest.getCurrencyFactory(toCurrency).apply(toAmount));
+        Money reduced = sum.reduce(BankTest.getBankWithRates(), toCurrency);
         assertEquals(MoneyTest.getCurrencyFactory(toCurrency).apply(expectedAmount), reduced);
     }
 
