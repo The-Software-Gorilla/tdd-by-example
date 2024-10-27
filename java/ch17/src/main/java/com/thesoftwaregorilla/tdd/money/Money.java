@@ -35,6 +35,9 @@ public class Money implements Expression {
 
     public Money reduce(Bank bank, String to) {
         int rate = bank.rate(getCurrency(), to);
+        if (rate == 0) {
+            throw new ArithmeticException("Exchange rate not available");
+        }
         return new Money(getAmount() / rate, to);
     }
 

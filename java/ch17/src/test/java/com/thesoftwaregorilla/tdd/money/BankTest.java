@@ -58,7 +58,7 @@ public class BankTest {
         ArithmeticException exception = assertThrows(ArithmeticException.class, () -> {
             bank.reduce(MoneyTest.getCurrencyFactory(from).apply(fromAmt), to);
         });
-        assertEquals("/ by zero", exception.getMessage());
+        assertEquals("Exchange rate not available", exception.getMessage());
     }
 
     // This error occurs when the currency does not have a factory method.
