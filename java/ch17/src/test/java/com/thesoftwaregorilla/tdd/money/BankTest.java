@@ -34,6 +34,24 @@ public class BankTest {
         return bank;
     }
 
+    @DisplayName("rate table")
+    @ParameterizedTest(name = "rate from = \"{0}\" to = \"{1}\", expected = {2}")
+    @CsvSource({
+            "USD, USD, 1",
+            "CHF, CHF, 1",
+            "ZAR, ZAR, 1",
+            "USD, CHF, 0",
+            "CHF, ZAR, 0",
+            "GBP, ZAR, 0",
+            "CHF, USD, 2",
+            "ZAR, USD, 17",
+            "ZAR, CHF, 20"
+    })
+    public void testRate(String from, String to, int expected) {
+        assertEquals(expected, bank.rate(from, to));
+    }
+
+
     @DisplayName("reduce")
     @ParameterizedTest(name = "reduce from = \"{0}\", amount = {1}, to = \"{2}\", expected = {3}")
     @CsvSource({
@@ -50,7 +68,7 @@ public class BankTest {
     @DisplayName("reduce with division by zero exception")
     @ParameterizedTest(name = "reduce from = \"{0}\", amount = {1}, to = \"{2}\"")
     @CsvSource({
-            "USD, 1, ZAR, 20",
+            "USD, 1, ZAR, 17",
             "CHF, 1, ZAR, 20",
             "USD, 1, CHF, 0"
     })
@@ -69,27 +87,11 @@ public class BankTest {
             "INR, 1, ZAR, 20",
             "FRF, 1, CHF, 0"
     })
-    public void testReduceWithNpException(String from, int fromAmt, String to, int expected) {
+    public void testReduceNotInRateTable(String from, int fromAmt, String to, int expected) {
         NullPointerException exception = assertThrows(NullPointerException.class, () -> {
             bank.reduce(MoneyTest.getCurrencyFactory(from).apply(fromAmt), to);
         });
     }
 
-    @DisplayName("rate table")
-    @ParameterizedTest(name = "rate from = \"{0}\" to = \"{1}\", expected = {2}")
-    @CsvSource({
-            "USD, USD, 1",
-            "CHF, CHF, 1",
-            "ZAR, ZAR, 1",
-            "USD, CHF, 0",
-            "CHF, ZAR, 0",
-            "GBP, ZAR, 0",
-            "CHF, USD, 2",
-            "ZAR, USD, 17",
-            "ZAR, CHF, 20"
-    })
-    public void testIdentityRate(String from, String to, int expected) {
-        assertEquals(expected, bank.rate(from, to));
-    }
 
 }

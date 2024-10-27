@@ -44,6 +44,10 @@ public class Money : Expression
     public Money Reduce(Bank bank, string to)
     {
         int rate = bank.Rate(Currency, to);
+        if (rate == 0)
+        {
+            throw new InvalidOperationException("No rate found for " + Currency + " to " + to);
+        }
         return new Money(Amount / rate, to);
     }
 

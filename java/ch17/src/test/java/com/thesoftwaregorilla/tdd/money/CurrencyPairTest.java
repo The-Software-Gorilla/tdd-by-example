@@ -3,35 +3,42 @@ package com.thesoftwaregorilla.tdd.money;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("CurrencyPair Tests")
 public class CurrencyPairTest {
 
-    @Test
-    @DisplayName("equal")
-    public void testCurrencyPairEquals() {
-        var francToDollar = new CurrencyPair("CHF", "USD");
-        assertEquals(francToDollar, new CurrencyPair("CHF", "USD"));
-        assertEquals(francToDollar.hashCode(), new CurrencyPair("CHF", "USD").hashCode());
-    }
 
-    @Test
-    @DisplayName("not equal")
-    public void testCurrencyPairNotEquals() {
-        var francToDollar = new CurrencyPair("CHF", "USD");
-        assertNotEquals(francToDollar, new CurrencyPair("USD", "CHF"));
-        assertNotEquals(francToDollar.hashCode(), new CurrencyPair("USD", "CHF").hashCode());
+    @DisplayName("equality tests")
+    @ParameterizedTest(name = "from = \"{0}\", to = \"{1}\", equality = {2}")
+    @CsvSource({
+            "CHF, USD, true",
+            "CHF, USD, false",
+            "ZAR, USD, true",
+            "ZAR, USD, false"
+    })
+    public void testCurrencyPairs(String from, String to, boolean isEqual) {
+        var pair = new CurrencyPair(from, to);
+        if(isEqual) {
+            assertEquals(pair, new CurrencyPair(from, to));
+            assertEquals(pair.hashCode(), new CurrencyPair(from, to).hashCode());
+        } else {
+            assertNotEquals(pair, new CurrencyPair(to, from));
+            assertNotEquals(pair.hashCode(), new CurrencyPair(to, from).hashCode());
+        }
     }
 
     @Test
     @DisplayName("edge tests for code coverage")
     public void testCurrencyEdgeCases() {
-        var francToDollar = new CurrencyPair("CHF", "USD");
+        var pair = new CurrencyPair("CHF", "USD");
         // Test for code coverage
-        assertEquals(francToDollar, francToDollar);
-        assertNotEquals(francToDollar, "CHF");
+        assertNotNull(pair);
+        assertEquals(pair, pair);
+        assertNotEquals(pair, new Object());
     }
 
 }

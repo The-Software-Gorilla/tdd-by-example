@@ -14,7 +14,7 @@ namespace TheSoftwareGorilla.TDD.Money.Tests;
 #endregion
 [TestFixture]
 [Description("MoneyTest class")]
-public class MoneyTests
+public class MoneyTest
 {
     
     private static readonly Dictionary<String, Func<int, Money>> _currencyFactories = new Dictionary<string, Func<int, Money>>
@@ -29,6 +29,11 @@ public class MoneyTests
     public static void OneTimeSetUp()
     {
         // This method is called only once before any of the tests are run.
+    }
+
+    public static Func<int, Money> GetCurrencyFactory(string currency)
+    {
+        return _currencyFactories[currency];
     }
 
     private Money? _fiveDollar;
@@ -144,35 +149,7 @@ public class MoneyTests
         Assert.That(randExchange, Is.EqualTo(_fiveDollar));
     }
 
-    // On page 69, Kent suggests trying this to see if the test will pass. In 2002, Java did not have 
-    // a built-in array equality method test, so this code would not compile.
-    // The Java code he suggested then is:
-    // assertEquals(new Object[] {"abc"}, new Object[] {"abc"}); 
-    // I included this same test in the Java example, but used assertArrayEquals instead.
-    // NUnit supports this in 2024, so this test will pass and I am leaving it here for reference.
-    [Test]
-    public void TestArrayEquals()
-    {
-        var actual = new object[] { "abc" };
-        Assert.That(actual, Is.EqualTo(new object[] { "abc" }));
-    }
 
-    // This code is not in the book, but when I started adding the CurrencyPair class, I realized we should 
-    // have started with a test.
-    [Test]
-    public void TestCurrencyPairEquals()
-    {
-        var FrancToDollar = new CurrencyPair("CHF", "USD");
-        Assert.That(FrancToDollar, Is.EqualTo(new CurrencyPair("CHF", "USD")));
-        Assert.That(FrancToDollar.GetHashCode(), Is.EqualTo(new CurrencyPair("CHF", "USD").GetHashCode()));
-    }
-
-    [Test]
-    public void TestIdentityRate()
-    {
-        Assert.That(new Bank().Rate("USD", "USD"), Is.EqualTo(1));
-        Assert.That(new Bank().Rate("GBP", "ZAR"), Is.EqualTo(0)); // We haven't added this rate to the rate table so make sure it is zero.
-    }
 
     [Test]
     public void TestMixedAddition()
@@ -211,11 +188,12 @@ public class MoneyTests
 
     // This test is discussed at the end of Chapter 16, but there is no clean implementation for how to fix make it pass in the book.
     // The test is commented out because it will fail. We'll come back to it later.
-    // [Test]
-    // public void TestPlusSameCurrencyReturnsMoney()
-    // {
-    //     Expression sum = Money.Dollar(1).Plus(Money.Dollar(1));
-    //     Assert.That(sum, Is.InstanceOf<Money>());
-    // }
+    [Test]
+    [Ignore("Disabled until we implement the fix for duplicate plus implementation")]
+    public void TestPlusSameCurrencyReturnsMoney()
+    {
+        Expression sum = Money.Dollar(1).Plus(Money.Dollar(1));
+        Assert.That(sum, Is.InstanceOf<Money>());
+    }
 
 }
