@@ -15,17 +15,18 @@ import java.util.logging.Logger;
 public class ExchangeApiFetcher {
 
     private final Logger logger = Logger.getLogger(ExchangeApiFetcher.class.getName());
-    public static final String EXCHANGE_API_STANDARD_URL = "https://v6.exchangerate-api.com/v6/%s/latest/%s";
+    private final String apiStandardUrl;
     private final String apiKey;
     private final String baseCurrency;
     private ExchangeApiStandardResponse rateResponse;
-    public ExchangeApiFetcher(String apiKey, String baseCurrency) {
-        this.apiKey = apiKey;
+    public ExchangeApiFetcher(AppConfig config, String baseCurrency) {
+        this.apiKey = config.getApiKey();
+        this.apiStandardUrl = config.getExchangeApiStandardUrl();
         this.baseCurrency = baseCurrency;
     }
 
     public ExchangeApiFetcher fetch() {
-        GetRequest getRequest = new GetRequest(String.format(EXCHANGE_API_STANDARD_URL, apiKey, baseCurrency));
+        GetRequest getRequest = new GetRequest(String.format(apiStandardUrl, apiKey, baseCurrency));
         rateResponse = parseResponse(getRequest.fetchResponse(), ExchangeApiStandardResponse.class);
         return this;
     }

@@ -3,7 +3,6 @@ package com.thesoftwaregorilla.tdd.money;
 import com.thesoftwaregorilla.tdd.money.http.GetRequest;
 import com.thesoftwaregorilla.tdd.money.json.ExchangeApiPairResponse;
 import com.thesoftwaregorilla.tdd.money.json.ExchangeApiStandardResponse;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -43,11 +42,12 @@ public class ExchangeAPITest {
     private static final String API_KEY_PROPERTY;
     private static final String API_PAIR_URL_PROPERTY;
     private static final String API_STANDARD_URL_PROPERTY;
+    private static final AppConfig APP_CONFIG;
     static {
-        AppConfig config = new AppConfig("src/main/resources/application.settings");
-        API_KEY_PROPERTY = config.getApiKey();
-        API_PAIR_URL_PROPERTY = config.getExchangeApiPairUrl();
-        API_STANDARD_URL_PROPERTY = config.getExchangeApiStandardUrl();
+        APP_CONFIG = new AppConfig("src/main/resources/application.settings");
+        API_KEY_PROPERTY = APP_CONFIG.getApiKey();
+        API_PAIR_URL_PROPERTY = APP_CONFIG.getExchangeApiPairUrl();
+        API_STANDARD_URL_PROPERTY = APP_CONFIG.getExchangeApiStandardUrl();
     }
 
     @Test
@@ -96,7 +96,7 @@ public class ExchangeAPITest {
 
     @Test
     public void testExchangeApiFetcher() {
-        ExchangeApiFetcher fetcher = new ExchangeApiFetcher(API_KEY_PROPERTY, BASE_CURRENCY).fetch();
+        ExchangeApiFetcher fetcher = new ExchangeApiFetcher(APP_CONFIG, BASE_CURRENCY).fetch();
         assertNotNull(fetcher);
         assertEquals(BASE_CURRENCY, fetcher.getBaseCurrency());
         assertNotNull(fetcher.getTimeLastUpdateUtc());
