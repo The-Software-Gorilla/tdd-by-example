@@ -3,6 +3,9 @@
 .AppleDouble
 .LSOverride
 
+# general
+#apikeys.settings
+
 # Thumbnails
 ._*
 

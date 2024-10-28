@@ -1,0 +1,4 @@
+api.key.location=apikeys.settings
+api.key.name=exchangeapi.com
+exchange.api.pair.url=https://v6.exchangerate-api.com/v6/%s/pair/%s/%s
+exchange.api.standard.url=https://v6.exchangerate-api.com/v6/%s/latest/%s
