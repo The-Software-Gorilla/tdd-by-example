@@ -24,6 +24,12 @@ public class AppConfig
         ExchangeApiStandardUrl = primaryConfig.AppSettings.Settings["ExchangeApiStandardUrl"].Value;
 
         string apiKeyLocation = primaryConfig.AppSettings.Settings["ApiKeyLocation"].Value;
+        if (apiKeyLocation != null && !File.Exists(apiKeyLocation)) {
+            apiKeyLocation = GetSolutionPathForFile(apiKeyLocation);
+        }
+        if (apiKeyLocation == null) {
+            throw new FileNotFoundException($"ApiKeyLocation file ({primaryConfig.AppSettings.Settings["ApiKeyLocation"].Value}) not found");
+        }
         string apiKeyName = primaryConfig.AppSettings.Settings["ApiKeyName"].Value;
 
         
@@ -33,4 +39,19 @@ public class AppConfig
         ApiKey = secondaryConfig.AppSettings.Settings[apiKeyName].Value;
 
     }
+    
+    public static string GetSolutionPathForFile(string relativeFileName) {
+        string exePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+        DirectoryInfo di = new DirectoryInfo(exePath);
+        while (di != null && !File.Exists(Path.Combine(di.FullName, relativeFileName))) {
+            di = di.Parent;
+        }
+
+        if (di == null) {
+            return null;
+        }
+
+        return Path.Combine(di.FullName, relativeFileName);
+    }
+
 }

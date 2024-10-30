@@ -7,29 +7,21 @@ namespace TheSoftwareGorilla.TDD.Money.Http;
 
 public class GetRequest
 {
-    private readonly string _url;
+    public string Url { get; }
 
     public GetRequest(string url)
     {
-        _url = url;
+        Url = url;
 
     }
 
     public async Task<string> FetchResponseAsync()
     {
-        try
-        {
-            using HttpClient client = new HttpClient();
-            HttpResponseMessage response = await client.GetAsync(_url);
-            response.EnsureSuccessStatusCode();
-            return await response.Content.ReadAsStringAsync();
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine("Error fetching response: {0}", e.Message);
-            return null;
-        }
+        using HttpClient client = new HttpClient();
+        HttpResponseMessage response = await client.GetAsync(Url);
+        response.EnsureSuccessStatusCode();
+        return await response.Content.ReadAsStringAsync();
     }
 
-    public string Url => _url;
+
 }

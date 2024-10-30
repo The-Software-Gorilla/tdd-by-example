@@ -11,7 +11,7 @@ public class GetRequest {
 
     private final Logger logger = Logger.getLogger(GetRequest.class.getName());
 
-    private String url;
+    public String url;
     public GetRequest(String url) {
         this.url = url;
     }

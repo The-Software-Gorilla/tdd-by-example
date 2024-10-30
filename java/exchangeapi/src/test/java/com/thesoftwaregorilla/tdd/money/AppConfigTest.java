@@ -6,8 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class AppConfigTest {
-    private static final String BASE_CURRENCY = "USD";
-    private static final String TARGET_CURRENCY = "ZAR";
     public static final String EXCHANGE_API_PAIR_URL = "https://v6.exchangerate-api.com/v6/%s/pair/%s/%s";
     public static final String EXCHANGE_API_STANDARD_URL = "https://v6.exchangerate-api.com/v6/%s/latest/%s";
 
