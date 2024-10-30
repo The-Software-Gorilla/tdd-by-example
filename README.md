@@ -1,4 +1,7 @@
 # Test Driven Development Example Code
+
+**NOTE:** This repository requires an SSH token and SSH URL to clone.
+
 Back in 2004, I was working for a company that had one of the most extensive test suites I have ever seen (to this day). The majority of 
 the codebase was written in C/C++ and even though we were using Rational Clearcase for version control, we had a very strict build
 process that regression-tested all code during the nightly-build. 
