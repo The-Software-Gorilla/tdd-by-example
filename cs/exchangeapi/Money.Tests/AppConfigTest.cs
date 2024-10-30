@@ -30,7 +30,6 @@ public class AppConfigTest
     public void TestGetSolutionPathForFile(string relativeFileName)
     {
         string solutionPath = AppConfig.GetSolutionPathForFile(relativeFileName);
-        Console.WriteLine(solutionPath);
         Assert.IsNotNull(solutionPath);
     }
 
