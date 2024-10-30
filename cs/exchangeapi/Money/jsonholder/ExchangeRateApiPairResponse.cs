@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 // Code generated with https://json2csharp.com/json-to-csharp
 // ExchangeRateApiPairResponse response = JsonSerializer.Deserialize<ExchangeRateApiPairResponse>(jsonString);
 
-namespace TheSoftwareGorilla.TDD.Money.Json;
+namespace TheSoftwareGorilla.TDD.Money.JsonHolder;
 public class ExchangeRateApiPairResponse
 {
     [JsonPropertyName("result")]

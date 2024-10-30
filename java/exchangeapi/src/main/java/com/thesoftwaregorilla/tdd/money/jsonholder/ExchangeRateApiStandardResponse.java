@@ -1,8 +1,8 @@
-package com.thesoftwaregorilla.tdd.money.json;
+package com.thesoftwaregorilla.tdd.money.jsonholder;
 
 import java.util.Map;
 
-public class ExchangeApiStandardResponse {
+public class ExchangeRateApiStandardResponse {
     private String result;
     private String documentation;
     private String terms_of_use;

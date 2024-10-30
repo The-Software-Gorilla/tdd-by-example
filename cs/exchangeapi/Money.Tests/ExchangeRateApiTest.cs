@@ -3,9 +3,18 @@ using System.Text.Json;
 using NUnit.Framework;
 using TheSoftwareGorilla.TDD.Money;
 using TheSoftwareGorilla.TDD.Money.Http;
-using TheSoftwareGorilla.TDD.Money.Json;
+using TheSoftwareGorilla.TDD.Money.JsonHolder;
 
 namespace TheSoftwareGorilla.TDD.Money.Tests;
+
+#region TO DO's
+//TODO: Refactor tests to segregate each class into its own test class
+//TODO: Add a CurrencyExchange object to cache all exchange rates and lazy load them as needed.
+//TODO: Get to 100% code coverage.
+//TODO: Create the utility class for the JSON parsing.
+//TODO: Create a utility class for the HTTP requests.
+//TODO: Build solution for error responses.
+#endregion
 
 public class ExchangeRateApiTest
 {

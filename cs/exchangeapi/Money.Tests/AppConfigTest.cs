@@ -7,8 +7,8 @@ namespace TheSoftwareGorilla.TDD.Money.Tests;
 [TestFixture]
 public class AppConfigTest
 {
-    public const string EXCHANGE_API_PAIR_URL = "https://v6.exchangerate-api.com/v6/{0}/pair/{1}/{2}";
-    private const string EXCHANGE_API_STANDARD_URL = "https://v6.exchangerate-api.com/v6/{0}/latest/{1}";
+    public const string API_PAIR_URL = "https://v6.exchangerate-api.com/v6/{0}/pair/{1}/{2}";
+    private const string API_STANDARD_URL = "https://v6.exchangerate-api.com/v6/{0}/latest/{1}";
     
     [SetUp]
     public void Setup()
@@ -20,8 +20,8 @@ public class AppConfigTest
     {
         AppConfig appConfig = new AppConfig();
         Assert.IsNotEmpty(appConfig.ApiKey);
-        Assert.That(appConfig.ExchangeApiStandardUrl, Is.EqualTo(EXCHANGE_API_STANDARD_URL));
-        Assert.That(appConfig.ExchangeApiPairUrl, Is.EqualTo(EXCHANGE_API_PAIR_URL));
+        Assert.That(appConfig.ExchangeApiStandardUrl, Is.EqualTo(API_STANDARD_URL));
+        Assert.That(appConfig.ExchangeApiPairUrl, Is.EqualTo(API_PAIR_URL));
     }
 
     [TestCase("secrets.config")]

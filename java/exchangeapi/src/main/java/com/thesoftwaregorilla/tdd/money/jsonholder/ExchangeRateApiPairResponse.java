@@ -1,6 +1,6 @@
-package com.thesoftwaregorilla.tdd.money.json;
+package com.thesoftwaregorilla.tdd.money.jsonholder;
 
-public class ExchangeApiPairResponse {
+public class ExchangeRateApiPairResponse {
     private String result;
     private String documentation;
     private String terms_of_use;

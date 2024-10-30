@@ -2,7 +2,7 @@ using System;
 using System.Text.Json.Serialization;
 
 
-namespace TheSoftwareGorilla.TDD.Money.Json;
+namespace TheSoftwareGorilla.TDD.Money.JsonHolder;
 public class ExchangeRateApiStandardResponse
 {
     private Dictionary<string, double> _conversionRates = new Dictionary<string, double>();

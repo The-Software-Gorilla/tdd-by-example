@@ -1,6 +1,6 @@
 using System.Text.Json;
 using TheSoftwareGorilla.TDD.Money.Http;
-using TheSoftwareGorilla.TDD.Money.Json;
+using TheSoftwareGorilla.TDD.Money.JsonHolder;
 
 namespace TheSoftwareGorilla.TDD.Money;
 

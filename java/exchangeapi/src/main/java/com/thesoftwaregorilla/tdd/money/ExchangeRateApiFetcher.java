@@ -2,7 +2,7 @@ package com.thesoftwaregorilla.tdd.money;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.thesoftwaregorilla.tdd.money.http.GetRequest;
-import com.thesoftwaregorilla.tdd.money.json.ExchangeApiStandardResponse;
+import com.thesoftwaregorilla.tdd.money.jsonholder.ExchangeRateApiStandardResponse;
 
 import java.io.IOException;
 import java.util.logging.Logger;
@@ -12,22 +12,22 @@ import java.util.logging.Logger;
 //</editor-fold>
 
 
-public class ExchangeApiFetcher {
+public class ExchangeRateApiFetcher {
 
-    private final Logger logger = Logger.getLogger(ExchangeApiFetcher.class.getName());
+    private final Logger logger = Logger.getLogger(ExchangeRateApiFetcher.class.getName());
     private final String apiStandardUrl;
     private final String apiKey;
     private final String baseCurrency;
-    private ExchangeApiStandardResponse rateResponse;
-    public ExchangeApiFetcher(AppConfig config, String baseCurrency) {
+    private ExchangeRateApiStandardResponse rateResponse;
+    public ExchangeRateApiFetcher(AppConfig config, String baseCurrency) {
         this.apiKey = config.getApiKey();
         this.apiStandardUrl = config.getExchangeApiStandardUrl();
         this.baseCurrency = baseCurrency;
     }
 
-    public ExchangeApiFetcher fetch() {
+    public ExchangeRateApiFetcher fetch() {
         GetRequest getRequest = new GetRequest(String.format(apiStandardUrl, apiKey, baseCurrency));
-        rateResponse = parseResponse(getRequest.fetchResponse(), ExchangeApiStandardResponse.class);
+        rateResponse = parseResponse(getRequest.fetchResponse(), ExchangeRateApiStandardResponse.class);
         return this;
     }
 
@@ -68,7 +68,7 @@ public class ExchangeApiFetcher {
 
     @Override
     public String toString() {
-        return "ExchangeApiFetcher{" +
+        return "ExchangeRateApiFetcher{" +
                 "baseCurrency='" + baseCurrency + '\'' +
                 ", timeLastUpdateUtc='" + getTimeLastUpdateUtc() + '\'' +
                 ", ZARRate='" + rateResponse.getConversion_rates().getOrDefault("ZAR", 0.0) + '\'' +
