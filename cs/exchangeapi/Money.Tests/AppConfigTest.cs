@@ -9,8 +9,8 @@ public class AppConfigTest
 {
     private const string BASE_CURRENCY = "USD";
     private const string TARGET_CURRENCY = "EUR";
-    private const string EXCHANGE_API_PAIR_URL = "https://v6.exchangerate-api.com/v6/%s/pair/%s/%s";
-    private const string EXCHANGE_API_STANDARD_URL = "https://v6.exchangerate-api.com/v6/%s/latest/%s";
+    private const string EXCHANGE_API_PAIR_URL = "https://v6.exchangerate-api.com/v6/{0}/pair/{1}/{2}";
+    private const string EXCHANGE_API_STANDARD_URL = "https://v6.exchangerate-api.com/v6/{0}/latest/{1}";
     
     [SetUp]
     public void Setup()
@@ -22,11 +22,8 @@ public class AppConfigTest
     {
         AppConfig appConfig = new AppConfig();
         Assert.IsNotEmpty(appConfig.ApiKey);
-        Console.WriteLine(appConfig.ApiKey);
         Assert.That(appConfig.ExchangeApiStandardUrl, Is.EqualTo(EXCHANGE_API_STANDARD_URL));
-        Console.WriteLine(appConfig.ExchangeApiStandardUrl);
         Assert.That(appConfig.ExchangeApiPairUrl, Is.EqualTo(EXCHANGE_API_PAIR_URL));
-        Console.WriteLine(appConfig.ExchangeApiPairUrl);
     }
 
 }
