@@ -36,8 +36,8 @@ public class ExchangeRateAPITest {
     private static final String ERROR_INVALID_KEY =
             """
             {"result":"error","documentation":"https://www.exchangerate-api.com/docs","terms-of-use":"https://www.exchangerate-api.com/terms","error-type":"invalid-key"}""";
-    private static final String STANDARD_RESPONSE_FILE = "src/test/resources/exchange_api_standard_response.jsonholder";
-    private static final String PAIR_RESPONSE_FILE = "src/test/resources/exchange_api_pair_response.jsonholder";
+    private static final String STANDARD_RESPONSE_FILE = "src/test/resources/exchange_api_standard_response.json";
+    private static final String PAIR_RESPONSE_FILE = "src/test/resources/exchange_api_pair_response.json";
 
     private static final String API_KEY_PROPERTY;
     private static final String API_PAIR_URL_PROPERTY;
@@ -81,7 +81,6 @@ public class ExchangeRateAPITest {
         assertEquals("USD", response.getBase_code());
         assertEquals("ZAR", response.getTarget_code());
         assertTrue(response.getConversion_rate() > 0);
-        System.out.println("%s to %s conversion rate: %f".formatted(response.getBase_code(), response.getTarget_code(), response.getConversion_rate()));
     }
 
     @Test
@@ -91,7 +90,6 @@ public class ExchangeRateAPITest {
         assertEquals("USD", response.getBase_code());
         assertNotNull(response.getConversion_rates());
         assertFalse(response.getConversion_rates().isEmpty());
-        System.out.println("Conversion rates: " + response.getConversion_rates());
     }
 
     @Test
@@ -102,7 +100,6 @@ public class ExchangeRateAPITest {
         assertNotNull(fetcher.getTimeLastUpdateUtc());
         assertTrue(fetcher.isRateExists(TARGET_CURRENCY));
         assertTrue(fetcher.getConversionRate(TARGET_CURRENCY) > 0);
-        System.out.println(fetcher.toString());
     }
 
     private <T> T parseResponse(File response, Class<T> responseType) {
@@ -114,7 +111,6 @@ public class ExchangeRateAPITest {
             fail("Failed to parse response");
             return null;
         }
-        // Implement parsing logic here
     }
 
     private <T> T parseResponse(String response, Class<T> responseType) {
@@ -126,7 +122,6 @@ public class ExchangeRateAPITest {
             fail("Failed to parse response");
             return null;
         }
-        // Implement parsing logic here
     }
 
     private void writeResponseToFile(String response, String filePath) {
