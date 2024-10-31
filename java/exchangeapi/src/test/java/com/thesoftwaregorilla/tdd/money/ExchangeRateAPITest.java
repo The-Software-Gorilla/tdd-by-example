@@ -10,6 +10,13 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.Date;
+import java.util.TimeZone;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -88,6 +95,9 @@ public class ExchangeRateAPITest {
         ExchangeRateApiStandardResponse response = parseResponse(new File(STANDARD_RESPONSE_FILE), ExchangeRateApiStandardResponse.class);
         assertNotNull(response);
         assertEquals("USD", response.getBase_code());
+        Date unixDate = getDateFromUnixTimestamp(response.getTime_last_update_unix());
+        Date date = getDateFromStringUtc(response.getTime_last_update_utc());
+        assertEquals(date, unixDate);
         assertNotNull(response.getConversion_rates());
         assertFalse(response.getConversion_rates().isEmpty());
     }
@@ -132,5 +142,30 @@ public class ExchangeRateAPITest {
             e.printStackTrace();
         }
 
+    }
+
+    private Date getDateFromUnixTimestamp(long timestamp) {
+        Instant instant = Instant.ofEpochSecond(timestamp);
+        ZonedDateTime zdt = instant.atZone(ZoneId.of("UTC"));
+        return Date.from(zdt.toInstant());
+    }
+
+    private Date getLocalDateFromUnixTimestamp(long timestamp) {
+        Instant instant = Instant.ofEpochSecond(timestamp);
+        ZonedDateTime zdt = instant.atZone(ZoneId.systemDefault());
+        return Date.from(zdt.toInstant());
+    }
+
+    private Date getDateFromStringUtc(String dateString) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss Z");
+        dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+        try {
+            Date date = dateFormat.parse(dateString);
+            dateFormat.setTimeZone(TimeZone.getDefault());
+            return dateFormat.parse(dateFormat.format(date));
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

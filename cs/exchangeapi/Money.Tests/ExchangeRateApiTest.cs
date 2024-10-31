@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.Runtime.CompilerServices;
 using System.Text.Json;
 using NUnit.Framework;
@@ -28,6 +29,7 @@ public class ExchangeRateApiTest
     private static readonly AppConfig APP_SETTINGS;
     private static readonly string PAIR_RESPONSE_FILE;
     private static readonly string STANDARD_RESPONSE_FILE;
+    private static readonly DateTime TEST_DATE_STANDARD;
 
     static ExchangeRateApiTest() {
         APP_SETTINGS = new AppConfig();
@@ -36,6 +38,7 @@ public class ExchangeRateApiTest
         API_STANDARD_URL_SETTING = APP_SETTINGS.ExchangeApiStandardUrl;
         PAIR_RESPONSE_FILE = AppConfig.GetSolutionPathForFile("pair_response.json");
         STANDARD_RESPONSE_FILE = AppConfig.GetSolutionPathForFile("standard_response.json");
+        TEST_DATE_STANDARD = DateTime.ParseExact("Wed, 30 Oct 2024 00:00:01 +0000", "ddd, dd MMM yyyy HH:mm:ss K", CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal);
     }
 
     [SetUp]
@@ -74,6 +77,13 @@ public class ExchangeRateApiTest
         ExchangeRateApiStandardResponse response = JsonSerializer.Deserialize<ExchangeRateApiStandardResponse>(jsonString);
         Assert.IsNotNull(response);
         Assert.That(response.BaseCode, Is.EqualTo(BASE_CURRENCY));
+        Assert.IsNotNull(response.TimeLastUpdateUtc);
+        DateTime utcDate = GetDateFromStringUtc(response.TimeLastUpdateUtc).Value;
+        Assert.That(utcDate, Is.EqualTo(TEST_DATE_STANDARD));
+        Assert.IsNotNull(response.TimeLastUpdateUnix);
+        DateTime unixDate = GetDateFromUnixTimestamp(response.TimeLastUpdateUnix.Value);
+        Assert.That(unixDate, Is.EqualTo(TEST_DATE_STANDARD));
+        Assert.That(utcDate, Is.EqualTo(unixDate));
         Assert.IsNotNull(response.ConversionRates);
         Assert.That(response.ConversionRates.Count, Is.GreaterThan(0));
         Assert.That(response.ConversionRates.ContainsKey(TARGET_CURRENCY));
@@ -89,5 +99,62 @@ public class ExchangeRateApiTest
         Assert.IsNotNull(fetcher.ConversionRates);
         Assert.IsNotNull(fetcher.ConversionRates[TARGET_CURRENCY]);
         Assert.That(fetcher.ConversionRates[TARGET_CURRENCY], Is.GreaterThan(0));
-    }  
+    } 
+
+    private static DateTime GetLocalDateFromUtcDate(DateTime dateTime) 
+    {
+        DateTime localDate = TimeZoneInfo.ConvertTimeFromUtc(dateTime, TimeZoneInfo.Local);
+        return localDate;
+    }
+
+    private static DateTime GetUtcDateFromLocalDate(DateTime dateTime) 
+    {
+        DateTime utcDate = TimeZoneInfo.ConvertTimeToUtc(dateTime, TimeZoneInfo.Utc);
+        return utcDate;
+    }
+
+    private static DateTime GetLocalDateFromUnixTimestampUtc(int timestamp)
+    {
+        DateTimeOffset dateTimeOffset = DateTimeOffset.FromUnixTimeSeconds(timestamp);
+        DateTime localDateTime = dateTimeOffset.LocalDateTime;
+        return localDateTime;
+    }
+    private static DateTime GetDateFromUnixTimestamp(int timestamp)
+    {
+        DateTime response = DateTime.UnixEpoch.AddSeconds(timestamp);
+        return response;
+    }
+
+    private static DateTime? GetDateFromStringUtc(string dateString) {
+        const string format = "ddd, dd MMM yyyy HH:mm:ss K";
+        try
+        {
+            DateTime date = DateTime.ParseExact(dateString, format, CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal);
+            return date;
+        }
+        catch (FormatException e)
+        {
+            Console.WriteLine(e.Message);
+            return null;
+        }
+
+    }       
+
+    private static DateTime? GetLocalDateFromStringUtc(string dateString) {
+        const string format = "ddd, dd MMM yyyy HH:mm:ss K";
+        var localTimeZone = TimeZoneInfo.Local;
+
+        try
+        {
+            DateTime date = DateTime.ParseExact(dateString, format, CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal);
+            DateTime localDate = TimeZoneInfo.ConvertTimeFromUtc(date, localTimeZone);
+            return localDate;
+        }
+        catch (FormatException e)
+        {
+            Console.WriteLine(e.Message);
+            return null;
+        }
+
+    }       
 }
