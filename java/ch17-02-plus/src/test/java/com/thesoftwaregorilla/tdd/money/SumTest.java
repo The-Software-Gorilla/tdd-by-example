@@ -94,7 +94,6 @@ class SumTest {
 
     private void testArithmetic(String currency, int amount, int extraAmount, int expectedAmount, BiFunction<Expression, Integer, Expression> operation) {
         Expression money = MoneyTest.getCurrencyFactory(currency).apply(amount);
-
         Sum sum = new Sum(money, money);
         Expression result = operation.apply(sum, extraAmount);
         assertEquals(MoneyTest.getCurrencyFactory(currency).apply(expectedAmount), result.reduce(BankTest.getBankWithRates(), currency));

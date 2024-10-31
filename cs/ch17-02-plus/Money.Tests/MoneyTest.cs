@@ -31,20 +31,6 @@ public class MoneyTest
         return _currencyFactories[currency];
     }
 
-    private Money? _fiveDollar;
-    
-    [SetUp]
-    public void Setup()
-    {
-        _fiveDollar = Money.Dollar(5);
-    }
-
-    [TearDown]
-    public void TearDown()
-    {
-        _fiveDollar = null;
-    }
-
     [TestCase("USD", 5, 5, TestName = "construct USD 5")]
     [TestCase("CHF", 5, 5, TestName = "construct CHF 5")]
     [TestCase("ZAR", 5, 5, TestName = "construct ZAR 5")]
@@ -109,7 +95,7 @@ public class MoneyTest
     {
         var money = _currencyFactories[currency].Invoke(STD_AMT);
         Expression sum = money.Plus(money);
-        Assert.That(sum, Is.InstanceOf<Sum>());
+        Assert.That(sum, Is.InstanceOf<Money>());
         Money reduced = BankTest.GetBankWithRates().Reduce(sum, currency);
         Assert.That(reduced, Is.EqualTo(_currencyFactories[currency].Invoke(STD_AMT + STD_AMT)));
     }
@@ -191,10 +177,7 @@ public class MoneyTest
         Assert.That(result, Is.EqualTo(_currencyFactories[to].Invoke(expected)));
     }
 
-    // This test is discussed at the end of Chapter 16, but there is no clean implementation for how to fix make it pass in the book.
-    // The test is commented out because it will fail. We'll come back to it later.
     [Test]
-    [Ignore("Disabled until we implement the fix for duplicate plus implementation")]
     public void TestPlusSameCurrencyReturnsMoney()
     {
         Expression sum = Money.Dollar(1).Plus(Money.Dollar(1));

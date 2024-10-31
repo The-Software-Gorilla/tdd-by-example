@@ -31,17 +31,22 @@ public class Money : Expression
         Currency = currency;
     }
 
-    public Expression Times(int multiplier)
+    public override Expression Times(int multiplier)
     {
         return new Money(Amount * multiplier, Currency);
     }
 
     public Expression Plus(Expression addend)
     {
-        return new Sum(this, addend);
+        if(addend is Money money && Currency == money.Currency)
+        {
+            return new Money(Amount + money.Amount, Currency);
+        }
+
+        return base.Plus(addend);
     }
 
-    public Money Reduce(Bank bank, string to)
+    public override Money Reduce(Bank bank, string to)
     {
         int rate = bank.Rate(Currency, to);
         if (rate == 0)

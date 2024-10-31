@@ -2,9 +2,11 @@ using System.Net;
 
 namespace TheSoftwareGorilla.TDD.Money;
 
-public interface Expression
+public abstract class Expression
 {
-    Money Reduce(Bank bank, string to);
-    Expression Plus(Expression addend);
-    Expression Times(int multiplier);
+    public abstract Money Reduce(Bank bank, string to);
+    public Expression Plus(Expression addend) {
+        return new Sum(this, addend);
+    }
+    public abstract Expression Times(int multiplier);
 }
