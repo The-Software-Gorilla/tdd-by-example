@@ -1,9 +1,8 @@
 package com.thesoftwaregorilla.tdd.money;
 
-import com.thesoftwaregorilla.tdd.money.helper.DateHelper;
-import com.thesoftwaregorilla.tdd.money.helper.FileHelper;
-import com.thesoftwaregorilla.tdd.money.helper.JsonHelper;
-import com.thesoftwaregorilla.tdd.money.helper.StandardDateFormat;
+import com.thesoftwaregorilla.helper.DateHelper;
+import com.thesoftwaregorilla.helper.JsonHelper;
+import com.thesoftwaregorilla.helper.StandardDateFormat;
 import com.thesoftwaregorilla.tdd.money.http.GetRequest;
 import com.thesoftwaregorilla.tdd.money.jsonholder.ExchangeRateApiPairResponse;
 import com.thesoftwaregorilla.tdd.money.jsonholder.ExchangeRateApiStandardResponse;
@@ -107,10 +106,10 @@ public class ExchangeRateAPITest {
         }
         assertNotNull(response);
         assertEquals("USD", response.getBase_code());
-        Date unixDate = DateHelper.getDateFromUnixTimestamp(response.getTime_last_update_unix());
+        Date unixDate = DateHelper.fromUnixTimestamp(response.getTime_last_update_unix());
         Date date = null;
         try {
-            date = DateHelper.getDateFromStringUtc(response.getTime_last_update_utc(), StandardDateFormat.RFC1123.getDateFormat());
+            date = DateHelper.fromStringUtc(response.getTime_last_update_utc(), StandardDateFormat.RFC1123.getDateFormat());
         } catch (ParseException e) {
             fail(String.format("Failed to parse date: %s", response.getTime_last_update_utc()));
         }

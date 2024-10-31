@@ -1,4 +1,4 @@
-package com.thesoftwaregorilla.tdd.money.helper;
+package com.thesoftwaregorilla.helper;
 
 import java.io.IOException;
 import java.nio.file.Files;

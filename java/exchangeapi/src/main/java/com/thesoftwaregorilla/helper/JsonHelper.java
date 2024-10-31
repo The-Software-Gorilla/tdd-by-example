@@ -1,4 +1,4 @@
-package com.thesoftwaregorilla.tdd.money.helper;
+package com.thesoftwaregorilla.helper;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

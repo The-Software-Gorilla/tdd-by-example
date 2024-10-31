@@ -1,4 +1,4 @@
-package com.thesoftwaregorilla.tdd.money.helper;
+package com.thesoftwaregorilla.helper;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -32,23 +32,17 @@ public class DateHelper {
         return fmt.format(date);
     }
 
-    public static Date getDateFromUnixTimestamp(long timestamp) {
+    public static Date fromUnixTimestamp(long timestamp) {
         Instant instant = Instant.ofEpochSecond(timestamp);
         ZonedDateTime zdt = instant.atZone(ZoneId.of("UTC"));
         return Date.from(zdt.toInstant());
     }
 
-    public static Date getLocalDateFromUnixTimestamp(long timestamp) {
-        Instant instant = Instant.ofEpochSecond(timestamp);
-        ZonedDateTime zdt = instant.atZone(ZoneId.systemDefault());
-        return Date.from(zdt.toInstant());
+    public static Date fromStringUtc(String dateString) throws ParseException {
+            return fromStringUtc(dateString, StandardDateFormat.RFC1123.getDateFormat());
     }
 
-    public static Date getDateFromStringUtc(String dateString) throws ParseException {
-            return getDateFromStringUtc(dateString, StandardDateFormat.RFC1123.getDateFormat());
-    }
-
-    public static Date getDateFromStringUtc(String dateString, DateFormat dateFormat) throws ParseException {
+    public static Date fromStringUtc(String dateString, DateFormat dateFormat) throws ParseException {
         dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
         Date date = dateFormat.parse(dateString);
         dateFormat.setTimeZone(TimeZone.getDefault());
