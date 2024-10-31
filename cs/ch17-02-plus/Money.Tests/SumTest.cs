@@ -70,7 +70,7 @@ public class SumTest
         testArithmetic(currency, amount, multiplier, expected, (sum, extraAmount) => sum.Times(extraAmount));
     }
 
-    private void testArithmetic(string currency, int amount, int extraAmount, int expectedAmount, Func<Expression, int, Expression> operation)
+    private static void testArithmetic(string currency, int amount, int extraAmount, int expectedAmount, Func<Expression, int, Expression> operation)
     {
         var money = MoneyTest.GetCurrencyFactory(currency).Invoke(amount);
         Sum sum = new Sum(money, money);

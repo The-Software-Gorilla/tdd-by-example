@@ -36,7 +36,7 @@ public class Money : Expression
         return new Money(Amount * multiplier, Currency);
     }
 
-    public Expression Plus(Expression addend)
+    public override Expression Plus(Expression addend)
     {
         if(addend is Money money && Currency == money.Currency)
         {
