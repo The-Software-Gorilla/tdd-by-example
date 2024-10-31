@@ -230,13 +230,10 @@ public class MoneyTest {
     }
 
     @Nested
-    @DisplayName("incomplete tests")
+    @DisplayName("test not complete in the book")
     public class IncompleteTests {
-        // This test is discussed at the end of Chapter 16, but there is no clean implementation for how to fix make it pass in the book.
-        // The test is commented out because it will fail. We'll come back to it later.
         @Test
         @DisplayName("same currency should return Money")
-        @Disabled("Disabled until we implement the fix for duplicate plus implementation")
         public void testPlusSameCurrencyReturnsMoney() {
             Expression sum = Money.dollar(1).plus(Money.dollar(1));
             assertInstanceOf(Money.class, sum);

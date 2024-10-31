@@ -1,7 +1,7 @@
 package com.thesoftwaregorilla.tdd.money;
 
 
-public class Money implements Expression {
+public class Money extends Expression {
 
     public static Money dollar(int amount) {
         return new Money(amount, "USD");
@@ -25,14 +25,19 @@ public class Money implements Expression {
         this.currency = currency;
     }
 
+    @Override
     public Expression times(int multiplier) {
         return new Money(getAmount() * multiplier, getCurrency());
     };
 
     public Expression plus(Expression addend) {
-        return new Sum(this, addend);
+        if (addend instanceof Money money && this.currency.equals(money.getCurrency())) {
+            return new Money(getAmount() + money.getAmount(), getCurrency());
+        }
+        return super.plus(addend);
     }
 
+    @Override
     public Money reduce(Bank bank, String to) {
         int rate = bank.rate(getCurrency(), to);
         if (rate == 0) {

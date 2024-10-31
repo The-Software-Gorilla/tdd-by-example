@@ -1,6 +1,6 @@
 package com.thesoftwaregorilla.tdd.money;
 
-class Sum implements Expression {
+class Sum extends Expression {
     final Expression augend;
     final Expression addend;
 
@@ -9,14 +9,12 @@ class Sum implements Expression {
         this.addend = addend;
     }
 
+    @Override
     public Money reduce(Bank bank, String to) {
         return new Money(augend.reduce(bank, to).getAmount() + addend.reduce(bank, to).getAmount(), to);
     }
 
-    public Expression plus(Expression addend) {
-        return new Sum(this, addend);
-    }
-
+    @Override
     public Expression times(int multiplier) {
         return new Sum(augend.times(multiplier), addend.times(multiplier));
     }
