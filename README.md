@@ -26,6 +26,9 @@ years for existing codebases and, in all likelihood, have a lot more code that i
 
 I decided to work through the examples in the book again and create a repository to share the code with others who may want to do the same.
 
+## References
+[Test Desiderata](https://kentbeck.github.io/TestDesiderata/)
+
 ## About this Repository
 
 The code in this repository is the example code that Kent Beck used in his book "Test Driven Development: By Example". 
