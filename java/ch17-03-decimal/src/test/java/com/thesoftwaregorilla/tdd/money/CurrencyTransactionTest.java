@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 //TODO: Clean up the settle() method in CurrencyTransaction
 //TODO: Change the tests to do more assert expected value calculations
 //TODO: Add 5 test cases
-//TODO: Refator the tests for separating the asserts
+//TODO: Refactor the tests for separating the asserts
 //</editor-fold>
 
 public class CurrencyTransactionTest {
