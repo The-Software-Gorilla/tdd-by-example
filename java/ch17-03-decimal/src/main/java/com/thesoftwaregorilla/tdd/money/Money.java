@@ -43,7 +43,7 @@ public class Money extends Expression {
     @Override
     public Money reduce(Bank bank, String to) {
         BigDecimal rate = bank.rate(getCurrency(), to);
-        if (rate.equals(BigDecimal.ZERO)) {
+        if (rate.equals(BigDecimal.ZERO.setScale(8, RoundingMode.HALF_UP))) {
             throw new ArithmeticException("Exchange rate not available");
         }
         return new Money(getAmount().divide(rate, RoundingMode.HALF_UP), to);

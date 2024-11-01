@@ -39,16 +39,16 @@ public class BankTest {
     @DisplayName("rate table")
     @ParameterizedTest(name = "rate from = \"{0}\" to = \"{1}\", expected = {2}")
     @CsvSource({
-            "USD, USD, 1",
-            "CHF, CHF, 1",
-            "ZAR, ZAR, 1",
-            "USD, CHF, 0.5",
-            "CHF, ZAR, 0",
-            "GBP, ZAR, 0",
-            "CHF, USD, 2",
-            "ZAR, USD, 17",
-            "USD, ZAR, 0.0588235",
-            "ZAR, CHF, 20"
+            "USD, USD, 1.00000000",
+            "CHF, CHF, 1.00000000",
+            "ZAR, ZAR, 1.00000000",
+            "USD, CHF, 0.50000000",
+            "CHF, ZAR, 0E-8",
+            "GBP, ZAR, 0E-8",
+            "CHF, USD, 2.00000000",
+            "ZAR, USD, 17.00000000",
+            "USD, ZAR, 0.05882350",
+            "ZAR, CHF, 20.00000000"
     })
     public void testRate(String from, String to, BigDecimal expected) {
         assertEquals(expected, bank.rate(from, to));

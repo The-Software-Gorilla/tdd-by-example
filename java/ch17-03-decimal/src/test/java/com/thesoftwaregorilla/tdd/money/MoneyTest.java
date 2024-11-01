@@ -221,7 +221,7 @@ public class MoneyTest {
                 Expression money1 = currencyFactories.get(from).apply(fromAmt);
                 Expression money2 = currencyFactories.get(to).apply(toAmt);
                 Expression sum = operation.apply(money1, money2);
-                if (bank.rate(from, to).equals(BigDecimal.ZERO)) {
+                if (bank.rate(from, to).equals(BigDecimal.ZERO.setScale(8, RoundingMode.HALF_UP))) {
                     ArithmeticException exception = assertThrows(ArithmeticException.class, () -> {
                         Money result = bank.reduce(sum, to);
                     });
