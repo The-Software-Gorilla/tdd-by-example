@@ -166,7 +166,7 @@ public class MoneyTest {
                 Bank bank = new Bank();
                 bank.addRate(fromCurrency, toCurrency, rate);
                 Money result = bank.reduce(currencyFactories.get(fromCurrency).apply(amount), toCurrency);
-                assertEquals(currencyFactories.get(toCurrency).apply(amount.divide(rate, RoundingMode.HALF_UP)), result);
+                assertEquals(currencyFactories.get(toCurrency).apply(amount.multiply(rate)), result);
             }
         }
 

@@ -46,7 +46,7 @@ public class Money extends Expression {
         if (rate.equals(BigDecimal.ZERO.setScale(8, RoundingMode.HALF_UP))) {
             throw new ArithmeticException("Exchange rate not available");
         }
-        return new Money(getAmount().divide(rate, RoundingMode.HALF_UP), to);
+        return new Money(getAmount().multiply(rate), to);
     }
 
     @Override
