@@ -5,10 +5,12 @@ a number of charges associated with the transaction on both sides. I thought it 
 to try and come up with a way to calculate the total cost of the transaction, itemizing all the 
 charges. 
 
-There were two problems with the initial implementation:
-1. Currency and exchange rates are always decimals and the initial implementation used integers. 
-I needed to change the data type of the transaction to BigDecimal.
-2. I needed to subtract some the charges from the transaction amount.
+There were two problems with the initial implementation the book provides:
+1. In the real world, the currency and exchange rates are always decimals and the initial 
+implementation used integers. I needed to change the contained data type of money and rates 
+to decimal.
+2. I needed to subtract some of the charges from the original transaction amount. The initial 
+implementation does not have support for subtraction.
 
 ## Decimals 
 I dealt with the first problem by changing the data type of the transaction to BigDecimal. This was a
@@ -17,7 +19,7 @@ but it did require changes to the existing unit tests to support decimal data ty
 
 The BigDecimal data type does not have a precision setting in the constructor, so the tests had to
 all have the same precision for Money objects(2) and all the rates had to be the same precision(8).
-That means that the CsvSource attributes had to change as follows:
+That means that the CsvSource annotations in the tests had to change as follows:
 - Money had to be changed from "1", 1.00"
 - Rate had to be changed from "1", 1.00000000"
 
@@ -27,17 +29,18 @@ the string value doesn't match on return.
 ## Subtraction
 The second problem was a little more difficult and I needed to have real examples to work with before
 I figured out how to solve it, so I deferred solving the subtraction issue until I had real examples 
-of CurrencyTransactions to work with.
+of CurrencyTransactions to work with. I ended up solving the subtraction issue in the 
+CurrencyTransaction class, which is not where it should be solved. This code will be refactored later.
 
 ## Currency Transactions
-I created a new class called CurrencyTransaction that would perform the calculations for the 
-transaction. I created a new test class called CurrencyTransactionTest that would test the
+I created a new class called CurrencyTransaction to perform the calculations for the 
+transaction. I created a new test class called CurrencyTransactionTest that tests the
 CurrencyTransaction class.
 
 The way a currency transaction works is that you call the bank, tell them how much you want to send,
 and pay a transaction fee to send it. The bank then sends the money to the foreign bank. The foreign
-bank then deducts a percentage of the money based on the exchange rate, and a service fee to settle
-the transaction in the foreign currency.
+bank then deducts a percentage of the money based on the exchange rate, and a service fee to transfer
+the money to the destination account.
 
 The transaction I am using as an example is from the US (USD) to South Africa (ZAR). South Africa's
 currency is the Rand, symbol R. The exchange rate when I wrote this was ZAR 17.64:USD 1 or 
@@ -82,7 +85,7 @@ Putting that in table form:
 | Total transaction amount                  |     $1035.00 |   R18,257.40 |
 
 ### CurrencyTransaction Class
-With TDD, you start with the end in mind. I wrote a test in new class called CurrencyTransactionTest.
+With TDD, you start with the end in mind. I wrote a test in the new class called CurrencyTransactionTest.
 
 Here's the process I followed:
 1. Create Bank object instantiated @BeforeAll tests.
