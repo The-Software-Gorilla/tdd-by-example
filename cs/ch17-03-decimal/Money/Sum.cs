@@ -15,12 +15,12 @@ public class Sum : Expression
 
     public override Money Reduce(Bank bank, string to)
     {
-        int amount = Augend.Reduce(bank, to).Amount + Addend.Reduce(bank, to).Amount;
+        decimal amount = Augend.Reduce(bank, to).Amount + Addend.Reduce(bank, to).Amount;
         return new Money(amount, to);
     }
 
 
-    public override Expression Times(int multiplier)
+    public override Expression Times(decimal multiplier)
     {
         return new Sum(Augend.Times(multiplier), Addend.Times(multiplier));
     }

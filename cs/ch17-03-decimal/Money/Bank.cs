@@ -4,23 +4,23 @@ namespace TheSoftwareGorilla.TDD.Money;
 
 public class Bank
 {
-    private Dictionary<CurrencyPair, int> _rates = new Dictionary<CurrencyPair, int>();
+    private Dictionary<CurrencyPair, decimal> _rates = new Dictionary<CurrencyPair, decimal>();
     public Money Reduce(Expression source, string to)
     {
         return source.Reduce(this, to);
     }
 
-    public int Rate(string from, string to)
+    public decimal Rate(string from, string to)
     {
         if (from.Equals(to))
         {
             return 1;
         }
-        int rate = _rates.TryGetValue(new CurrencyPair(from, to), out int value) ? value : 0;
+        decimal rate = _rates.TryGetValue(new CurrencyPair(from, to), out decimal value) ? value : 0;
         return rate;
     }
 
-    public void AddRate(string from, string to, int rate)
+    public void AddRate(string from, string to, decimal rate)
     {
         _rates.Add(new CurrencyPair(from, to), rate);
     }

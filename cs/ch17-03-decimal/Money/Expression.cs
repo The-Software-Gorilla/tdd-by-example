@@ -8,5 +8,5 @@ public abstract class Expression
     public virtual Expression Plus(Expression addend) {
         return new Sum(this, addend);
     }
-    public abstract Expression Times(int multiplier);
+    public abstract Expression Times(decimal multiplier);
 }

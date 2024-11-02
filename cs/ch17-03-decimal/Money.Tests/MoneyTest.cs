@@ -12,13 +12,13 @@ namespace TheSoftwareGorilla.TDD.Money.Tests;
 public class MoneyTest
 {
     
-    private static readonly Dictionary<String, Func<int, Money>> _currencyFactories = new Dictionary<string, Func<int, Money>>
+    private static readonly Dictionary<String, Func<decimal, Money>> _currencyFactories = new Dictionary<string, Func<decimal, Money>>
     {
         { "USD", Money.Dollar },
         { "CHF", Money.Franc },
         { "ZAR", Money.Rand }
     };
-    private const int STD_AMT = 5;
+    private const decimal STD_AMT = 5;
 
     [OneTimeSetUp]
     public static void OneTimeSetUp()
@@ -26,7 +26,7 @@ public class MoneyTest
         // This method is called only once before any of the tests are run.
     }
 
-    public static Func<int, Money> GetCurrencyFactory(string currency)
+    public static Func<decimal, Money> GetCurrencyFactory(string currency)
     {
         return _currencyFactories[currency];
     }
@@ -35,7 +35,7 @@ public class MoneyTest
     [TestCase("CHF", 5, 5, TestName = "construct CHF 5")]
     [TestCase("ZAR", 5, 5, TestName = "construct ZAR 5")]
     [Category("construction")]
-    public void TestConstruction(string currency, int amount, int expected)
+    public void TestConstruction(string currency, decimal amount, decimal expected)
     {
         var money = _currencyFactories[currency].Invoke(amount);
         Assert.IsNotNull(money);
@@ -47,7 +47,7 @@ public class MoneyTest
     [TestCase("CHF", 5, TestName = "ToString CHF 10")]
     [TestCase("ZAR", 5, TestName = "ToString ZAR 20")]
     [Category("construction")]
-    public void TestToString(string currency, int amount)
+    public void TestToString(string currency, decimal amount)
     {
         var money = _currencyFactories[currency].Invoke(amount);
         Assert.That(money.ToString(), Is.EqualTo(amount + " " + currency));
@@ -57,7 +57,7 @@ public class MoneyTest
     [TestCase("CHF", "ZAR", 7, TestName = "equality CHF 7")]
     [TestCase("ZAR", "USD", 8, TestName = "equality ZAR 8")]
     [Category("construction")]
-    public void TestEquality(string currency1, string currency2, int notEqualAmount)
+    public void TestEquality(string currency1, string currency2, decimal notEqualAmount)
     {
         var money1 = _currencyFactories[currency1].Invoke(STD_AMT);
         var money2 = _currencyFactories[currency2].Invoke(STD_AMT);
@@ -80,7 +80,7 @@ public class MoneyTest
     [TestCase("CHF", 3, 2, TestName = "multiply test for aliasing CHF, multiplier 3, 2")]
     [TestCase("ZAR", 4, 3, TestName = "multiply test for aliasing ZAR, multiplier 4, 3")]
     [Category("multiplication")]
-    public void TestMultiplication(string currency, int multiplier1, int multiplier2)
+    public void TestMultiplication(string currency, decimal multiplier1, decimal multiplier2)
     {
         var money = _currencyFactories[currency].Invoke(STD_AMT);
         Assert.That(_currencyFactories[currency].Invoke(STD_AMT * multiplier1), Is.EqualTo(money.Times(multiplier1)));
@@ -122,7 +122,7 @@ public class MoneyTest
     [TestCase ("ZAR", "USD", 17, 85, TestName = "reduce money mixed currency from ZAR to USD, rate 17, amount 85")]
     [TestCase ("ZAR", "CHF", 20, 60, TestName = "reduce money mixed currency from ZAR to CHF, rate 20, amount 60")]
     [Category("reduction")]
-    public void TestReduceMoneyDifferentCurrency(string fromCurrency, string toCurrency, int rate, int amount)
+    public void TestReduceMoneyDifferentCurrency(string fromCurrency, string toCurrency, decimal rate, decimal amount)
     {
         Bank bank = new Bank();
         bank.AddRate(fromCurrency, toCurrency, rate);
@@ -136,7 +136,7 @@ public class MoneyTest
     [TestCase ("ZAR", 34, "USD", 5, 7, TestName = "plus with Money mixed currency ZAR 34 with USD 5, expected 7")]
     [TestCase ("USD", 5, "ZAR", 20, 0, TestName = "plus with Money missing exchange rate USD 5 with ZAR 20, expected InvalidOperationException")]
     [Category("complex arithmetic")]
-    public void TestMixedAddition(string fromCurrency, int fromAmount, string toCurrency, int toAmount, int expected)
+    public void TestMixedAddition(string fromCurrency, decimal fromAmount, string toCurrency, decimal toAmount, decimal expected)
     {
         testReduceHarness(fromCurrency, fromAmount, toCurrency, toAmount, expected, (from, to) => from.Plus(to));
     }
@@ -147,7 +147,7 @@ public class MoneyTest
     [TestCase ("ZAR", 34, "USD", 5, 12, TestName = "plus with Sum mixed currency ZAR 34 with USD 5, expected 12")]
     [TestCase ("USD", 5, "ZAR", 20, 0, TestName = "plus with Sum missing exchange rate USD 5 with ZAR 20, expected InvalidOperationException")]
     [Category("complex arithmetic")]
-    public void TestSumPlusMoney(string fromCurrency, int fromAmount, string toCurrency, int toAmount, int expected)
+    public void TestSumPlusMoney(string fromCurrency, decimal fromAmount, string toCurrency, decimal toAmount, decimal expected)
     {
         testReduceHarness(fromCurrency, fromAmount, toCurrency, toAmount, expected, (from, to) => new Sum(from, to).Plus(to));
     }
@@ -157,12 +157,12 @@ public class MoneyTest
     [TestCase ("ZAR", 85, "USD", 5, 20, TestName = "times with mixed currency ZAR 85 with USD 5, expected 20")]
     [TestCase ("USD", 5, "ZAR", 20, 0, TestName = "times with missing exchange rate USD 5 with ZAR 20, expected InvalidOperationException")]
     [Category("complex arithmetic")]
-    public void TestSumTimes(string fromCurrency, int fromAmount, string toCurrency, int toAmount, int expected)
+    public void TestSumTimes(string fromCurrency, decimal fromAmount, string toCurrency, decimal toAmount, decimal expected)
     {
         testReduceHarness(fromCurrency, fromAmount, toCurrency, toAmount, expected, (from, to) => new Sum(from, to).Times(2));
     }
     
-    private static void testReduceHarness(string from, int fromAmt, string to, int toAmt, int expected, Func<Expression, Expression, Expression> operation)
+    private static void testReduceHarness(string from, decimal fromAmt, string to, decimal toAmt, decimal expected, Func<Expression, Expression, Expression> operation)
     {
         Expression fromMoney = _currencyFactories[from].Invoke(fromAmt);
         Expression toMoney = _currencyFactories[to].Invoke(toAmt);

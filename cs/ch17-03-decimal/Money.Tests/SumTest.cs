@@ -19,7 +19,7 @@ public class SumTest
     [TestCase("ZAR", 20, "CHF", 5, 6, TestName = "reduce different currency ZAR 20 with CHF 5, expected 6")]
     [TestCase("ZAR", 34, "USD", 5, 7, TestName = "reduce different currency ZAR 34 with USD 5, expected 7")]
     [Category("reduction")]
-    public void TestReduce(string fromCurrency, int fromAmount, string toCurrency, int toAmount, int expected)
+    public void TestReduce(string fromCurrency, decimal fromAmount, string toCurrency, decimal toAmount, decimal expected)
     {
         var sum = new Sum(MoneyTest.GetCurrencyFactory(fromCurrency).Invoke(fromAmount), MoneyTest.GetCurrencyFactory(toCurrency).Invoke(toAmount));
         var result = sum.Reduce(BankTest.GetBankWithRates(), toCurrency);
@@ -31,7 +31,7 @@ public class SumTest
     [TestCase("CHF", "CHF", 5, TestName = "plus returns sum CHF 5")]
     [TestCase("ZAR", "USD", 5, TestName = "plus returns sum ZAR 5")]
     [Category("arithmetic")]
-    public void TestPlusReturnsSum(string baseCurrency, string targetCurrency, int amount)
+    public void TestPlusReturnsSum(string baseCurrency, string targetCurrency, decimal amount)
     {
         var baseMoney = MoneyTest.GetCurrencyFactory(baseCurrency).Invoke(amount);
         var targetMoney = MoneyTest.GetCurrencyFactory(targetCurrency).Invoke(amount);
@@ -54,9 +54,9 @@ public class SumTest
     [TestCase("CHF", 7, 9, TestName = "plus with new Sum CHF 7, 9")]
     [TestCase("ZAR", 10, 23, TestName = "plus with new Sum ZAR 10, 23")]
     [Category("arithmetic")]
-    public void TestPlus(string currency, int amount, int extraAmount)
+    public void TestPlus(string currency, decimal amount, decimal extraAmount)
     {
-        int expected = (amount * 2) + extraAmount;
+        decimal expected = (amount * 2) + extraAmount;
         testArithmetic(currency, amount, extraAmount, expected, (sum, extraAmount) => sum.Plus(MoneyTest.GetCurrencyFactory(currency).Invoke(extraAmount)));
     }
 
@@ -64,13 +64,13 @@ public class SumTest
     [TestCase("CHF", 7, 5, TestName = "times with new Sum CHF 7")]
     [TestCase("ZAR", 10, 30, TestName = "times with new Sum ZAR 10")]
     [Category("arithmetic")]
-    public void TestTimes(string currency, int amount, int multiplier)
+    public void TestTimes(string currency, decimal amount, decimal multiplier)
     {
-        int expected = (amount + amount) * multiplier;
+        decimal expected = (amount + amount) * multiplier;
         testArithmetic(currency, amount, multiplier, expected, (sum, extraAmount) => sum.Times(extraAmount));
     }
 
-    private static void testArithmetic(string currency, int amount, int extraAmount, int expectedAmount, Func<Expression, int, Expression> operation)
+    private static void testArithmetic(string currency, decimal amount, decimal extraAmount, decimal expectedAmount, Func<Expression, decimal, Expression> operation)
     {
         var money = MoneyTest.GetCurrencyFactory(currency).Invoke(amount);
         Sum sum = new Sum(money, money);

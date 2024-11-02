@@ -5,33 +5,33 @@ namespace TheSoftwareGorilla.TDD.Money;
 public class Money : Expression
 {
 
-    public static Money Dollar(int amount)
+    public static Money Dollar(decimal amount)
     {
         return new Money(amount, "USD");
     }
 
-    public static Money Franc(int amount)
+    public static Money Franc(decimal amount)
     {
         return new Money(amount, "CHF");
     }
 
     // Shout out to my South African friends!
-    public static Money Rand(int amount)
+    public static Money Rand(decimal amount)
     {
         return new Money(amount, "ZAR");
     }
 
-    public int Amount { get; }
+    public decimal Amount { get; }
 
     public string Currency { get; }
 
-    public Money(int amount, string currency)
+    public Money(decimal amount, string currency)
     {
         Amount = amount;
         Currency = currency;
     }
 
-    public override Expression Times(int multiplier)
+    public override Expression Times(decimal multiplier)
     {
         return new Money(Amount * multiplier, Currency);
     }
@@ -48,7 +48,7 @@ public class Money : Expression
 
     public override Money Reduce(Bank bank, string to)
     {
-        int rate = bank.Rate(Currency, to);
+        decimal rate = bank.Rate(Currency, to);
         if (rate == 0)
         {
             throw new InvalidOperationException("No rate found for " + Currency + " to " + to);
