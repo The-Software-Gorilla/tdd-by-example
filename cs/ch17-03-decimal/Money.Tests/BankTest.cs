@@ -31,6 +31,8 @@ public class BankTest
             _bank.AddRate("CHF", "USD", 2);
             _bank.AddRate("ZAR", "USD", 17);
             _bank.AddRate("ZAR", "CHF", 20);
+            _bank.AddRate("USD", "CHF", (decimal)0.5);
+            _bank.AddRate("USD", "ZAR", (decimal)0.0588235);
         }
         return _bank;
     }
@@ -38,14 +40,14 @@ public class BankTest
     [TestCase("USD", "USD", 1, TestName = "Rate USD to USD returns 1")]
     [TestCase("CHF", "CHF", 1, TestName = "Rate CHF to CHF returns 1")]
     [TestCase("ZAR", "ZAR", 1, TestName = "Rate ZAR to ZAR returns 1")]
-    [TestCase("USD", "CHF", 0, TestName = "Rate CHF to USD missing")]
-    [TestCase("USD", "ZAR", 0, TestName = "Rate USD to ZAR missing")]
     [TestCase("CHF", "ZAR", 0, TestName = "Rate CHF to ZAR missing")]   
     [TestCase("CHF", "USD", 2, TestName = "Rate USD to CHF returns rate (2)")]
     [TestCase("ZAR", "USD", 17, TestName = "Rate USD to ZAR returns rate (17)")]
     [TestCase("ZAR", "CHF", 20, TestName = "Rate CHF to ZAR returns rate (20)")]
+    [TestCase("USD", "CHF", 0.5, TestName = "Rate CHF to USD returns rate (0.5)")]
+    [TestCase("USD", "ZAR", 0.0588235, TestName = "Rate ZAR to USD returns rate (0.0588235)")]
     [Category("rates")]
-    public void TestRate(string from, string to, int expected)
+    public void TestRate(string from, string to, decimal expected)
     {
         Assert.That(_bank.Rate(from, to), Is.EqualTo(expected));
     }
@@ -55,17 +57,15 @@ public class BankTest
     [TestCase("ZAR", 17, "USD", 1, TestName = "Reduce ZAR 17 to USD 1")]
     [TestCase("USD", 5, "USD", 5, TestName = "Reduce USD 5 to USD 5")]
     [Category("rates")]
-    public void TestReduce(string from, int fromAmt, string to, int expected)
+    public void TestReduce(string from, decimal fromAmt, string to, decimal expected)
     {
         Money result = _bank.Reduce(MoneyTest.GetCurrencyFactory(from).Invoke(fromAmt), to);
         Assert.That(result, Is.EqualTo(MoneyTest.GetCurrencyFactory(to).Invoke(expected)));
     }
 
-    [TestCase("USD", 1, "ZAR", 17, TestName = "Reduce USD 1 to ZAR 17 throws invalid operation exception")]
     [TestCase("CHF", 1, "ZAR", 20, TestName = "Reduce CHF 1 to ZAR 20 throws invalid operation exception")]
-    [TestCase("USD", 1, "CHF", 2, TestName = "Reduce USD 1 to CHF 2 throws invalid operation exception")]
     [Category("rates")]
-    public void TestReduceDivisionByZero(string from, int fromAmt, string to, int toRate)
+    public void TestReduceDivisionByZero(string from, decimal fromAmt, string to, decimal toRate)
     {
         Exception ex = Assert.Throws<InvalidOperationException>(() => _bank.Reduce(MoneyTest.GetCurrencyFactory(from).Invoke(fromAmt), to));
         Assert.That(ex.Message, Is.EqualTo($"No rate found for {from} to {to}"));
@@ -75,7 +75,7 @@ public class BankTest
     [TestCase("INR", 1, "ZAR", 20, TestName = "Reduce INR 1 to CHF throws key not found exception")]
     [TestCase("FRF", 1, "CHF", 0, TestName = "Reduce FRF 1 to CHF throws key not found exception")]
     [Category("rates")]
-    public void TestReduceNotInRateTable(string from, int fromAmt, string to, int toRate)
+    public void TestReduceNotInRateTable(string from, decimal fromAmt, string to, decimal toRate)
     {
         Exception ex = Assert.Throws<KeyNotFoundException>(() => _bank.Reduce(MoneyTest.GetCurrencyFactory(from).Invoke(fromAmt), to));
         Assert.That(ex.Message, Is.EqualTo($"The given key '{from}' was not present in the dictionary."));

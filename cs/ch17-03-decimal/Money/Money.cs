@@ -53,7 +53,7 @@ public class Money : Expression
         {
             throw new InvalidOperationException("No rate found for " + Currency + " to " + to);
         }
-        return new Money(Amount / rate, to);
+        return new Money(Math.Round(Amount / rate, 2, MidpointRounding.AwayFromZero), to);
     }
 
     public override bool Equals(object? obj)

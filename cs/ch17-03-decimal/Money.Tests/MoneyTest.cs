@@ -134,7 +134,7 @@ public class MoneyTest
     [TestCase ("CHF", 10, "USD", 5, 10, TestName = "plus with Money mixed currency CHF 10 with USD 5, expected 10")]
     [TestCase ("ZAR", 20, "CHF", 10, 11, TestName = "plus with Money mixed currency ZAR 20 with CHF 10, expected 11")]
     [TestCase ("ZAR", 34, "USD", 5, 7, TestName = "plus with Money mixed currency ZAR 34 with USD 5, expected 7")]
-    [TestCase ("USD", 5, "ZAR", 20, 0, TestName = "plus with Money missing exchange rate USD 5 with ZAR 20, expected InvalidOperationException")]
+    [TestCase ("USD", 5, "ZAR", 20, 105.00, TestName = "plus with Money mixed currency USD 5 with ZAR 20, expected 105")]
     [Category("complex arithmetic")]
     public void TestMixedAddition(string fromCurrency, decimal fromAmount, string toCurrency, decimal toAmount, decimal expected)
     {
@@ -145,7 +145,7 @@ public class MoneyTest
     [TestCase ("CHF", 10, "USD", 5, 15, TestName = "plus with Sum mixed currency CHF 10 with USD 5, expected 15")]
     [TestCase ("ZAR", 20, "CHF", 10, 21, TestName = "plus with Sum mixed currency ZAR 20 with CHF 10, expected 21")]
     [TestCase ("ZAR", 34, "USD", 5, 12, TestName = "plus with Sum mixed currency ZAR 34 with USD 5, expected 12")]
-    [TestCase ("USD", 5, "ZAR", 20, 0, TestName = "plus with Sum missing exchange rate USD 5 with ZAR 20, expected InvalidOperationException")]
+    [TestCase ("USD", 5, "ZAR", 20, 125.00, TestName = "plus with Sum miced currency USD 5 with ZAR 20, expected 105")]
     [Category("complex arithmetic")]
     public void TestSumPlusMoney(string fromCurrency, decimal fromAmount, string toCurrency, decimal toAmount, decimal expected)
     {
@@ -155,7 +155,7 @@ public class MoneyTest
     [TestCase ("CHF", 10, "USD", 5, 20, TestName = "times with mixed currency CHF 10 with USD 5, expected 20")]
     [TestCase ("ZAR", 20, "CHF", 10, 22, TestName = "times with mixed currency ZAR 20 with CHF 10, expected 22")]
     [TestCase ("ZAR", 85, "USD", 5, 20, TestName = "times with mixed currency ZAR 85 with USD 5, expected 20")]
-    [TestCase ("USD", 5, "ZAR", 20, 0, TestName = "times with missing exchange rate USD 5 with ZAR 20, expected InvalidOperationException")]
+    [TestCase ("USD", 5, "ZAR", 20, 210.00, TestName = "times with mixed currency USD 5 with ZAR 20, expected 105.00")]
     [Category("complex arithmetic")]
     public void TestSumTimes(string fromCurrency, decimal fromAmount, string toCurrency, decimal toAmount, decimal expected)
     {
