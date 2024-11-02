@@ -9,7 +9,7 @@ public class CurrencyTransaction {
     private final String targetCurrency;
 
     private Money sourceFee;
-    private BigDecimal targetCurrencyRateFeePerc;
+    private BigDecimal targetCurrencyRateFeePercentage;
     private BigDecimal targetConversionRate;
     private Money targetAmountAfterRateFee;
     private Money targetCurrencyFee;
@@ -20,28 +20,51 @@ public class CurrencyTransaction {
     private Money totalTransactionFees;
     private Money totalTransactionAmount;
     private Money settlementAmount;
+    private boolean isSettled;
 
-    public CurrencyTransaction(Bank bank,Money sourceAmount, String targetCurrency) {
+    public CurrencyTransaction(Bank bank, Money sourceAmount, String targetCurrency) {
         this.bank = bank;
         this.sourceAmount = sourceAmount;
         this.targetCurrency = targetCurrency;
+        isSettled = false;
+        sourceFee = new Money(BigDecimal.ZERO, sourceAmount.getCurrency());
+        targetCurrencyRateFeePercentage = BigDecimal.ZERO;
+        targetConversionRate = BigDecimal.ZERO;
+        targetAmountAfterRateFee = new Money(BigDecimal.ZERO, targetCurrency);
+        targetCurrencyFee = new Money(BigDecimal.ZERO, targetCurrency);
+        targetServiceFee = new Money(BigDecimal.ZERO, targetCurrency);
+        totalTargetFees = new Money(BigDecimal.ZERO, targetCurrency);
+        totalTransactionFees = new Money(BigDecimal.ZERO, targetCurrency);
+        totalTransactionAmount = new Money(BigDecimal.ZERO, sourceAmount.getCurrency());
+        settlementAmount = new Money(BigDecimal.ZERO, targetCurrency);
     }
 
     public void setSourceFee(Money fee) {
         this.sourceFee = fee;
     }
 
-    public void setTargetCurrencyRateFeePerc(BigDecimal rate) {
-        this.targetCurrencyRateFeePerc = rate;
+    public Money getSourceFee() {
+        return sourceFee;
+    }
+
+    public void setTargetCurrencyRateFeePercentage(BigDecimal rate) {
+        this.targetCurrencyRateFeePercentage = rate;
     }
 
     public void setTargetServiceFee(Money fee) {
         this.targetServiceFee = fee;
     }
 
+    public boolean isSettled() {
+        return isSettled;
+    }
+
     public void settle() {
+        if (isSettled) {
+            return;
+        }
         BigDecimal bankRate = bank.rate(sourceAmount.getCurrency(),targetCurrency);
-        BigDecimal rateFee = bankRate.multiply(targetCurrencyRateFeePerc).setScale(8, RoundingMode.HALF_UP);
+        BigDecimal rateFee = bankRate.multiply(targetCurrencyRateFeePercentage).setScale(8, RoundingMode.HALF_UP);
         this.targetConversionRate = bankRate.subtract(rateFee).setScale(8, RoundingMode.HALF_UP);
         this.targetAmountAfterRateFee = new Money(sourceAmount.getAmount().multiply(targetConversionRate), targetCurrency);
         Money srcInDest = sourceAmount.reduce(bank, targetCurrency);
@@ -50,42 +73,43 @@ public class CurrencyTransaction {
         this.totalTransactionFees = sourceFee.plus(totalTargetFees).reduce(bank, targetCurrency);
         this.totalTransactionAmount = sourceAmount.plus(this.sourceFee).reduce(bank, sourceAmount.getCurrency());
         this.settlementAmount = new Money(this.targetAmountAfterRateFee.getAmount().subtract(targetServiceFee.getAmount()), targetCurrency);
+        isSettled = true;
     }
 
     public BigDecimal getTargetConversionRate() {
         return targetConversionRate;
     }
 
-    public Money getSettlementAmount(String currency) {
-        return settlementAmount.reduce(bank, currency);
+    public Money getSettlementAmount() {
+        return settlementAmount;
     }
 
-    public Money getTargetCurrencyFee(String currency) {
-        return targetCurrencyFee.reduce(bank, currency);
+    public Money getTargetCurrencyFee() {
+        return targetCurrencyFee;
     }
 
-    public Money getTargetServiceFee(String currency) {
-        return targetServiceFee.reduce(bank, currency);
+    public Money getTargetServiceFee() {
+        return targetServiceFee;
     }
 
-    public Money getTargetAmountAfterRateFee(String currency) {
-        return targetAmountAfterRateFee.reduce(bank, currency);
+    public Money getTargetAmountAfterRateFee() {
+        return targetAmountAfterRateFee;
     }
 
-    public Money getTotalTargetFees(String currency) {
-        return totalTargetFees.reduce(bank, currency);
+    public Money getTotalTargetFees() {
+        return totalTargetFees;
     }
 
-    public Money getTotalTransactionFees(String currency) {
-        return totalTransactionFees.reduce(bank, currency);
+    public Money getTotalTransactionFees() {
+        return totalTransactionFees;
     }
 
-    public Money getTotalTransactionAmount(String currency) {
-        return totalTransactionAmount.reduce(bank, currency);
+    public Money getTotalTransactionAmount() {
+        return totalTransactionAmount;
     }
 
-    public BigDecimal getTargetCurrencyRateFeePerc() {
-        return targetCurrencyRateFeePerc;
+    public BigDecimal getTargetCurrencyRateFeePercentage() {
+        return targetCurrencyRateFeePercentage;
     }
 
 

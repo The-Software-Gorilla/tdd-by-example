@@ -27,7 +27,7 @@ public class Money : Expression
 
     public Money(decimal amount, string currency)
     {
-        Amount = amount;
+        Amount = Math.Round(amount, 2, MidpointRounding.AwayFromZero);
         Currency = currency;
     }
 
@@ -66,6 +66,11 @@ public class Money : Expression
     public override string ToString()
     {
         return Amount + " " + Currency;
+    }
+
+    public decimal ValueIn(string currency, Bank bank)
+    {
+        return bank.Reduce(this, currency).Amount;
     }
 
 

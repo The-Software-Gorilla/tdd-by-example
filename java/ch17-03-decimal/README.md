@@ -35,6 +35,14 @@ I figured out how to solve it, so I deferred solving the subtraction issue until
 of CurrencyTransactions to work with. I ended up solving the subtraction issue in the 
 CurrencyTransaction class, which is not where it should be solved. This code will be refactored later.
 
+## ValueIn
+One of the things I love with C# is that properties are just part of the language. Java needs getter and
+setters that make it a function call to get the value of a property. As I was writing the tests for
+CurrencyTransaction, I realized it would be really nice to have a money object value in a specific currency
+without calling the Reduce function to do it. So I added an ```ValueIn()``` method that takes the target currency
+for the conversion and the bank object and returns a decimal value with the amount. Just a neat helper
+to make the code more readable. This also made me refactor the Java code to make it more readable.
+
 ## Currency Transactions
 I created a new class called CurrencyTransaction to perform the calculations for the 
 transaction. I created a new test class called CurrencyTransactionTest that tests the

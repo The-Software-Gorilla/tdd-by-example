@@ -22,6 +22,6 @@ public class Bank
 
     public void AddRate(string from, string to, decimal rate)
     {
-        _rates.Add(new CurrencyPair(from, to), rate);
+        _rates.Add(new CurrencyPair(from, to), Math.Round(rate, 8, MidpointRounding.AwayFromZero));
     }
 }

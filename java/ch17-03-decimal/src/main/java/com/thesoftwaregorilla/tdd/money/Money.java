@@ -71,4 +71,8 @@ public class Money extends Expression {
         return currency;
     }
 
+    public BigDecimal getValueIn(String currency, Bank bank) {
+        return bank.reduce(this, currency).getAmount();
+    }
+
 }
