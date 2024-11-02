@@ -5,12 +5,15 @@ a number of charges associated with the transaction on both sides. I thought it 
 to try and come up with a way to calculate the total cost of the transaction, itemizing all the 
 charges. 
 
-There were two problems with the initial implementation the book provides:
+There were some problems with the initial implementation the book provides:
 1. In the real world, the currency and exchange rates are always decimals and the initial 
 implementation used integers. I needed to change the contained data type of money and rates 
 to decimal.
 2. I needed to subtract some of the charges from the original transaction amount. The initial 
 implementation does not have support for subtraction.
+3. The rate tables work backwards to what I expected. That's because the ```reduce()``` method
+in the Money class divides the amount by the rate rather than multiplying it. I changed this
+to multiply the amount by the rate, but that meant changing the rate tables in the test too.
 
 ## Decimals 
 I dealt with the first problem by changing the data type of the transaction to BigDecimal. This was a

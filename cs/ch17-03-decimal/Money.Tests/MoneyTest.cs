@@ -118,16 +118,16 @@ public class MoneyTest
         Assert.That(Money.Dollar(1), Is.EqualTo(result));
     }
 
-    [TestCase ("CHF", "USD", 2, 2, TestName = "reduce money mixed currency from CHF to USD, rate 2, amount 2")]
-    [TestCase ("ZAR", "USD", 17, 85, TestName = "reduce money mixed currency from ZAR to USD, rate 17, amount 85")]
-    [TestCase ("ZAR", "CHF", 20, 60, TestName = "reduce money mixed currency from ZAR to CHF, rate 20, amount 60")]
+    [TestCase ("CHF", "USD", 0.5, 2, TestName = "reduce money mixed currency from CHF to USD, rate 0.5, amount 2")]
+    [TestCase ("ZAR", "USD", 0.0588235, 85, TestName = "reduce money mixed currency from ZAR to USD, rate 0.0588235, amount 85")]
+    [TestCase ("ZAR", "CHF", 0.05, 60, TestName = "reduce money mixed currency from ZAR to CHF, rate 0.05, amount 60")]
     [Category("reduction")]
     public void TestReduceMoneyDifferentCurrency(string fromCurrency, string toCurrency, decimal rate, decimal amount)
     {
         Bank bank = new Bank();
         bank.AddRate(fromCurrency, toCurrency, rate);
         Money result = bank.Reduce(_currencyFactories[fromCurrency].Invoke(amount), toCurrency);
-        Assert.That(_currencyFactories[toCurrency].Invoke(amount / rate), Is.EqualTo(result));
+        Assert.That(_currencyFactories[toCurrency].Invoke(Math.Round(amount * rate, 2, MidpointRounding.AwayFromZero)), Is.EqualTo(result));
     }
 
 

@@ -28,11 +28,11 @@ public class BankTest
         if (_bank == null)
         {
             _bank = new Bank();
-            _bank.AddRate("CHF", "USD", 2);
-            _bank.AddRate("ZAR", "USD", 17);
-            _bank.AddRate("ZAR", "CHF", 20);
-            _bank.AddRate("USD", "CHF", (decimal)0.5);
-            _bank.AddRate("USD", "ZAR", (decimal)0.0588235);
+            _bank.AddRate("CHF", "USD", 0.5m);
+            _bank.AddRate("ZAR", "USD", 0.0588235m);
+            _bank.AddRate("ZAR", "CHF", 0.05m);
+            _bank.AddRate("USD", "CHF", 2);
+            _bank.AddRate("USD", "ZAR", 17);
         }
         return _bank;
     }
@@ -41,11 +41,11 @@ public class BankTest
     [TestCase("CHF", "CHF", 1, TestName = "Rate CHF to CHF returns 1")]
     [TestCase("ZAR", "ZAR", 1, TestName = "Rate ZAR to ZAR returns 1")]
     [TestCase("CHF", "ZAR", 0, TestName = "Rate CHF to ZAR missing")]   
-    [TestCase("CHF", "USD", 2, TestName = "Rate USD to CHF returns rate (2)")]
-    [TestCase("ZAR", "USD", 17, TestName = "Rate USD to ZAR returns rate (17)")]
-    [TestCase("ZAR", "CHF", 20, TestName = "Rate CHF to ZAR returns rate (20)")]
-    [TestCase("USD", "CHF", 0.5, TestName = "Rate CHF to USD returns rate (0.5)")]
-    [TestCase("USD", "ZAR", 0.0588235, TestName = "Rate ZAR to USD returns rate (0.0588235)")]
+    [TestCase("CHF", "USD", 0.5, TestName = "Rate CHF to USD returns rate 0.5")]
+    [TestCase("ZAR", "USD", 0.0588235, TestName = "Rate ZAR to USD returns rate 0.0588235")]
+    [TestCase("ZAR", "CHF", 0.05, TestName = "Rate ZAR to CHF returns rate 0.05")]
+    [TestCase("USD", "CHF", 2, TestName = "Rate USD to CHF returns rate 2")]
+    [TestCase("USD", "ZAR", 17, TestName = "Rate USD to ZAR returns rate 17")]
     [Category("rates")]
     public void TestRate(string from, string to, decimal expected)
     {
