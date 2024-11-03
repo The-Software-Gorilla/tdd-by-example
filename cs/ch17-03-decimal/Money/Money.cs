@@ -51,7 +51,7 @@ public class Money : Expression
         decimal rate = bank.Rate(Currency, to);
         if (rate == 0)
         {
-            throw new InvalidOperationException("No rate found for " + Currency + " to " + to);
+            throw new InvalidOperationException($"No rate found for {Currency} to {to}");
         }
         return new Money(Math.Round(Amount * rate, 2, MidpointRounding.AwayFromZero), to);
     }
