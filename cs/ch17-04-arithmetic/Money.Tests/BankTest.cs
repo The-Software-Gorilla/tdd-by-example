@@ -55,26 +55,19 @@ public class BankTest
     [Category("rates")]
     public void TestReduce(string from, decimal fromAmt, string to, decimal expected)
     {
-        Money result = _bank.Reduce(MoneyTest.GetCurrencyFactory(from).Invoke(fromAmt), to);
-        Assert.That(result, Is.EqualTo(MoneyTest.GetCurrencyFactory(to).Invoke(expected)));
+        Money result = _bank.Reduce(Money.For(fromAmt, from), to);
+        Assert.That(result, Is.EqualTo(Money.For(expected, to)));
     }
 
     [TestCase("CHF", 1, "ZAR", 20, TestName = "Reduce CHF 1 to ZAR 20 throws invalid operation exception")]
-    [Category("rates")]
-    public void TestReduceDivisionByZero(string from, decimal fromAmt, string to, decimal toRate)
-    {
-        Exception ex = Assert.Throws<InvalidOperationException>(() => _bank.Reduce(MoneyTest.GetCurrencyFactory(from).Invoke(fromAmt), to));
-        Assert.That(ex.Message, Is.EqualTo($"No rate found for {from} to {to}"));
-    }
-
     [TestCase("GBP", 1, "ZAR", 20, TestName = "Reduce GBP 1 to ZAR throws key not found exception")]
     [TestCase("INR", 1, "ZAR", 20, TestName = "Reduce INR 1 to CHF throws key not found exception")]
     [TestCase("FRF", 1, "CHF", 0, TestName = "Reduce FRF 1 to CHF throws key not found exception")]
     [Category("rates")]
-    public void TestReduceNotInRateTable(string from, decimal fromAmt, string to, decimal toRate)
+    public void TestReduceDivisionByZero(string from, decimal fromAmt, string to, decimal toRate)
     {
-        Exception ex = Assert.Throws<KeyNotFoundException>(() => _bank.Reduce(MoneyTest.GetCurrencyFactory(from).Invoke(fromAmt), to));
-        Assert.That(ex.Message, Is.EqualTo($"The given key '{from}' was not present in the dictionary."));
+        Exception ex = Assert.Throws<InvalidOperationException>(() => _bank.Reduce(Money.For(fromAmt, from), to));
+        Assert.That(ex.Message, Is.EqualTo($"No rate found for {from} to {to}"));
     }
 
 }

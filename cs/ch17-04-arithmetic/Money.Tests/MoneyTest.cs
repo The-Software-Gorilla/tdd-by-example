@@ -12,13 +12,8 @@ namespace TheSoftwareGorilla.TDD.Money.Tests;
 public class MoneyTest
 {
     
-    private static readonly Dictionary<String, Func<decimal, Money>> _currencyFactories = new Dictionary<string, Func<decimal, Money>>
-    {
-        { "USD", Money.Dollar },
-        { "CHF", Money.Franc },
-        { "ZAR", Money.Rand }
-    };
     private const decimal STD_AMT = 5;
+    private const string USD = "USD";
 
     [OneTimeSetUp]
     public static void OneTimeSetUp()
@@ -26,10 +21,6 @@ public class MoneyTest
         // This method is called only once before any of the tests are run.
     }
 
-    public static Func<decimal, Money> GetCurrencyFactory(string currency)
-    {
-        return _currencyFactories[currency];
-    }
 
     [TestCase("USD", 5, 5, TestName = "construct USD 5")]
     [TestCase("CHF", 5, 5, TestName = "construct CHF 5")]
@@ -37,7 +28,7 @@ public class MoneyTest
     [Category("construction")]
     public void TestConstruction(string currency, decimal amount, decimal expected)
     {
-        var money = _currencyFactories[currency].Invoke(amount);
+        var money =  Money.For(amount, currency);
         Assert.IsNotNull(money);
         Assert.That(money.Amount, Is.EqualTo(expected));
         Assert.That(money.Currency, Is.EqualTo(currency));
@@ -49,7 +40,7 @@ public class MoneyTest
     [Category("construction")]
     public void TestToString(string currency, decimal amount)
     {
-        var money = _currencyFactories[currency].Invoke(amount);
+        var money =  Money.For(amount, currency);
         Assert.That(money.ToString(), Is.EqualTo(amount + " " + currency));
     }
 
@@ -59,10 +50,10 @@ public class MoneyTest
     [Category("construction")]
     public void TestEquality(string currency1, string currency2, decimal notEqualAmount)
     {
-        var money1 = _currencyFactories[currency1].Invoke(STD_AMT);
-        var money2 = _currencyFactories[currency2].Invoke(STD_AMT);
-        Assert.That(money1, Is.EqualTo(_currencyFactories[currency1].Invoke(STD_AMT)));
-        Assert.That(money1, Is.Not.EqualTo(_currencyFactories[currency1].Invoke(notEqualAmount)));
+        var money1 =  Money.For(STD_AMT, currency1);
+        var money2 =  Money.For(STD_AMT, currency2);
+        Assert.That(money1, Is.EqualTo( Money.For(STD_AMT, currency1)));
+        Assert.That(money1, Is.Not.EqualTo( Money.For(notEqualAmount, currency1)));
         Assert.That(money2, Is.Not.EqualTo(money1));
     }
 
@@ -72,7 +63,7 @@ public class MoneyTest
     [Category("construction")]
     public void TestCurrency(string currency)
     {
-        var money = _currencyFactories[currency].Invoke(STD_AMT);
+        var money =  Money.For(STD_AMT, currency);
         Assert.That(money.Currency, Is.EqualTo(currency));
     }
 
@@ -82,9 +73,9 @@ public class MoneyTest
     [Category("multiplication")]
     public void TestMultiplication(string currency, decimal multiplier1, decimal multiplier2)
     {
-        var money = _currencyFactories[currency].Invoke(STD_AMT);
-        Assert.That(_currencyFactories[currency].Invoke(STD_AMT * multiplier1), Is.EqualTo(money.Times(multiplier1)));
-        Assert.That(_currencyFactories[currency].Invoke(STD_AMT * multiplier2), Is.EqualTo(money.Times(multiplier2)));
+        var money =  Money.For(STD_AMT, currency);
+        Assert.That( Money.For(STD_AMT * multiplier1, currency), Is.EqualTo(money.Times(multiplier1)));
+        Assert.That( Money.For(STD_AMT * multiplier2, currency), Is.EqualTo(money.Times(multiplier2)));
     }
 
     [TestCase("USD", TestName = "simple add currency USD")]
@@ -93,11 +84,11 @@ public class MoneyTest
     [Category("addition")]
     public void TestSimpleAddition(string currency)
     {
-        var money = _currencyFactories[currency].Invoke(STD_AMT);
+        var money =  Money.For(STD_AMT, currency);
         Expression sum = money.Plus(money);
         Assert.That(sum, Is.InstanceOf<Money>());
         Money reduced = BankTest.GetBankWithRates().Reduce(sum, currency);
-        Assert.That(reduced, Is.EqualTo(_currencyFactories[currency].Invoke(STD_AMT + STD_AMT)));
+        Assert.That(reduced, Is.EqualTo(Money.For(STD_AMT + STD_AMT, currency)));
     }
 
 
@@ -105,17 +96,17 @@ public class MoneyTest
     [Category("reduction")]
     public void TestReduceSum()
     {
-        Expression sum = new Sum(Money.Dollar(3), Money.Dollar(4));
-        Money result = BankTest.GetBankWithRates().Reduce(sum, "USD");
-        Assert.That(Money.Dollar(7), Is.EqualTo(result));
+        Expression sum = new Sum( Money.For(3, USD),  Money.For(4, USD));
+        Money result = BankTest.GetBankWithRates().Reduce(sum, USD);
+        Assert.That( Money.For(7, USD), Is.EqualTo(result));
     }
 
     [TestCase (TestName = "reduce using Money class")]
     [Category("reduction")]
     public void TestReduceMoney()
     {
-        Money result = BankTest.GetBankWithRates().Reduce(Money.Dollar(1), "USD");
-        Assert.That(Money.Dollar(1), Is.EqualTo(result));
+        Money result = BankTest.GetBankWithRates().Reduce( Money.For(1, USD), USD);
+        Assert.That( Money.For(1, USD), Is.EqualTo(result));
     }
 
     [TestCase ("CHF", "USD", 0.5, 2, TestName = "reduce money mixed currency from CHF to USD, rate 0.5, amount 2")]
@@ -126,8 +117,8 @@ public class MoneyTest
     {
         Bank bank = new Bank();
         bank.AddRate(fromCurrency, toCurrency, rate);
-        Money result = bank.Reduce(_currencyFactories[fromCurrency].Invoke(amount), toCurrency);
-        Assert.That(_currencyFactories[toCurrency].Invoke(Math.Round(amount * rate, 2, MidpointRounding.AwayFromZero)), Is.EqualTo(result));
+        Money result = bank.Reduce(Money.For(amount, fromCurrency), toCurrency);
+        Assert.That(Money.For(Math.Round(amount * rate, 2, MidpointRounding.AwayFromZero), toCurrency), Is.EqualTo(result));
     }
 
 
@@ -164,8 +155,8 @@ public class MoneyTest
     
     private static void testReduceHarness(string from, decimal fromAmt, string to, decimal toAmt, decimal expected, Func<Expression, Expression, Expression> operation)
     {
-        Expression fromMoney = _currencyFactories[from].Invoke(fromAmt);
-        Expression toMoney = _currencyFactories[to].Invoke(toAmt);
+        Expression fromMoney = Money.For(fromAmt, from);
+        Expression toMoney = Money.For(toAmt, to);
         Expression sum = operation.Invoke(fromMoney, toMoney);
         Bank bank = BankTest.GetBankWithRates();
         if (bank.Rate(from, to) == 0)
@@ -174,13 +165,13 @@ public class MoneyTest
             return;
         }
         Money result = BankTest.GetBankWithRates().Reduce(sum, to);
-        Assert.That(result, Is.EqualTo(_currencyFactories[to].Invoke(expected)));
+        Assert.That(result, Is.EqualTo(Money.For(expected, to)));
     }
 
     [Test]
     public void TestPlusSameCurrencyReturnsMoney()
     {
-        Expression sum = Money.Dollar(1).Plus(Money.Dollar(1));
+        Expression sum =  Money.For(1, USD).Plus( Money.For(1, USD));
         Assert.That(sum, Is.InstanceOf<Money>());
     }
 

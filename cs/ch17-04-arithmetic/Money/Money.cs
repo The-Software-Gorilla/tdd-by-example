@@ -2,23 +2,11 @@ using System.Net;
 
 namespace TheSoftwareGorilla.TDD.Money;
 
-public class Money : Expression
+public class Money : Expression, ICurrencyHolder<Money>
 {
-
-    public static Money Dollar(decimal amount)
+    public static Money For(Decimal amount, String currency)
     {
-        return new Money(amount, "USD");
-    }
-
-    public static Money Franc(decimal amount)
-    {
-        return new Money(amount, "CHF");
-    }
-
-    // Shout out to my South African friends!
-    public static Money Rand(decimal amount)
-    {
-        return new Money(amount, "ZAR");
+        return new Money(amount, currency);
     }
 
     public decimal Amount { get; }
@@ -46,7 +34,7 @@ public class Money : Expression
         return base.Plus(addend);
     }
 
-    public override Money Reduce(Bank bank, string to)
+    public Money Convert(Bank bank, string to)
     {
         decimal rate = bank.Rate(Currency, to);
         if (rate == 0)
@@ -55,6 +43,12 @@ public class Money : Expression
         }
         return new Money(Math.Round(Amount * rate, 2, MidpointRounding.AwayFromZero), to);
     }
+
+    public override Money Reduce(Bank bank, string to)
+    {
+        return this.Convert(bank, to);
+    }
+
 
     public override bool Equals(object? obj)
     {

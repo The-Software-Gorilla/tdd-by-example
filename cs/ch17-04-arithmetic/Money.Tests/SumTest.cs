@@ -21,9 +21,9 @@ public class SumTest
     [Category("reduction")]
     public void TestReduce(string fromCurrency, decimal fromAmount, string toCurrency, decimal toAmount, decimal expected)
     {
-        var sum = new Sum(MoneyTest.GetCurrencyFactory(fromCurrency).Invoke(fromAmount), MoneyTest.GetCurrencyFactory(toCurrency).Invoke(toAmount));
+        var sum = new Sum(Money.For(fromAmount, fromCurrency), Money.For(toAmount, toCurrency));
         var result = sum.Reduce(BankTest.GetBankWithRates(), toCurrency);
-        Assert.That(result, Is.EqualTo(MoneyTest.GetCurrencyFactory(toCurrency).Invoke(expected)));
+        Assert.That(result, Is.EqualTo(Money.For(expected, toCurrency)));
     }
 
 
@@ -33,13 +33,13 @@ public class SumTest
     [Category("arithmetic")]
     public void TestPlusReturnsSum(string baseCurrency, string targetCurrency, decimal amount)
     {
-        var baseMoney = MoneyTest.GetCurrencyFactory(baseCurrency).Invoke(amount);
-        var targetMoney = MoneyTest.GetCurrencyFactory(targetCurrency).Invoke(amount);
+        var baseMoney = Money.For(amount, baseCurrency);
+        var targetMoney = Money.For(amount, targetCurrency);
         var result = baseMoney.Plus(targetMoney);
         if (baseMoney.Currency == targetMoney.Currency)
         {
             Assert.IsInstanceOf<Money>(result);
-            Assert.That(result, Is.EqualTo(MoneyTest.GetCurrencyFactory(baseCurrency).Invoke(amount + amount)));
+            Assert.That(result, Is.EqualTo(Money.For(amount + amount, baseCurrency)));
         } 
         else
         { 
@@ -57,7 +57,7 @@ public class SumTest
     public void TestPlus(string currency, decimal amount, decimal extraAmount)
     {
         decimal expected = (amount * 2) + extraAmount;
-        testArithmetic(currency, amount, extraAmount, expected, (sum, extraAmount) => sum.Plus(MoneyTest.GetCurrencyFactory(currency).Invoke(extraAmount)));
+        testArithmetic(currency, amount, extraAmount, expected, (sum, extraAmount) => sum.Plus(Money.For(extraAmount, currency)));
     }
 
     [TestCase("USD", 5, 3, TestName = "times with new Sum USD 5")]
@@ -72,10 +72,10 @@ public class SumTest
 
     private static void testArithmetic(string currency, decimal amount, decimal extraAmount, decimal expectedAmount, Func<Expression, decimal, Expression> operation)
     {
-        var money = MoneyTest.GetCurrencyFactory(currency).Invoke(amount);
+        var money = Money.For(amount, currency);
         Sum sum = new Sum(money, money);
         var result = operation(sum, extraAmount);
-        Assert.That(result.Reduce(BankTest.GetBankWithRates(), currency), Is.EqualTo(MoneyTest.GetCurrencyFactory(currency).Invoke(expectedAmount)));
+        Assert.That(result.Reduce(BankTest.GetBankWithRates(), currency), Is.EqualTo(Money.For(expectedAmount,currency)));
     }
     
 }
