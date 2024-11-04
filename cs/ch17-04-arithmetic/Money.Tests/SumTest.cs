@@ -12,6 +12,14 @@ namespace TheSoftwareGorilla.TDD.Money.Tests;
 [Description("Sum Tests")]
 public class SumTest
 {
+    [OneTimeSetUp]
+    public static void OneTimeSetUp()
+    {
+        if (Bank.DefaultBank == null || Bank.DefaultBank.RateCount == 0) {
+            Bank.DefaultBank = BankTest.GetBankWithRates();
+        }
+    }
+
     [TestCase("USD", 5, "USD", 5, 10, TestName = "reduce same currency USD 5")]
     [TestCase("CHF", 5, "CHF", 5, 10, TestName = "reduce same currency USD 5")]
     [TestCase("ZAR", 5, "ZAR", 5, 10, TestName = "reduce same currency USD 5")]

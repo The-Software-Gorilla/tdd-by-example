@@ -2,9 +2,13 @@ using System.Net;
 
 namespace TheSoftwareGorilla.TDD.Money;
 
-public class Bank
+public class Bank 
 {
+
+    public static Bank DefaultBank { get; set; } = new Bank();
+
     private readonly Dictionary<CurrencyPair, decimal> _rates = new Dictionary<CurrencyPair, decimal>();
+    public int RateCount => _rates.Count;
     public Money Reduce(Expression source, string to)
     {
         return source.Reduce(this, to);

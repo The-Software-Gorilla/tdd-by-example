@@ -9,4 +9,5 @@ public abstract class Expression
         return new Sum(this, addend);
     }
     public abstract Expression Times(decimal multiplier);
+
 }

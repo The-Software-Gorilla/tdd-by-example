@@ -16,7 +16,7 @@ public class Sum : Expression
     public override Money Reduce(Bank bank, string to)
     {
         decimal amount = Augend.Reduce(bank, to).Amount + Addend.Reduce(bank, to).Amount;
-        return new Money(amount, to);
+        return Money.For(amount, to);
     }
 
 

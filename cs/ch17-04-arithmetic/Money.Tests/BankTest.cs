@@ -16,7 +16,7 @@ public class BankTest
     [OneTimeSetUp]
     public static void OneTimeSetUp()
     {
-        _bank = GetBankWithRates();
+        Bank.DefaultBank = GetBankWithRates();
     }
 
     public static Bank GetBankWithRates()

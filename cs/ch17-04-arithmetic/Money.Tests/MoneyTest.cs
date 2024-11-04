@@ -18,7 +18,9 @@ public class MoneyTest
     [OneTimeSetUp]
     public static void OneTimeSetUp()
     {
-        // This method is called only once before any of the tests are run.
+        if (Bank.DefaultBank == null || Bank.DefaultBank.RateCount == 0) {
+            Bank.DefaultBank = BankTest.GetBankWithRates();
+        }
     }
 
 

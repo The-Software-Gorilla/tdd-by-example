@@ -16,19 +16,19 @@ public class CurrencyTransaction
         SourceAmount = sourceAmount;
         TargetCurrency = targetCurrency;
         IsSettled = false;
-        SourceFee = new Money(0m, SourceAmount.Currency);
+        SourceFee = Money.For(0m, SourceAmount.Currency);
         TargetCurrencyRateFeePercentage = 0m;
-        TargetServiceFee = new Money(0m, targetCurrency);
+        TargetServiceFee = Money.For(0m, targetCurrency);
         TargetConversionRate = 0m;
         TargetCurrencyRateFeePercentage = 0m;
-        TargetServiceFee = new Money(0m, targetCurrency);
+        TargetServiceFee = Money.For(0m, targetCurrency);
         TargetConversionRate = 0m;
-        TargetCurrencyFee = new Money(0m, targetCurrency);
-        TotalTargetFees = new Money(0m, targetCurrency);
-        SettlementAmount = new Money(0m, targetCurrency);
-        TotalTransactionFees = new Money(0m, targetCurrency);
-        TotalTransactionAmount = new Money(0m, SourceAmount.Currency);
-        TargetAmountAfterRateFee = new Money(0m, targetCurrency);
+        TargetCurrencyFee = Money.For(0m, targetCurrency);
+        TotalTargetFees = Money.For(0m, targetCurrency);
+        SettlementAmount = Money.For(0m, targetCurrency);
+        TotalTransactionFees = Money.For(0m, targetCurrency);
+        TotalTransactionAmount = Money.For(0m, SourceAmount.Currency);
+        TargetAmountAfterRateFee = Money.For(0m, targetCurrency);
     }
 
     public Money SourceFee { get; set; }
@@ -49,13 +49,13 @@ public class CurrencyTransaction
         }
         decimal bankRate = Bank.Rate(SourceAmount.Currency, TargetCurrency);
         TargetConversionRate = Math.Round(bankRate - bankRate * TargetCurrencyRateFeePercentage, 8, MidpointRounding.AwayFromZero);
-        TargetAmountAfterRateFee = new Money(SourceAmount.Amount * TargetConversionRate, TargetCurrency);
+        TargetAmountAfterRateFee = Money.For(SourceAmount.Amount * TargetConversionRate, TargetCurrency);
         Money srcInDest = SourceAmount.Reduce(Bank, TargetCurrency);
-        TargetCurrencyFee = new Money(srcInDest.Amount - TargetAmountAfterRateFee.Amount, TargetCurrency);
+        TargetCurrencyFee = Money.For(srcInDest.Amount - TargetAmountAfterRateFee.Amount, TargetCurrency);
         TotalTargetFees = TargetCurrencyFee.Plus(TargetServiceFee).Reduce(Bank, TargetCurrency);
         TotalTransactionFees = SourceFee.Plus(TotalTargetFees).Reduce(Bank, TargetCurrency);
         TotalTransactionAmount = SourceAmount.Plus(SourceFee).Reduce(Bank, SourceAmount.Currency);
-        SettlementAmount = new Money(TargetAmountAfterRateFee.Amount - TargetServiceFee.Amount, TargetCurrency);
+        SettlementAmount = Money.For(TargetAmountAfterRateFee.Amount - TargetServiceFee.Amount, TargetCurrency);
         IsSettled = true;
     }
 

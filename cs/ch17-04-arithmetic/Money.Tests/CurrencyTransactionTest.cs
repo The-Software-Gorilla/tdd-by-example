@@ -13,44 +13,50 @@ namespace TheSoftwareGorilla.TDD.Money.Tests;
 public class CurrencyTransactionTest
 {
     
-    private static Bank _bank;
+    // private static Bank bank;
     
-    [OneTimeSetUp]
-    public static void OneTimeSetUp()
+    [SetUp]
+    public void SetUp()
     {
-        _bank = new Bank();
-        _bank.AddRate("USD", "ZAR", 17.64m);
-        _bank.AddRate("ZAR", "USD", 0.056689m);
-        // This method is called only once before any of the tests are run.
+        Bank bank = new Bank();
+        bank.AddRate("USD", "ZAR", 17.64m);
+        bank.AddRate("ZAR", "USD", 0.056689m);
+        Bank.DefaultBank = bank;
+    }
+
+    [TearDown]
+    public void TearDown()
+    {
+        Bank.DefaultBank = new Bank();
     }
 
     [TestCase]
     public void TestCurrencyTransaction()
     {
-        var transaction = new CurrencyTransaction(_bank, Money.For(1000m, "USD"), "ZAR");
+        var transaction = new CurrencyTransaction(Bank.DefaultBank, Money.For(1000m, "USD"), "ZAR");
         transaction.SourceFee = Money.For(35m, "USD");
         transaction.TargetCurrencyRateFeePercentage = 0.015m; 
         transaction.TargetServiceFee = Money.For(150m, "ZAR");
         transaction.Settle();
         Assert.That(transaction.TargetConversionRate, Is.EqualTo(17.3754m));
-        Assert.That(transaction.TargetCurrencyFee.ValueIn("USD", _bank), Is.EqualTo(15.00m));
-        Assert.That(transaction.TargetCurrencyFee.ValueIn("ZAR", _bank), Is.EqualTo(264.60m));
-        Assert.That(transaction.TargetServiceFee.ValueIn("USD", _bank), Is.EqualTo(8.50m));
-        Assert.That(transaction.TargetServiceFee.ValueIn("ZAR", _bank), Is.EqualTo(150.00m));
-        Assert.That(transaction.TotalTargetFees.ValueIn("USD", _bank), Is.EqualTo(23.50m));
-        Assert.That(transaction.TotalTargetFees.ValueIn("ZAR", _bank), Is.EqualTo(414.60m));
-        Assert.That(transaction.SettlementAmount.ValueIn("USD", _bank), Is.EqualTo(976.49m));
-        Assert.That(transaction.SettlementAmount.ValueIn("ZAR", _bank), Is.EqualTo(17225.40m));
-        Assert.That(transaction.TotalTransactionFees.ValueIn("USD", _bank), Is.EqualTo(58.50m));
-        Assert.That(transaction.TotalTransactionFees.ValueIn("ZAR", _bank), Is.EqualTo(1032.00m));
-        Assert.That(transaction.TotalTransactionAmount.ValueIn("USD", _bank), Is.EqualTo(1035.00m));
-        Assert.That(transaction.TotalTransactionAmount.ValueIn("ZAR", _bank), Is.EqualTo(18257.40m));
+        Assert.That(transaction.TargetCurrencyFee.ValueIn("USD"), Is.EqualTo(15.00m));
+        Assert.That(transaction.TargetCurrencyFee.ValueIn("ZAR"), Is.EqualTo(264.60m));
+        Assert.That(transaction.TargetServiceFee.ValueIn("USD"), Is.EqualTo(8.50m));
+        Assert.That(transaction.TargetServiceFee.ValueIn("ZAR"), Is.EqualTo(150.00m));
+        Assert.That(transaction.TotalTargetFees.ValueIn("USD"), Is.EqualTo(23.50m));
+        Assert.That(transaction.TotalTargetFees.ValueIn("ZAR"), Is.EqualTo(414.60m));
+        Assert.That(transaction.SettlementAmount.ValueIn("USD"), Is.EqualTo(976.49m));
+        Assert.That(transaction.SettlementAmount.ValueIn("ZAR"), Is.EqualTo(17225.40m));
+        Assert.That(transaction.TotalTransactionFees.ValueIn("USD"), Is.EqualTo(58.50m));
+        Assert.That(transaction.TotalTransactionFees.ValueIn("ZAR"), Is.EqualTo(1032.00m));
+        Assert.That(transaction.TotalTransactionAmount.ValueIn("USD"), Is.EqualTo(1035.00m));
+        Assert.That(transaction.TotalTransactionAmount.ValueIn("ZAR"), Is.EqualTo(18257.40m));
     }
 
     [TestCase]
     public void TestUnsettledTransaction()
     {
-        var transaction = new CurrencyTransaction(_bank, Money.For(1000m, "USD"), "ZAR");
+        var transaction = new CurrencyTransaction(Bank.DefaultBank, Money.For(1000m, "USD"), "ZAR");
         Assert.That(transaction.IsSettled, Is.EqualTo(false));
         Assert.That(transaction.SourceFee, Is.EqualTo( Money.For(0m, "USD")));
         Assert.That(transaction.TargetCurrencyRateFeePercentage, Is.EqualTo(0m)); 
