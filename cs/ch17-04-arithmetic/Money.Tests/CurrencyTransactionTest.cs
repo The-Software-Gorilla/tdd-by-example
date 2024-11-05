@@ -18,16 +18,16 @@ public class CurrencyTransactionTest
     [SetUp]
     public void SetUp()
     {
-        Bank bank = new Bank();
+        Bank<Money> bank = new Bank<Money>();
         bank.AddRate("USD", "ZAR", 17.64m);
         bank.AddRate("ZAR", "USD", 0.056689m);
-        Bank.DefaultBank = bank;
+        Bank<Money>.DefaultBank = bank;
     }
 
     [TearDown]
     public void TearDown()
     {
-        Bank.DefaultBank = new Bank();
+        Bank<Money>.DefaultBank = new Bank<Money>();
     }
 
     [TestCase]

@@ -9,7 +9,7 @@ public class Money : ICurrencyHolder<Money>, IExpression<Money>
         return new Money(amount, currency);
     }
 
-    public static Money For(Decimal amount, String currency, Bank bank)
+    public static Money For(Decimal amount, String currency, Bank<Money> bank)
     {
         return new Money(amount, currency, bank);
     }
@@ -18,7 +18,7 @@ public class Money : ICurrencyHolder<Money>, IExpression<Money>
 
     public string Currency { get; }
 
-    public Bank Bank { get; } = Bank.DefaultBank;
+    public Bank<Money> Bank { get; } = Bank<Money>.DefaultBank;
 
     private Money(decimal amount, string currency)
     {
@@ -26,7 +26,7 @@ public class Money : ICurrencyHolder<Money>, IExpression<Money>
         Currency = currency;
     }
 
-    private Money(decimal amount, string currency, Bank bank)
+    private Money(decimal amount, string currency, Bank<Money> bank)
     {
         Amount = Math.Round(amount, 2, MidpointRounding.AwayFromZero);
         Currency = currency;
@@ -120,4 +120,8 @@ public class Money : ICurrencyHolder<Money>, IExpression<Money>
         return Convert(currency).Amount;
     }
 
+    public Money NewCurrencyHolder(decimal amount, string currency, Bank<Money> bank)
+    {
+        return Money.For(amount, currency, bank);
+    }
 }

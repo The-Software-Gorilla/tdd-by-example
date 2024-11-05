@@ -2,24 +2,22 @@ using System.Net;
 
 namespace TheSoftwareGorilla.TDD.Money;
 
-public class Bank : ICurrencyConverter<Money>
+public class Bank<T> : ICurrencyConverter<T> where T : ICurrencyHolder<T>
 {
-
-    public static Bank DefaultBank { get; set; } = new Bank();
+    public static Bank<T> DefaultBank { get; set; } = new Bank<T>();
 
     private readonly Dictionary<CurrencyPair, decimal> _rates = new Dictionary<CurrencyPair, decimal>();
     public int RateCount => _rates.Count;
 
-    public Money Convert(Money holder, string to)
+    public T Convert(T holder, string to)
     {
         decimal rate = Rate(holder.Currency, to);
         if (rate == 0)
         {
             throw new InvalidOperationException($"No rate found for {holder.Currency} to {to}");
         }
-        return Money.For(Math.Round(holder.Amount * rate, 2, MidpointRounding.AwayFromZero), to, this);
+        return holder.NewCurrencyHolder(Math.Round(holder.Amount * rate, 2, MidpointRounding.AwayFromZero), to, this);        
     }
-    
 
     public decimal Rate(string from, string to)
     {
@@ -37,3 +35,6 @@ public class Bank : ICurrencyConverter<Money>
     }
 
 }
+
+    
+

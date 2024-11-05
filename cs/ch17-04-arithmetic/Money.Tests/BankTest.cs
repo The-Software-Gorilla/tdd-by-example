@@ -14,18 +14,18 @@ public class BankTest
     [SetUp]
     public void SetUp()
     {
-        Bank.DefaultBank = GetBankWithRates();
+        Bank<Money>.DefaultBank = GetBankWithRates();
     }
 
     [TearDown]
     public void TearDown()
     {
-        Bank.DefaultBank = new Bank();
+        Bank<Money>.DefaultBank = new Bank<Money>();
     }
 
-    public static Bank GetBankWithRates()
+    public static Bank<Money> GetBankWithRates()
     {
-        Bank bank = new Bank();
+        Bank<Money> bank = new Bank<Money>();
         bank.AddRate("CHF", "USD", 0.5m);
         bank.AddRate("ZAR", "USD", 0.0588235m);
         bank.AddRate("ZAR", "CHF", 0.05m);

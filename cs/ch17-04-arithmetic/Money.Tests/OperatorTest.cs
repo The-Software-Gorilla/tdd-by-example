@@ -10,13 +10,13 @@ public class OperatorTest
     [SetUp]
     public void SetUp()
     {
-        Bank.DefaultBank = BankTest.GetBankWithRates();
+        Bank<Money>.DefaultBank = BankTest.GetBankWithRates();
     }
 
     [TearDown]
     public void TearDown()
     {
-        Bank.DefaultBank = new Bank();
+        Bank<Money>.DefaultBank = new Bank<Money>();
     }
 
     [Test]

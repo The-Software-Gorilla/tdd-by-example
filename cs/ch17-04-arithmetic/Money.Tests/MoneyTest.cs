@@ -18,13 +18,13 @@ public class MoneyTest
     [SetUp]
     public void SetUp()
     {
-        Bank.DefaultBank = BankTest.GetBankWithRates();
+        Bank<Money>.DefaultBank = BankTest.GetBankWithRates();
     }
 
     [TearDown]
     public void TearDown()
     {
-        Bank.DefaultBank = new Bank();
+        Bank<Money>.DefaultBank = new Bank<Money>();
     }
 
 
@@ -36,6 +36,9 @@ public class MoneyTest
     {
         var money =  Money.For(amount, currency);
         Assert.IsNotNull(money);
+        Assert.That(money, Is.InstanceOf<Money>());
+        Assert.That(money, Is.InstanceOf<ICurrencyHolder<Money>>());
+        Assert.That(money, Is.InstanceOf<IExpression<Money>>());
         Assert.That(money.Amount, Is.EqualTo(expected));
         Assert.That(money.Currency, Is.EqualTo(currency));
     }
@@ -97,15 +100,23 @@ public class MoneyTest
         Assert.That(reduced, Is.EqualTo(Money.For(STD_AMT + STD_AMT, currency)));
     }
 
+    [Test]
+    public void TestSimpleMathReturnsFromCurrency()
+    {
+        Money usd = Money.For(STD_AMT, USD);
+        Money zar = Money.For(STD_AMT, "ZAR");
+        Assert.That((usd + zar).Currency, Is.EqualTo(USD));
+        Assert.That((usd - zar).Currency, Is.EqualTo(USD));
+        Assert.That((usd * 2).Currency, Is.EqualTo(USD));
+        Assert.That((usd / 2).Currency, Is.EqualTo(USD));
+        Assert.That((zar + usd).Currency, Is.EqualTo("ZAR"));
+        Assert.That((zar - usd).Currency, Is.EqualTo("ZAR"));
+        Assert.That((zar * 2).Currency, Is.EqualTo("ZAR"));
+        Assert.That((zar / 2).Currency, Is.EqualTo("ZAR"));
+        
+    }
 
-    // [TestCase (TestName = "reduce using Sum class")]
-    // [Category("reduction")]
-    // public void TestReduceSum()
-    // {
-    //     var sum = new Sum( Money.For(3, USD),  Money.For(4, USD));
-    //     Money result = BankTest.GetBankWithRates().Convert(sum, USD);
-    //     Assert.That( Money.For(7, USD), Is.EqualTo(result));
-    // }
+
 
     [TestCase (TestName = "reduce using Money class")]
     [Category("reduction")]
@@ -121,7 +132,7 @@ public class MoneyTest
     [Category("reduction")]
     public void TestReduceMoneyDifferentCurrency(string fromCurrency, string toCurrency, decimal rate, decimal amount)
     {
-        Bank bank = new Bank();
+        Bank<Money> bank = new Bank<Money>();
         bank.AddRate(fromCurrency, toCurrency, rate);
         Money result = bank.Convert(Money.For(amount, fromCurrency, bank), toCurrency);
         Assert.That(Money.For(Math.Round(amount * rate, 2, MidpointRounding.AwayFromZero), toCurrency), Is.EqualTo(result));

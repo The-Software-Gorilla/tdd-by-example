@@ -7,13 +7,13 @@ public class Operation<T> : IOperation<T> where T : ICurrencyHolder<T>
     public T Oper1 { get; }
     public T Oper2 { get; }
 
-    public Bank Bank { get; }
+    public Bank<T> Bank { get; }
 
     private readonly Func<T, T, T> _calculation;
     private readonly string _toCurrency;
 
 
-    public Operation(T oper1, T oper2, Bank bank, string toCurrency, Func<T, T, T> calculation)
+    public Operation(T oper1, T oper2, Bank<T> bank, string toCurrency, Func<T, T, T> calculation)
     {
         Oper1 = oper1;
         Oper2 = oper2;
