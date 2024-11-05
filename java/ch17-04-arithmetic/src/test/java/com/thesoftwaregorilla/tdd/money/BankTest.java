@@ -1,6 +1,8 @@
 package com.thesoftwaregorilla.tdd.money;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -17,22 +19,24 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @DisplayName("Bank Tests")
 public class BankTest {
 
-    private static Bank bank;
-
-    @BeforeAll
-    public static void beforeAllSetUp() {
+    private Bank<Money> bank;
+    @BeforeEach
+    public void beforeEach() {
         bank = getBankWithRates();
     }
 
-    public static Bank getBankWithRates() {
-        if (bank == null) {
-            bank = new Bank();
-            bank.addRate("CHF", "USD", BigDecimal.valueOf(0.5)); // 1 CHF = 0.5 USD
-            bank.addRate("ZAR", "USD", BigDecimal.valueOf(0.0588235)); // 1 ZAR = 0.0588 USD
-            bank.addRate("ZAR", "CHF", BigDecimal.valueOf(0.05)); // 1 ZAR = 0.05 CHF
-            bank.addRate("USD", "CHF", BigDecimal.valueOf(2)); // 1 CHF = 0.5 USD
-            bank.addRate("USD", "ZAR", BigDecimal.valueOf(17)); // 1 ZAR = 0.0588 USD
-        }
+    @AfterEach
+    public void afterEach() {
+        bank = null;
+    }
+
+    public static Bank<Money> getBankWithRates() {
+        Bank<Money> bank = new Bank<Money>();
+        bank.addRate("CHF", "USD", BigDecimal.valueOf(0.5)); // 1 CHF = 0.5 USD
+        bank.addRate("ZAR", "USD", BigDecimal.valueOf(0.0588235)); // 1 ZAR = 0.0588 USD
+        bank.addRate("ZAR", "CHF", BigDecimal.valueOf(0.05)); // 1 ZAR = 0.05 CHF
+        bank.addRate("USD", "CHF", BigDecimal.valueOf(2)); // 1 CHF = 0.5 USD
+        bank.addRate("USD", "ZAR", BigDecimal.valueOf(17)); // 1 ZAR = 0.0588 USD
         return bank;
     }
 
@@ -64,7 +68,7 @@ public class BankTest {
             "USD, 5, USD, 5"
             })
     public void testReduce(String from, BigDecimal fromAmt, String to, BigDecimal expected) {
-        Money result = bank.reduce(MoneyTest.getCurrencyFactory(from).apply(fromAmt), to);
+        Money result = bank.convert(Money.from(fromAmt, from, bank), to);
         assertEquals(MoneyTest.getCurrencyFactory(to).apply(expected), result);
     }
 
@@ -77,7 +81,7 @@ public class BankTest {
     })
     public void testReduceWithDbzException(String from, BigDecimal fromAmt, String to, int expected) {
         ArithmeticException exception = assertThrows(ArithmeticException.class, () -> {
-            bank.reduce(MoneyTest.getCurrencyFactory(from).apply(fromAmt), to);
+            bank.convert(Money.from(fromAmt, from, bank), to);
         });
         assertEquals("Exchange rate not available", exception.getMessage());
     }
@@ -92,7 +96,7 @@ public class BankTest {
     })
     public void testReduceNotInRateTable(String from, BigDecimal fromAmt, String to, int expected) {
         NullPointerException exception = assertThrows(NullPointerException.class, () -> {
-            bank.reduce(MoneyTest.getCurrencyFactory(from).apply(fromAmt), to);
+            bank.convert(Money.from(fromAmt, from, bank), to);
         });
     }
 

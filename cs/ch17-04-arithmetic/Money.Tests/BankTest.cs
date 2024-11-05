@@ -56,8 +56,8 @@ public class BankTest
     [Category("rates")]
     public void TestReduce(string from, decimal fromAmt, string to, decimal expected)
     {
-        Money result = GetBankWithRates().Convert(Money.For(fromAmt, from), to);
-        Assert.That(result, Is.EqualTo(Money.For(expected, to)));
+        Money result = GetBankWithRates().Convert(Money.From(fromAmt, from), to);
+        Assert.That(result, Is.EqualTo(Money.From(expected, to)));
     }
 
     [TestCase("CHF", 1, "ZAR", 20, TestName = "Reduce CHF 1 to ZAR 20 throws invalid operation exception")]
@@ -67,7 +67,7 @@ public class BankTest
     [Category("rates")]
     public void TestReduceDivisionByZero(string from, decimal fromAmt, string to, decimal toRate)
     {
-        Exception ex = Assert.Throws<InvalidOperationException>(() => GetBankWithRates().Convert(Money.For(fromAmt, from), to));
+        Exception ex = Assert.Throws<InvalidOperationException>(() => GetBankWithRates().Convert(Money.From(fromAmt, from), to));
         Assert.That(ex.Message, Is.EqualTo($"No rate found for {from} to {to}"));
     }
 

@@ -4,8 +4,8 @@ namespace TheSoftwareGorilla.TDD.Money;
 
 public class Operation<T> : IOperation<T> where T : ICurrencyHolder<T>
 {   
-    public T Oper1 { get; }
-    public T Oper2 { get; }
+    public T LeftOperand { get; }
+    public T RightOperand { get; }
 
     public Bank<T> Bank { get; }
 
@@ -13,20 +13,20 @@ public class Operation<T> : IOperation<T> where T : ICurrencyHolder<T>
     private readonly string _toCurrency;
 
 
-    public Operation(T oper1, T oper2, Bank<T> bank, string toCurrency, Func<T, T, T> calculation)
+    public Operation(T leftOperand, T rightOperand, Bank<T> bank, string toCurrency, Func<T, T, T> calculation)
     {
-        Oper1 = oper1;
-        Oper2 = oper2;
+        LeftOperand = leftOperand;
+        RightOperand = rightOperand;
         Bank = bank;
         _calculation = calculation;
         _toCurrency = toCurrency;
     }
 
-    public virtual T Apply()
+    public virtual T Evaluate()
     {
-        T oper1Converted = Oper1.Convert(_toCurrency);
-        T oper2Converted = Oper2.Convert(_toCurrency); 
-        return _calculation(oper1Converted, oper2Converted);
+        T left = LeftOperand.Convert(_toCurrency);
+        T right = RightOperand.Convert(_toCurrency); 
+        return _calculation(left, right);
     }
 
 }

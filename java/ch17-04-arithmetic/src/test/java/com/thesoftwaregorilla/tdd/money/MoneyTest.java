@@ -20,26 +20,18 @@ import static org.junit.jupiter.api.Assertions.*;
 @DisplayName("Money Class Tests")
 public class MoneyTest {
 
-    //<editor-fold desc="Test Setup">
-    private static final HashMap<String, Function<BigDecimal, Money>> currencyFactories = new HashMap<>() {
-        {
-            put("USD", Money::dollar);
-            put("CHF", Money::franc);
-            put("ZAR", Money::rand);
-        }
-    };
     private static final BigDecimal STD_AMOUNT = BigDecimal.valueOf(5.00).setScale(2, RoundingMode.HALF_UP);
-    private static Bank bank;
+    private Bank<Money> bank;
 
-    @BeforeAll
-    public static void beforeAllSetUp() {
+    @BeforeEach
+    public void beforeEachSetUp() {
         bank = BankTest.getBankWithRates();
     }
 
-    public static Function<BigDecimal, Money> getCurrencyFactory(String currency) {
-        return currencyFactories.get(currency);
+    @AfterEach
+    public void afterEachTearDown() {
+        bank = null;
     }
-    //</editor-fold>
 
     @Nested
     @DisplayName("construction")

@@ -4,12 +4,12 @@ namespace TheSoftwareGorilla.TDD.Money;
 
 public class Money : ICurrencyHolder<Money>, IExpression<Money>
 {
-    public static Money For(Decimal amount, String currency)
+    public static Money From(Decimal amount, String currency)
     {
         return new Money(amount, currency);
     }
 
-    public static Money For(Decimal amount, String currency, Bank<Money> bank)
+    public static Money From(Decimal amount, String currency, Bank<Money> bank)
     {
         return new Money(amount, currency, bank);
     }
@@ -35,7 +35,7 @@ public class Money : ICurrencyHolder<Money>, IExpression<Money>
 
     public Money Add(Money addend)
     {
-        Func<Money, Money, Money> plus = (aue, ade) => Money.For(aue.Amount + ade.Amount, aue.Currency, aue.Bank);
+        Func<Money, Money, Money> plus = (aue, ade) => Money.From(aue.Amount + ade.Amount, aue.Currency, aue.Bank);
         return InvokeOperator(addend, plus);
     }
 
@@ -46,7 +46,7 @@ public class Money : ICurrencyHolder<Money>, IExpression<Money>
 
     public Money Subtract(Money subtrahend)
     {
-        Func<Money, Money, Money> minus = (minuend, subtrahend) => Money.For(minuend.Amount - subtrahend.Amount, minuend.Currency, minuend.Bank);   
+        Func<Money, Money, Money> minus = (minuend, subtrahend) => Money.From(minuend.Amount - subtrahend.Amount, minuend.Currency, minuend.Bank);   
         return InvokeOperator(subtrahend, minus);
     }
     
@@ -57,7 +57,7 @@ public class Money : ICurrencyHolder<Money>, IExpression<Money>
 
     public Money Divide(decimal divisor)
     {
-        return Money.For(Amount / divisor, Currency, Bank);
+        return Money.From(Amount / divisor, Currency, Bank);
     }
 
     public static Money operator /(Money dividend, decimal divisor)
@@ -67,7 +67,7 @@ public class Money : ICurrencyHolder<Money>, IExpression<Money>
 
     public Money Multiply(decimal multiplier)
     {
-        return Money.For(Amount * multiplier, Currency, Bank);
+        return Money.From(Amount * multiplier, Currency, Bank);
     }
 
     public static Money operator *(Money multiplicand, decimal multiplier)
@@ -79,7 +79,7 @@ public class Money : ICurrencyHolder<Money>, IExpression<Money>
     private Money InvokeOperator(Money other, Func<Money, Money, Money> operation)
     {
         Operation<Money> operationInstance = new Operation<Money>(this, other, Bank, Currency, operation);
-        return operationInstance.Apply();
+        return operationInstance.Evaluate();
     }
 
     public Money Convert(string to)
@@ -122,6 +122,6 @@ public class Money : ICurrencyHolder<Money>, IExpression<Money>
 
     public Money NewCurrencyHolder(decimal amount, string currency, Bank<Money> bank)
     {
-        return Money.For(amount, currency, bank);
+        return Money.From(amount, currency, bank);
     }
 }

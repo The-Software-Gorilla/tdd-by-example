@@ -3,50 +3,98 @@ package com.thesoftwaregorilla.tdd.money;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.function.BiFunction;
 
-public class Money extends Expression {
 
-    public static Money dollar(BigDecimal amount) {
-        return new Money(amount, "USD");
+public class Money implements ICurrencyHolder<Money>, IExpression<Money> {
+
+    public static Money from(BigDecimal amount, String currency) {
+        return new Money(amount, currency);
     }
 
-    public static Money franc(BigDecimal amount) {
-        return new Money(amount, "CHF");
+    public static Money from(BigDecimal amount, String currency, Bank<Money> bank) {
+        return new Money(amount, currency, bank);
     }
 
-    // Shout out to all my South African friends!
-    public static Money rand(BigDecimal amount) {
-        return new Money(amount, "ZAR");
-    }
 
+    private static Bank<Money> BANK = new Bank<Money>();
+    public static Bank<Money> getDefaultBank() {
+        return BANK;
+    }
+    public static void setDefaultBank(Bank<Money> bank) {
+        Money.BANK = bank;
+    }
 
     private final BigDecimal amount;
     private final String currency;
+    private final Bank<Money> bank;
 
-    Money(BigDecimal amount, String currency) {
+    private Money(BigDecimal amount, String currency) {
+        this(amount, currency, Money.getDefaultBank());
+    }
+
+    private Money(BigDecimal amount, String currency, Bank<Money> bank) {
         this.amount = amount.setScale(2, RoundingMode.HALF_UP);
         this.currency = currency;
+        this.bank = bank;
+    }
+
+
+    @Override
+    public Bank<Money> getBank() {
+        return bank;
     }
 
     @Override
-    public Expression times(BigDecimal multiplier) {
-        return new Money(getAmount().multiply(multiplier), getCurrency());
-    };
-
-    public Expression plus(Expression addend) {
-        if (addend instanceof Money money && this.currency.equals(money.getCurrency())) {
-            return new Money(getAmount().add(money.getAmount()), getCurrency());
-        }
-        return super.plus(addend);
+    public Money convert(String toCurrency) {
+        return bank.convert(this, toCurrency);
     }
 
     @Override
-    public Money reduce(Bank bank, String to) {
-        BigDecimal rate = bank.rate(getCurrency(), to);
-        if (rate.equals(BigDecimal.ZERO.setScale(8, RoundingMode.HALF_UP))) {
-            throw new ArithmeticException("Exchange rate not available");
-        }
-        return new Money(getAmount().multiply(rate), to);
+    public BigDecimal getAmount() {
+        return amount;
+    }
+
+    @Override
+    public BigDecimal getAmountIn(String toCurrency) {
+        return convert(toCurrency).getAmount();
+    }
+
+    @Override
+    public String getCurrency() {
+        return currency;
+    }
+
+    @Override
+    public Money newCurrencyHolder(BigDecimal amount, String currency, Bank<Money> bank) {
+        return Money.from(amount, currency, bank);
+    }
+
+    @Override
+    public Money add(Money addend) {
+        BiFunction<Money, Money, Money> operation = (a, b) -> Money.from(a.getAmount().add(b.getAmount()), a.getCurrency(), a.getBank());
+        return InvokeOperator(addend, operation);
+    }
+
+    @Override
+    public Money subtract(Money subtrahend) {
+        BiFunction<Money, Money, Money> operation = (a, b) -> Money.from(a.getAmount().subtract(b.getAmount()), a.getCurrency(), a.getBank());
+        return InvokeOperator(subtrahend, operation);
+    }
+
+    @Override
+    public Money multiply(BigDecimal multiplier) {
+        return Money.from(getAmount().multiply(multiplier), getCurrency(), getBank());
+    }
+
+    @Override
+    public Money divide(BigDecimal divisor) {
+        return Money.from(getAmount().divide(divisor, 2, RoundingMode.HALF_UP), getCurrency(), getBank());
+    }
+
+    private Money InvokeOperator(Money other, BiFunction<Money, Money, Money> operation) {
+        Operation<Money> operationInstance = new Operation<Money>(this, other, bank, currency, operation);
+        return operationInstance.evaluate();
     }
 
     @Override
@@ -56,23 +104,15 @@ public class Money extends Expression {
     }
 
     @Override
+    public int hashCode() {
+        return getAmount().hashCode() + getCurrency().hashCode() + getBank().hashCode();
+    }
+
+    @Override
     public String toString() {
         return amount + " " + currency;
     }
 
-    // See my note in the MoneyTest class. I added a getter for amount because I had a constructor test.
-    public BigDecimal getAmount() {
-        return amount;
-    }
 
-    // I changed the name of this method from "currency" to "getCurrency" to keep consistent with Java standards.
-    // I'm not sure these standards existed when Kent wrote the book.
-    public String getCurrency() {
-        return currency;
-    }
-
-    public BigDecimal getValueIn(String currency, Bank bank) {
-        return bank.reduce(this, currency).getAmount();
-    }
 
 }
