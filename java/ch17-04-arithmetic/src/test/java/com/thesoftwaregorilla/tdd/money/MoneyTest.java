@@ -26,10 +26,12 @@ public class MoneyTest {
     @BeforeEach
     public void beforeEachSetUp() {
         bank = BankTest.getBankWithRates();
+        Money.setDefaultBank(bank);
     }
 
     @AfterEach
     public void afterEachTearDown() {
+        Money.setDefaultBank(null);
         bank = null;
     }
 
@@ -45,7 +47,7 @@ public class MoneyTest {
                 "ZAR"
         })
         public void testConstruction(String currency) {
-            Money money = currencyFactories.get(currency).apply(STD_AMOUNT);
+            Money money = Money.from(STD_AMOUNT, currency, bank);
             assertNotNull(money);
             assertEquals(STD_AMOUNT, money.getAmount());
             assertEquals(currency, money.getCurrency());
@@ -59,7 +61,7 @@ public class MoneyTest {
                 "ZAR, 20.00"
         })
         public void testToString(String currency, BigDecimal amount) {
-            assertEquals(amount + " " + currency, currencyFactories.get(currency).apply(amount).toString());
+            assertEquals(amount + " " + currency, Money.from(amount, currency, bank).toString());
         }
 
         @DisplayName("equality")
@@ -70,10 +72,10 @@ public class MoneyTest {
                 "ZAR, USD, 8"
         })
         public void testEquality(String currency, String unequalCurrency, BigDecimal unequalAmount) {
-            Money money = currencyFactories.get(currency).apply(STD_AMOUNT);
-            assertEquals(money, currencyFactories.get(currency).apply(STD_AMOUNT));
-            assertNotEquals(money, currencyFactories.get(currency).apply(unequalAmount));
-            assertNotEquals(money, currencyFactories.get(unequalCurrency).apply(STD_AMOUNT));
+            Money money = Money.from(STD_AMOUNT, currency, bank);
+            assertEquals(money, Money.from(STD_AMOUNT, currency, bank));
+            assertNotEquals(money, Money.from(unequalAmount, currency, bank));
+            assertNotEquals(money, Money.from(STD_AMOUNT, unequalCurrency, bank));
         }
 
         @DisplayName("currency")
@@ -84,7 +86,7 @@ public class MoneyTest {
                 "ZAR"
         })
         public void testCurrency(String currency) {
-            assertEquals(currency, currencyFactories.get(currency).apply(STD_AMOUNT).getCurrency());
+            assertEquals(currency, Money.from(STD_AMOUNT, currency, bank).getCurrency());
         }
     }
 
@@ -104,9 +106,9 @@ public class MoneyTest {
                     "ZAR, 4, 3"
             })
             public void testMultiplication(String currency, BigDecimal multiplier1, BigDecimal multiplier2) {
-                Money money = currencyFactories.get(currency).apply(STD_AMOUNT);
-                assertEquals(new Money(STD_AMOUNT.multiply(multiplier1), currency), money.times(multiplier1));
-                assertEquals(new Money(STD_AMOUNT.multiply(multiplier2), currency), money.times(multiplier2));
+                Money money = Money.from(STD_AMOUNT, currency, bank);
+                assertEquals(Money.from(STD_AMOUNT.multiply(multiplier1), currency, bank), money.multiply(multiplier1));
+                assertEquals(Money.from(STD_AMOUNT.multiply(multiplier2), currency, bank), money.multiply(multiplier2));
             }
         }
 
@@ -121,11 +123,10 @@ public class MoneyTest {
                     "ZAR"
             })
             public void testSimpleAddition(String currency) {
-                Money money = currencyFactories.get(currency).apply(STD_AMOUNT);
-                Expression sum = money.plus(money);
-                Bank bank = new Bank();
-                Money reduced = bank.reduce(sum, currency);
-                assertEquals(new Money(STD_AMOUNT.add(STD_AMOUNT), currency), reduced);
+                Money money = Money.from(STD_AMOUNT, currency, bank);
+                Money sum = money.add(money);
+                Money reduced = bank.convert(sum, currency);
+                assertEquals(Money.from(STD_AMOUNT.add(STD_AMOUNT), currency, bank), reduced);
             }
         }
 
@@ -135,17 +136,10 @@ public class MoneyTest {
             @Test
             @DisplayName("using Money class")
             public void testReduceMoney() {
-                Money result = bank.reduce(Money.dollar(BigDecimal.valueOf(1)), "USD");
-                assertEquals(Money.dollar(BigDecimal.valueOf(1)), result);
+                Money result = bank.convert(Money.from(BigDecimal.valueOf(1),"USD", bank), "USD");
+                assertEquals(Money.from(BigDecimal.valueOf(1), "USD", bank), result);
             }
 
-            @Test
-            @DisplayName("using Sum class")
-            public void testReduceSum() {
-                Expression sum = new Sum(Money.dollar(BigDecimal.valueOf(3)), Money.dollar(BigDecimal.valueOf(4)));
-                Money result = bank.reduce(sum, "USD");
-                assertEquals(Money.dollar(BigDecimal.valueOf(7)), result);
-            }
 
             @DisplayName("with mixed currency")
             @ParameterizedTest(name = "from \"{0}\", to \"{1}\". Rate = {2}, Amount = {3}")
@@ -155,10 +149,10 @@ public class MoneyTest {
                     "ZAR, CHF, 20.00, 60.00"
             })
             public void testReduceMoneyDifferentCurrency(String fromCurrency, String toCurrency, BigDecimal rate, BigDecimal amount) {
-                Bank bank = new Bank();
-                bank.addRate(fromCurrency, toCurrency, rate);
-                Money result = bank.reduce(currencyFactories.get(fromCurrency).apply(amount), toCurrency);
-                assertEquals(currencyFactories.get(toCurrency).apply(amount.multiply(rate)), result);
+                Bank<Money> thisBank = new Bank<Money>();
+                thisBank.addRate(fromCurrency, toCurrency, rate);
+                Money result = thisBank.convert(Money.from(amount, fromCurrency, thisBank), toCurrency);
+                assertEquals(Money.from(amount.multiply(rate), toCurrency, thisBank), result);
             }
         }
 
@@ -177,7 +171,7 @@ public class MoneyTest {
             })
             public void testMixedAddition(String from, BigDecimal fromAmt, String to, BigDecimal toAmt, BigDecimal expected) {
                 testReduceHarness(from, fromAmt, to, toAmt, expected,
-                        (aug, add) -> add.plus(aug));
+                        (aug, add) -> add.add(aug));
             }
 
             @DisplayName("plus with Sum")
@@ -191,7 +185,7 @@ public class MoneyTest {
             })
             public void testSumPlusMoney(String from, BigDecimal fromAmt, String to, BigDecimal toAmt, BigDecimal expected) {
                 testReduceHarness(from, fromAmt, to, toAmt, expected,
-                        (aug, add) -> new Sum(aug, add).plus(add));
+                        (aug, add) -> add.add(aug).add(add));
             }
 
 
@@ -206,22 +200,23 @@ public class MoneyTest {
             })
             public void testSumTimes(String from, BigDecimal fromAmt, String to, BigDecimal toAmt, BigDecimal expected) {
                 testReduceHarness(from, fromAmt, to, toAmt, expected,
-                        (aug, add) -> new Sum(aug, add).times(BigDecimal.valueOf(2)));
+                        (aug, add) -> add.add(aug).multiply(BigDecimal.valueOf(2)));
             }
 
-            private static void testReduceHarness(String from, BigDecimal fromAmt, String to, BigDecimal toAmt, BigDecimal expected, BiFunction<Expression, Expression, Expression> operation) {
-                Expression money1 = currencyFactories.get(from).apply(fromAmt);
-                Expression money2 = currencyFactories.get(to).apply(toAmt);
-                Expression sum = operation.apply(money1, money2);
+            private void testReduceHarness(String from, BigDecimal fromAmt, String to, BigDecimal toAmt, BigDecimal expected, BiFunction<Money, Money, Money> operation) {
+                Money money1 = Money.from(fromAmt, from, bank);
+                Money money2 = Money.from(toAmt, to, bank);
                 if (bank.rate(from, to).equals(BigDecimal.ZERO.setScale(8, RoundingMode.HALF_UP))) {
                     ArithmeticException exception = assertThrows(ArithmeticException.class, () -> {
-                        Money result = bank.reduce(sum, to);
+                        Money sum = operation.apply(money1, money2);
+                        Money result = bank.convert(sum, to);
                     });
                     assertEquals("Exchange rate not available", exception.getMessage());
                     return;
                 }
-                Money result = bank.reduce(sum, to);
-                assertEquals(currencyFactories.get(to).apply(expected), result);
+                Money sum = operation.apply(money1, money2);
+                Money result = bank.convert(sum, to);
+                assertEquals(Money.from(expected, to, bank), result);
             }
         }
     }
@@ -232,7 +227,7 @@ public class MoneyTest {
         @Test
         @DisplayName("same currency should return Money")
         public void testPlusSameCurrencyReturnsMoney() {
-            Expression sum = Money.dollar(BigDecimal.valueOf(1)).plus(Money.dollar(BigDecimal.valueOf(1)));
+            Money sum = Money.from(BigDecimal.valueOf(1), "USD", bank).add(Money.from(BigDecimal.valueOf(1), "USD", bank));
             assertInstanceOf(Money.class, sum);
         }
 

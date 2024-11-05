@@ -69,7 +69,7 @@ public class BankTest {
             })
     public void testReduce(String from, BigDecimal fromAmt, String to, BigDecimal expected) {
         Money result = bank.convert(Money.from(fromAmt, from, bank), to);
-        assertEquals(MoneyTest.getCurrencyFactory(to).apply(expected), result);
+        assertEquals(Money.from(expected, to, bank), result);
     }
 
     @DisplayName("reduce with division by zero exception")
@@ -95,7 +95,7 @@ public class BankTest {
             "FRF, 1, CHF, 0"
     })
     public void testReduceNotInRateTable(String from, BigDecimal fromAmt, String to, int expected) {
-        NullPointerException exception = assertThrows(NullPointerException.class, () -> {
+        ArithmeticException exception = assertThrows(ArithmeticException.class, () -> {
             bank.convert(Money.from(fromAmt, from, bank), to);
         });
     }
