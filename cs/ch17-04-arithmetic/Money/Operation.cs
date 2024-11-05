@@ -24,13 +24,9 @@ public class Operation<T> : IOperation<T> where T : ICurrencyHolder<T>
 
     public virtual T Apply()
     {
-        T oper1Converted = Convert(Oper1, _toCurrency);
-        T oper2Converted = Convert(Oper2, _toCurrency); 
+        T oper1Converted = Oper1.Convert(_toCurrency);
+        T oper2Converted = Oper2.Convert(_toCurrency); 
         return _calculation(oper1Converted, oper2Converted);
     }
 
-    public virtual T Convert(T holder, string to) 
-    {
-        return holder.Convert(to);
-    }
 }

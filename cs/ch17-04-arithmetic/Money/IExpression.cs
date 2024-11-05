@@ -1,6 +1,6 @@
 namespace TheSoftwareGorilla.TDD.Money;
 
-public interface IExpression<T> :ICurrencyConverter<T> where T : ICurrencyHolder<T>
+public interface IExpression<T> where T : ICurrencyHolder<T>
 {
     public T Add(Money addend);
     public T Subtract(Money subtrahend);

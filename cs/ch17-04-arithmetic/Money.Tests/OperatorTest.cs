@@ -25,7 +25,6 @@ public class OperatorTest
         Money zar = Money.For(17, "ZAR");
         Money result = usd.Subtract(zar);
         Assert.IsInstanceOf<Money>(result);
-        Assert.IsInstanceOf<Expression>(result);
         Assert.That(result, Is.EqualTo(Money.For(4, "USD")));
         Assert.That(result, Is.EqualTo(usd - zar));
     }
@@ -36,7 +35,6 @@ public class OperatorTest
         Money zar = Money.For(17, "ZAR");
         Money result = usd.Add(zar);
         Assert.IsInstanceOf<Money>(result);
-        Assert.IsInstanceOf<Expression>(result);
         Assert.That(result, Is.EqualTo(Money.For(6, "USD")));
         Assert.That(result, Is.EqualTo(usd + zar));
 
@@ -47,7 +45,6 @@ public class OperatorTest
         Money usd = Money.For(5, "USD");
         Money result = usd.Multiply(2);
         Assert.IsInstanceOf<Money>(result);
-        Assert.IsInstanceOf<Expression>(result);
         Assert.That(result, Is.EqualTo(Money.For(10, "USD")));
         Assert.That(result, Is.EqualTo(usd * 2));
     }
@@ -57,7 +54,6 @@ public class OperatorTest
         Money usd = Money.For(5, "USD");
         Money result = usd.Divide(2);
         Assert.IsInstanceOf<Money>(result);
-        Assert.IsInstanceOf<Expression>(result);
         Assert.That(result, Is.EqualTo(Money.For(2.5m, "USD")));
         Assert.That(result, Is.EqualTo(usd / 2));
     }

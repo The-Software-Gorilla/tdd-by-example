@@ -171,8 +171,10 @@ public class MoneyTest
         if (bank.Rate(from, to) == 0)
         {
             Assert.Throws<InvalidOperationException>(() => bank.Reduce(sum, to));
+            Console.WriteLine($"No rate found for {from} to {to}");
             return;
         }
+        Console.WriteLine($"Rate found for {from} to {to}");
         Money result = BankTest.GetBankWithRates().Reduce(sum, to);
         Assert.That(result, Is.EqualTo(_currencyFactories[to].Invoke(expected)));
     }

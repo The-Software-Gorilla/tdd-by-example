@@ -2,7 +2,7 @@ using System.Net;
 
 namespace TheSoftwareGorilla.TDD.Money;
 
-public class Money : Expression, ICurrencyHolder<Money>, IExpression<Money>
+public class Money : ICurrencyHolder<Money>, IExpression<Money>
 {
     public static Money For(Decimal amount, String currency)
     {
@@ -35,7 +35,7 @@ public class Money : Expression, ICurrencyHolder<Money>, IExpression<Money>
 
     public Money Add(Money addend)
     {
-        Func<Money, Money, Money> plus = (augend, addend) => new Money(augend.Amount + addend.Amount, augend.Currency);
+        Func<Money, Money, Money> plus = (aue, ade) => Money.For(aue.Amount + ade.Amount, aue.Currency, aue.Bank);
         return InvokeOperator(addend, plus);
     }
 
@@ -46,7 +46,7 @@ public class Money : Expression, ICurrencyHolder<Money>, IExpression<Money>
 
     public Money Subtract(Money subtrahend)
     {
-        Func<Money, Money, Money> minus = (minuend, subtrahend) => new Money(minuend.Amount - subtrahend.Amount, minuend.Currency);
+        Func<Money, Money, Money> minus = (minuend, subtrahend) => Money.For(minuend.Amount - subtrahend.Amount, minuend.Currency, minuend.Bank);   
         return InvokeOperator(subtrahend, minus);
     }
     
@@ -57,7 +57,7 @@ public class Money : Expression, ICurrencyHolder<Money>, IExpression<Money>
 
     public Money Divide(decimal divisor)
     {
-        return new Money(Amount / divisor, Currency);
+        return Money.For(Amount / divisor, Currency, Bank);
     }
 
     public static Money operator /(Money dividend, decimal divisor)
@@ -67,7 +67,7 @@ public class Money : Expression, ICurrencyHolder<Money>, IExpression<Money>
 
     public Money Multiply(decimal multiplier)
     {
-        return new Money(Amount * multiplier, Currency);
+        return Money.For(Amount * multiplier, Currency, Bank);
     }
 
     public static Money operator *(Money multiplicand, decimal multiplier)
@@ -84,17 +84,7 @@ public class Money : Expression, ICurrencyHolder<Money>, IExpression<Money>
 
     public Money Convert(string to)
     {
-        return Convert(this, to);
-    }
-
-    public Money Convert(Money money, string to)
-    {
-        decimal rate = Bank.Rate(Currency, to);
-        if (rate == 0)
-        {
-            throw new InvalidOperationException($"No rate found for {Currency} to {to}");
-        }
-        return new Money(Math.Round(Amount * rate, 2, MidpointRounding.AwayFromZero), to);
+        return Bank.Convert(this, to);
     }
 
 
@@ -125,40 +115,9 @@ public class Money : Expression, ICurrencyHolder<Money>, IExpression<Money>
         return Amount + " " + Currency;
     }
 
-    public decimal ValueIn(string currency)
+    public decimal AmountIn(string currency)
     {
         return Convert(currency).Amount;
     }
-
-
-#region for deprecation
-
-    public override Money Reduce(Bank bank, string to)
-    {
-        decimal rate = bank.Rate(Currency, to);
-        if (rate == 0)
-        {
-            throw new InvalidOperationException($"No rate found for {Currency} to {to}");
-        }
-        return new Money(Math.Round(Amount * rate, 2, MidpointRounding.AwayFromZero), to);
-    }
-
-    public override Expression Times(decimal multiplier)
-    {
-        return new Money(Amount * multiplier, Currency);
-    }
-
-    public override Expression Plus(Expression addend)
-    {
-        if(addend is Money money && Currency == money.Currency)
-        {
-            return new Money(Amount + money.Amount, Currency);
-        }
-
-        return base.Plus(addend);
-    }
-
-
-#endregion
 
 }

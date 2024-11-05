@@ -4,15 +4,13 @@ namespace TheSoftwareGorilla.TDD.Money;
 
 public class CurrencyTransaction
 {
-    private Bank Bank { get; }
     public Money SourceAmount { get; }
     public string TargetCurrency { get; }
 
     public bool IsSettled { get; private set; }
 
-    public CurrencyTransaction(Bank bank, Money sourceAmount, string targetCurrency)
+    public CurrencyTransaction(Money sourceAmount, string targetCurrency)
     {
-        Bank = bank;
         SourceAmount = sourceAmount;
         TargetCurrency = targetCurrency;
         IsSettled = false;
@@ -47,15 +45,14 @@ public class CurrencyTransaction
         if (IsSettled) {
             return;
         }
-        decimal bankRate = Bank.Rate(SourceAmount.Currency, TargetCurrency);
+        decimal bankRate = SourceAmount.Bank.Rate(SourceAmount.Currency, TargetCurrency);
         TargetConversionRate = Math.Round(bankRate - bankRate * TargetCurrencyRateFeePercentage, 8, MidpointRounding.AwayFromZero);
-        TargetAmountAfterRateFee = Money.For(SourceAmount.Amount * TargetConversionRate, TargetCurrency);
-        Money srcInDest = SourceAmount.Reduce(Bank, TargetCurrency);
-        TargetCurrencyFee = Money.For(srcInDest.Amount - TargetAmountAfterRateFee.Amount, TargetCurrency);
-        TotalTargetFees = TargetCurrencyFee.Plus(TargetServiceFee).Reduce(Bank, TargetCurrency);
-        TotalTransactionFees = SourceFee.Plus(TotalTargetFees).Reduce(Bank, TargetCurrency);
-        TotalTransactionAmount = SourceAmount.Plus(SourceFee).Reduce(Bank, SourceAmount.Currency);
-        SettlementAmount = Money.For(TargetAmountAfterRateFee.Amount - TargetServiceFee.Amount, TargetCurrency);
+        TargetAmountAfterRateFee = Money.For(SourceAmount.Amount * TargetConversionRate, TargetCurrency, SourceAmount.Bank);
+        TargetCurrencyFee = Money.For((SourceAmount.Convert(TargetCurrency) - TargetAmountAfterRateFee).Amount, TargetCurrency, SourceAmount.Bank);
+        TotalTargetFees = TargetCurrencyFee + TargetServiceFee;
+        TotalTransactionFees = SourceFee.Convert(TargetCurrency) + TotalTargetFees;
+        TotalTransactionAmount = SourceAmount + SourceFee;
+        SettlementAmount = Money.For((TargetAmountAfterRateFee - TargetServiceFee).Amount, TargetCurrency, SourceAmount.Bank);
         IsSettled = true;
     }
 

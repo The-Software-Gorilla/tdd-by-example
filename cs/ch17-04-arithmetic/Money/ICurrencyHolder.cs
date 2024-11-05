@@ -2,11 +2,12 @@ using System.Runtime;
 using TheSoftwareGorilla.TDD.Money;
 
 namespace TheSoftwareGorilla.TDD.Money;
-public interface ICurrencyHolder<T> : ICurrencyConverter<T> where T : ICurrencyHolder<T>
+public interface ICurrencyHolder<T> where T : ICurrencyHolder<T>
 
 {
+    public Bank Bank { get; }
     public decimal Amount { get; }
     public string Currency { get; }
     public T Convert(string to);
-    public decimal ValueIn(string currency);
+    public decimal AmountIn(string currency);
 }

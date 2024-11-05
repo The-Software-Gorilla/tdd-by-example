@@ -15,12 +15,16 @@ public class MoneyTest
     private const decimal STD_AMT = 5;
     private const string USD = "USD";
 
-    [OneTimeSetUp]
-    public static void OneTimeSetUp()
+    [SetUp]
+    public void SetUp()
     {
-        if (Bank.DefaultBank == null || Bank.DefaultBank.RateCount == 0) {
-            Bank.DefaultBank = BankTest.GetBankWithRates();
-        }
+        Bank.DefaultBank = BankTest.GetBankWithRates();
+    }
+
+    [TearDown]
+    public void TearDown()
+    {
+        Bank.DefaultBank = new Bank();
     }
 
 
@@ -76,8 +80,8 @@ public class MoneyTest
     public void TestMultiplication(string currency, decimal multiplier1, decimal multiplier2)
     {
         var money =  Money.For(STD_AMT, currency);
-        Assert.That( Money.For(STD_AMT * multiplier1, currency), Is.EqualTo(money.Times(multiplier1)));
-        Assert.That( Money.For(STD_AMT * multiplier2, currency), Is.EqualTo(money.Times(multiplier2)));
+        Assert.That( Money.For(STD_AMT * multiplier1, currency), Is.EqualTo(money * multiplier1));
+        Assert.That( Money.For(STD_AMT * multiplier2, currency), Is.EqualTo(money * multiplier2));
     }
 
     [TestCase("USD", TestName = "simple add currency USD")]
@@ -87,27 +91,27 @@ public class MoneyTest
     public void TestSimpleAddition(string currency)
     {
         var money =  Money.For(STD_AMT, currency);
-        Expression sum = money.Plus(money);
+        var sum = money + money;
         Assert.That(sum, Is.InstanceOf<Money>());
-        Money reduced = BankTest.GetBankWithRates().Reduce(sum, currency);
+        Money reduced = BankTest.GetBankWithRates().Convert(sum, currency);
         Assert.That(reduced, Is.EqualTo(Money.For(STD_AMT + STD_AMT, currency)));
     }
 
 
-    [TestCase (TestName = "reduce using Sum class")]
-    [Category("reduction")]
-    public void TestReduceSum()
-    {
-        Expression sum = new Sum( Money.For(3, USD),  Money.For(4, USD));
-        Money result = BankTest.GetBankWithRates().Reduce(sum, USD);
-        Assert.That( Money.For(7, USD), Is.EqualTo(result));
-    }
+    // [TestCase (TestName = "reduce using Sum class")]
+    // [Category("reduction")]
+    // public void TestReduceSum()
+    // {
+    //     var sum = new Sum( Money.For(3, USD),  Money.For(4, USD));
+    //     Money result = BankTest.GetBankWithRates().Convert(sum, USD);
+    //     Assert.That( Money.For(7, USD), Is.EqualTo(result));
+    // }
 
     [TestCase (TestName = "reduce using Money class")]
     [Category("reduction")]
     public void TestReduceMoney()
     {
-        Money result = BankTest.GetBankWithRates().Reduce( Money.For(1, USD), USD);
+        Money result = BankTest.GetBankWithRates().Convert( Money.For(1, USD), USD);
         Assert.That( Money.For(1, USD), Is.EqualTo(result));
     }
 
@@ -119,7 +123,7 @@ public class MoneyTest
     {
         Bank bank = new Bank();
         bank.AddRate(fromCurrency, toCurrency, rate);
-        Money result = bank.Reduce(Money.For(amount, fromCurrency), toCurrency);
+        Money result = bank.Convert(Money.For(amount, fromCurrency, bank), toCurrency);
         Assert.That(Money.For(Math.Round(amount * rate, 2, MidpointRounding.AwayFromZero), toCurrency), Is.EqualTo(result));
     }
 
@@ -131,18 +135,18 @@ public class MoneyTest
     [Category("complex arithmetic")]
     public void TestMixedAddition(string fromCurrency, decimal fromAmount, string toCurrency, decimal toAmount, decimal expected)
     {
-        testReduceHarness(fromCurrency, fromAmount, toCurrency, toAmount, expected, (from, to) => from.Plus(to));
+        testReduceHarness(fromCurrency, fromAmount, toCurrency, toAmount, expected, (from, to) => to + from);
     }
 
 
     [TestCase ("CHF", 10, "USD", 5, 15, TestName = "plus with Sum mixed currency CHF 10 with USD 5, expected 15")]
     [TestCase ("ZAR", 20, "CHF", 10, 21, TestName = "plus with Sum mixed currency ZAR 20 with CHF 10, expected 21")]
     [TestCase ("ZAR", 34, "USD", 5, 12, TestName = "plus with Sum mixed currency ZAR 34 with USD 5, expected 12")]
-    [TestCase ("USD", 5, "ZAR", 20, 125.00, TestName = "plus with Sum miced currency USD 5 with ZAR 20, expected 105")]
+    [TestCase ("USD", 5, "ZAR", 20, 125.00, TestName = "plus with Sum mixed currency USD 5 with ZAR 20, expected 105")]
     [Category("complex arithmetic")]
     public void TestSumPlusMoney(string fromCurrency, decimal fromAmount, string toCurrency, decimal toAmount, decimal expected)
     {
-        testReduceHarness(fromCurrency, fromAmount, toCurrency, toAmount, expected, (from, to) => new Sum(from, to).Plus(to));
+        testReduceHarness(fromCurrency, fromAmount, toCurrency, toAmount, expected, (from, to) => to + to + from);
     }
 
     [TestCase ("CHF", 10, "USD", 5, 20, TestName = "times with mixed currency CHF 10 with USD 5, expected 20")]
@@ -152,28 +156,27 @@ public class MoneyTest
     [Category("complex arithmetic")]
     public void TestSumTimes(string fromCurrency, decimal fromAmount, string toCurrency, decimal toAmount, decimal expected)
     {
-        testReduceHarness(fromCurrency, fromAmount, toCurrency, toAmount, expected, (from, to) => new Sum(from, to).Times(2));
+        testReduceHarness(fromCurrency, fromAmount, toCurrency, toAmount, expected, (from, to) => (to + from) * 2);
     }
     
-    private static void testReduceHarness(string from, decimal fromAmt, string to, decimal toAmt, decimal expected, Func<Expression, Expression, Expression> operation)
+    private static void testReduceHarness(string from, decimal fromAmt, string to, decimal toAmt, decimal expected, Func<Money, Money, Money> operation)
     {
-        Expression fromMoney = Money.For(fromAmt, from);
-        Expression toMoney = Money.For(toAmt, to);
-        Expression sum = operation.Invoke(fromMoney, toMoney);
-        Bank bank = BankTest.GetBankWithRates();
-        if (bank.Rate(from, to) == 0)
+        var fromMoney = Money.For(fromAmt, from);
+        var toMoney = Money.For(toAmt, to);
+        var sum = operation.Invoke(fromMoney, toMoney);
+        if (fromMoney.Bank.Rate(from, to) == 0)
         {
-            Assert.Throws<InvalidOperationException>(() => bank.Reduce(sum, to));
+            Assert.Throws<InvalidOperationException>(() => fromMoney.Bank.Convert(sum, to));
             return;
         }
-        Money result = BankTest.GetBankWithRates().Reduce(sum, to);
+        Money result = BankTest.GetBankWithRates().Convert(sum, to);
         Assert.That(result, Is.EqualTo(Money.For(expected, to)));
     }
 
     [Test]
     public void TestPlusSameCurrencyReturnsMoney()
     {
-        Expression sum =  Money.For(1, USD).Plus( Money.For(1, USD));
+        Money sum =  Money.For(1, USD) + Money.For(1, USD);
         Assert.That(sum, Is.InstanceOf<Money>());
     }
 

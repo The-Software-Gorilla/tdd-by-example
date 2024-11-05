@@ -11,26 +11,27 @@ namespace TheSoftwareGorilla.TDD.Money.Tests;
 [Description("BankTest class")]
 public class BankTest
 {
-    private static Bank _bank;
-
-    [OneTimeSetUp]
-    public static void OneTimeSetUp()
+    [SetUp]
+    public void SetUp()
     {
         Bank.DefaultBank = GetBankWithRates();
     }
 
+    [TearDown]
+    public void TearDown()
+    {
+        Bank.DefaultBank = new Bank();
+    }
+
     public static Bank GetBankWithRates()
     {
-        if (_bank == null)
-        {
-            _bank = new Bank();
-            _bank.AddRate("CHF", "USD", 0.5m);
-            _bank.AddRate("ZAR", "USD", 0.0588235m);
-            _bank.AddRate("ZAR", "CHF", 0.05m);
-            _bank.AddRate("USD", "CHF", 2);
-            _bank.AddRate("USD", "ZAR", 17);
-        }
-        return _bank;
+        Bank bank = new Bank();
+        bank.AddRate("CHF", "USD", 0.5m);
+        bank.AddRate("ZAR", "USD", 0.0588235m);
+        bank.AddRate("ZAR", "CHF", 0.05m);
+        bank.AddRate("USD", "CHF", 2);
+        bank.AddRate("USD", "ZAR", 17);
+        return bank;
     }
 
     [TestCase("USD", "USD", 1, TestName = "Rate USD to USD returns 1")]
@@ -45,7 +46,7 @@ public class BankTest
     [Category("rates")]
     public void TestRate(string from, string to, decimal expected)
     {
-        Assert.That(_bank.Rate(from, to), Is.EqualTo(expected));
+        Assert.That(GetBankWithRates().Rate(from, to), Is.EqualTo(expected));
     }
 
     [TestCase("CHF", 2, "USD", 1, TestName = "Reduce CHF 2 to USD 1")]
@@ -55,7 +56,7 @@ public class BankTest
     [Category("rates")]
     public void TestReduce(string from, decimal fromAmt, string to, decimal expected)
     {
-        Money result = _bank.Reduce(Money.For(fromAmt, from), to);
+        Money result = GetBankWithRates().Convert(Money.For(fromAmt, from), to);
         Assert.That(result, Is.EqualTo(Money.For(expected, to)));
     }
 
@@ -66,7 +67,7 @@ public class BankTest
     [Category("rates")]
     public void TestReduceDivisionByZero(string from, decimal fromAmt, string to, decimal toRate)
     {
-        Exception ex = Assert.Throws<InvalidOperationException>(() => _bank.Reduce(Money.For(fromAmt, from), to));
+        Exception ex = Assert.Throws<InvalidOperationException>(() => GetBankWithRates().Convert(Money.For(fromAmt, from), to));
         Assert.That(ex.Message, Is.EqualTo($"No rate found for {from} to {to}"));
     }
 
