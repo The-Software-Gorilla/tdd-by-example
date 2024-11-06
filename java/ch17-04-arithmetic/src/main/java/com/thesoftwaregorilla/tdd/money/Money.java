@@ -17,7 +17,7 @@ public class Money implements ICurrencyHolder<Money>, IExpression<Money> {
     private final String currency;
     private final Bank<Money> bank;
 
-    private Money(BigDecimal amount, String currency, Bank<Money> bank) {
+    protected Money(BigDecimal amount, String currency, Bank<Money> bank) {
         this.amount = amount.setScale(2, RoundingMode.HALF_UP);
         this.currency = currency;
         this.bank = bank;
@@ -76,7 +76,7 @@ public class Money implements ICurrencyHolder<Money>, IExpression<Money> {
         return Money.from(getAmount().divide(divisor, 2, RoundingMode.HALF_UP), getCurrency(), getBank());
     }
 
-    private Money InvokeOperator(Money other, BiFunction<Money, Money, Money> operation) {
+    protected Money InvokeOperator(Money other, BiFunction<Money, Money, Money> operation) {
         Operation<Money> operationInstance = new Operation<Money>(this, other, bank, currency, operation);
         return operationInstance.evaluate();
     }
@@ -96,7 +96,4 @@ public class Money implements ICurrencyHolder<Money>, IExpression<Money> {
     public String toString() {
         return amount + " " + currency;
     }
-
-
-
 }

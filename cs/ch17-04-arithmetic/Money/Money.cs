@@ -1,4 +1,5 @@
 using System.Net;
+using System.Runtime.InteropServices.Marshalling;
 
 namespace TheSoftwareGorilla.TDD.Money;
 
@@ -16,14 +17,14 @@ public class Money : ICurrencyHolder<Money>, IExpression<Money>
 
     public Bank<Money> Bank { get; }
 
-    private Money(decimal amount, string currency, Bank<Money> bank)
+    protected Money(decimal amount, string currency, Bank<Money> bank)
     {
         Amount = Math.Round(amount, 2, MidpointRounding.AwayFromZero);
         Currency = currency;
         Bank = bank;
     }
 
-    public Money Add(Money addend)
+    public virtual Money Add(Money addend)
     {
         Func<Money, Money, Money> plus = (aue, ade) => Money.From(aue.Amount + ade.Amount, aue.Currency, aue.Bank);
         return InvokeOperator(addend, plus);
@@ -34,7 +35,7 @@ public class Money : ICurrencyHolder<Money>, IExpression<Money>
         return augend.Add(addend);
     }
 
-    public Money Subtract(Money subtrahend)
+    public virtual Money Subtract(Money subtrahend)
     {
         Func<Money, Money, Money> minus = (minuend, subtrahend) => Money.From(minuend.Amount - subtrahend.Amount, minuend.Currency, minuend.Bank);   
         return InvokeOperator(subtrahend, minus);
@@ -45,7 +46,7 @@ public class Money : ICurrencyHolder<Money>, IExpression<Money>
         return minuend.Subtract(subtrahend);
     }
 
-    public Money Divide(decimal divisor)
+    public virtual Money Divide(decimal divisor)
     {
         return Money.From(Amount / divisor, Currency, Bank);
     }
@@ -55,7 +56,7 @@ public class Money : ICurrencyHolder<Money>, IExpression<Money>
         return dividend.Divide(divisor);
     }
 
-    public Money Multiply(decimal multiplier)
+    public virtual Money Multiply(decimal multiplier)
     {
         return Money.From(Amount * multiplier, Currency, Bank);
     }
@@ -66,13 +67,13 @@ public class Money : ICurrencyHolder<Money>, IExpression<Money>
     }
 
 
-    private Money InvokeOperator(Money other, Func<Money, Money, Money> operation)
+    protected virtual Money InvokeOperator(Money other, Func<Money, Money, Money> operation)
     {
         Operation<Money> operationInstance = new Operation<Money>(this, other, Bank, Currency, operation);
         return operationInstance.Evaluate();
     }
 
-    public Money Convert(string to)
+    public virtual Money Convert(string to)
     {
         return Bank.Convert(this, to);
     }
@@ -110,7 +111,7 @@ public class Money : ICurrencyHolder<Money>, IExpression<Money>
         return Convert(currency).Amount;
     }
 
-    public Money NewCurrencyHolder(decimal amount, string currency, Bank<Money> bank)
+    public virtual Money NewCurrencyHolder(decimal amount, string currency, Bank<Money> bank)
     {
         return Money.From(amount, currency, bank);
     }

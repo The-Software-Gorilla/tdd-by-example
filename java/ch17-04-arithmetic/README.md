@@ -136,8 +136,3 @@ how the Open/Closed Principle can be applied to a library. Up until this point, 
 and modification. Now that the contracts are stable, the library is closed for modification but open for extension. The 
 Open/Closed Principle is the "O" of the SOLID principles of object-oriented design. The question is how you know you're
 at this point in a TDD process.
-
-## TODO's
-- Create a CurrencyHolder base class with most of the implementation of Money, or make the methods virtual.
-- Figure out if IExpression needs a base class or an impl. Still on the fence.
-- Clean up the tests. They are a mess.
