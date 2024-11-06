@@ -45,7 +45,7 @@ public class BankTest
     [Category("rates")]
     public void TestRate(string from, string to, decimal expected)
     {
-        Assert.That(GetBankWithRates().Rate(from, to), Is.EqualTo(expected));
+        Assert.That(_bank.Rate(from, to), Is.EqualTo(expected));
     }
 
     [TestCase("CHF", 2, "USD", 1, TestName = "Reduce CHF 2 to USD 1")]
@@ -55,18 +55,18 @@ public class BankTest
     [Category("rates")]
     public void TestReduce(string from, decimal fromAmt, string to, decimal expected)
     {
-        Money result = GetBankWithRates().Convert(Money.From(fromAmt, from, _bank), to);
+        Money result = _bank.Convert(Money.From(fromAmt, from, _bank), to);
         Assert.That(result, Is.EqualTo(Money.From(expected, to, _bank)));
     }
 
-    [TestCase("GBP", 1, "ZAR", 20, TestName = "Reduce GBP 1 to ZAR throws key not found exception")]
-    [TestCase("INR", 1, "ZAR", 20, TestName = "Reduce INR 1 to CHF throws key not found exception")]
-    [TestCase("FRF", 1, "CHF", 0, TestName = "Reduce FRF 1 to CHF throws key not found exception")]
+    [TestCase("GBP", 1, "ZAR", 20, TestName = "Reduce GBP 1 to ZAR throws InvalidOperationException")]
+    [TestCase("INR", 1, "ZAR", 20, TestName = "Reduce INR 1 to CHF throws InvalidOperationException")]
+    [TestCase("FRF", 1, "CHF", 0, TestName = "Reduce FRF 1 to CHF throws InvalidOperationException")]
     [Category("rates")]
-    public void TestReduceDivisionByZero(string from, decimal fromAmt, string to, decimal toRate)
+    public void TestReduceWithNoRate(string from, decimal fromAmt, string to, decimal toRate)
     {
-        Exception ex = Assert.Throws<InvalidOperationException>(() => GetBankWithRates().Convert(Money.From(fromAmt, from, _bank), to));
-        Assert.That(ex.Message, Is.EqualTo($"No rate found for {from} to {to}"));
+        Exception ex = Assert.Throws<InvalidOperationException>(() => _bank.Convert(Money.From(fromAmt, from, _bank), to));
+        Assert.That(ex.Message, Is.EqualTo($"Exchange Rate not found for {from} to {to}"));
     }
 
 }

@@ -77,14 +77,15 @@ public class Money implements ICurrencyHolder<Money>, IExpression<Money> {
     }
 
     protected Money InvokeOperator(Money other, BiFunction<Money, Money, Money> operation) {
-        Operation<Money> operationInstance = new Operation<Money>(this, other, bank, currency, operation);
+        Operation<Money> operationInstance = new Operation<>(this, other, bank, currency, operation);
         return operationInstance.evaluate();
     }
 
     @Override
     public boolean equals(Object object) {
-        Money money = (Money) object;
-        return getAmount().equals(money.getAmount()) && getCurrency().equals(money.getCurrency());
+        return object instanceof ICurrencyHolder<?> money
+                && getAmount().equals(money.getAmount())
+                && getCurrency().equals(money.getCurrency());
     }
 
     @Override

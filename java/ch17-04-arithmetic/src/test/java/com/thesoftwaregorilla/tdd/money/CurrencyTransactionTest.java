@@ -16,7 +16,7 @@ public class CurrencyTransactionTest {
     private static Bank<Money> bank;
     @BeforeAll
     public static void beforeAllSetUp() {
-        bank = new Bank<Money>();
+        bank = new Bank<>();
         bank.addRate("USD", "ZAR",new BigDecimal("17.64"));
     }
 

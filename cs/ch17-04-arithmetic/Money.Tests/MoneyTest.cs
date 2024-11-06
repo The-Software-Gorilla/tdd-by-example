@@ -98,7 +98,7 @@ public class MoneyTest
         var money =  Money.From(STD_AMT, currency, _bank);
         var sum = money + money;
         Assert.That(sum, Is.InstanceOf<Money>());
-        Money reduced = BankTest.GetBankWithRates().Convert(sum, currency);
+        Money reduced = _bank.Convert(sum, currency);
         Assert.That(reduced, Is.EqualTo(Money.From(STD_AMT + STD_AMT, currency, _bank)));
     }
 
@@ -182,7 +182,7 @@ public class MoneyTest
             Assert.Throws<InvalidOperationException>(() => fromMoney.Bank.Convert(sum, to));
             return;
         }
-        Money result = BankTest.GetBankWithRates().Convert(sum, to);
+        Money result = _bank.Convert(sum, to);
         Assert.That(result, Is.EqualTo(Money.From(expected, to, _bank)));
     }
 

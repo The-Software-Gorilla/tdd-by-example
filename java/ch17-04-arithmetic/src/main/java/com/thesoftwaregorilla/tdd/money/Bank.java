@@ -14,7 +14,8 @@ public class Bank<T extends ICurrencyHolder<T>> implements ICurrencyConverter<T>
     public T convert(T holder, String toCurrency) {
         BigDecimal rate = this.rate(holder.getCurrency(), toCurrency);
         if (rate.equals(BigDecimal.ZERO.setScale(8, RoundingMode.HALF_UP))) {
-            throw new ArithmeticException("Exchange rate not available");
+            throw new ArithmeticException(String.format("Exchange Rate not found for %s to %s", holder.getCurrency(),
+                    toCurrency));
         }
         return holder.newCurrencyHolder(holder.getAmount().multiply(rate), toCurrency, this);
     }

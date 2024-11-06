@@ -138,11 +138,11 @@ in both directions. Reciprocal rates are automatically created, but they can be 
 1. The language you choose to implement a solution can have a big impact on the final solution.
 2. The Command pattern is a good way to handle arithmetic operations.
 3. Operator overloading is a powerful feature that can make code more readable and easier to understand.
-4. The decision to use the currency of the first operand as the target currency for the operation has implications in 
+4. The decision to use the currency of the first operand as the target currency for the operation has implications in
 both code bases' existing tests.
 5. The Money solution has been implemented as an API library. The idea is that the library can be reused. Getting to a
 point where the library's contracts won't change is important as existing tests were broken. This is a good example of
 how the Open/Closed Principle can be applied to a library. Up until this point, the library was open for both extension
-and modification. Now that the contracts are stable, the library is closed for modification but open for extension. The 
+and modification. Now that the contracts are stable, the library is closed for modification but open for extension. The
 Open/Closed Principle is the "O" of the SOLID principles of object-oriented design. The question is how you know you're
 at this point in a TDD process.

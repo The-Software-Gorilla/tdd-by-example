@@ -1,7 +1,6 @@
 package com.thesoftwaregorilla.tdd.money;
 
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -31,7 +30,7 @@ public class BankTest {
     }
 
     public static Bank<Money> getBankWithRates() {
-        Bank<Money> bank = new Bank<Money>();
+        Bank<Money> bank = new Bank<>();
         bank.addRate("USD", "CHF", BigDecimal.valueOf(2));
         bank.addRate("USD", "ZAR", BigDecimal.valueOf(17));
         bank.addRate("CHF", "ZAR", BigDecimal.valueOf(20));
@@ -71,32 +70,20 @@ public class BankTest {
     }
 
     @DisplayName("reduce with division by zero exception")
-    @ParameterizedTest(name = "reduce from = \"{0}\", amount = {1}, to = \"{2}\"")
+    @ParameterizedTest(name = "reduce from = \"{0}\", amount = {1} expects ArithmeticException")
     @CsvSource({
-            "CHF, 1, GBP, 17",
-            "ZAR, 1, GBP, 20",
-            "USD, 1, INR, 0"
+            "CHF, 1, GBP",
+            "ZAR, 1, GBP",
+            "USD, 1, INR",
+            "GBP, 1, ZAR",
+            "INR, 1, ZAR",
+            "FRF, 1, CHF"
     })
-    public void testReduceWithDbzException(String from, BigDecimal fromAmt, String to, int expected) {
+    public void testReduceWithNoRate(String from, BigDecimal fromAmt, String to) {
         ArithmeticException exception = assertThrows(ArithmeticException.class, () -> {
             bank.convert(Money.from(fromAmt, from, bank), to);
         });
-        assertEquals("Exchange rate not available", exception.getMessage());
+        assertEquals(String.format("Exchange Rate not found for %s to %s", from, to), exception.getMessage());
     }
-
-    // This error occurs when the currency does not have a factory method.
-    @DisplayName("reduce with null pointer exception")
-    @ParameterizedTest(name = "reduce from = \"{0}\", amount = {1}, to = \"{2}\"")
-    @CsvSource({
-            "GBP, 1, ZAR, 20",
-            "INR, 1, ZAR, 20",
-            "FRF, 1, CHF, 0"
-    })
-    public void testReduceNotInRateTable(String from, BigDecimal fromAmt, String to, int expected) {
-        ArithmeticException exception = assertThrows(ArithmeticException.class, () -> {
-            bank.convert(Money.from(fromAmt, from, bank), to);
-        });
-    }
-
 
 }

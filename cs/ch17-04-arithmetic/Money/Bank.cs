@@ -12,7 +12,7 @@ public class Bank<T> : ICurrencyConverter<T> where T : ICurrencyHolder<T>
         decimal rate = Rate(holder.Currency, to);
         if (rate == 0)
         {
-            throw new InvalidOperationException($"No rate found for {holder.Currency} to {to}");
+            throw new InvalidOperationException($"Exchange Rate not found for {holder.Currency} to {to}");
         }
         return holder.NewCurrencyHolder(Math.Round(holder.Amount * rate, 2, MidpointRounding.AwayFromZero), to, this);        
     }
