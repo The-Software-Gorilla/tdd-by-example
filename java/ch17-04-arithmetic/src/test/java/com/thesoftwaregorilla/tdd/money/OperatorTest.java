@@ -13,47 +13,48 @@ import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 @DisplayName("Operation Class Tests")
 public class OperatorTest {
 
+    private Bank<Money> bank;
     @BeforeEach
     public void beforeEachSetUp() {
-        Money.setDefaultBank(BankTest.getBankWithRates());
+        bank = BankTest.getBankWithRates();
     }
 
     @AfterEach
     public void afterEachTearDown() {
-        Money.setDefaultBank(null);
+        bank = new Bank<Money>();
     }
 
     @Test
     public void testSubtract() {
-        Money usd = Money.from(new BigDecimal("5.00"), "USD");
-        Money zar = Money.from(new BigDecimal("17.00"), "ZAR");
+        Money usd = Money.from(new BigDecimal("5.00"), "USD", bank);
+        Money zar = Money.from(new BigDecimal("17.00"), "ZAR", bank);
         Money result = usd.subtract(zar);
         assertInstanceOf(Money.class, result);
-        assertEquals(Money.from(new BigDecimal("4.00"), "USD"), result);
+        assertEquals(Money.from(new BigDecimal("4.00"), "USD", bank), result);
     }
 
     @Test
     public void testAdd() {
-        Money usd = Money.from(new BigDecimal("5.00"), "USD");
-        Money zar = Money.from(new BigDecimal("17.00"), "ZAR");
+        Money usd = Money.from(new BigDecimal("5.00"), "USD", bank);
+        Money zar = Money.from(new BigDecimal("17.00"), "ZAR", bank);
         Money result = usd.add(zar);
         assertInstanceOf(Money.class, result);
-        assertEquals(Money.from(new BigDecimal("6.00"), "USD"), result);
+        assertEquals(Money.from(new BigDecimal("6.00"), "USD", bank), result);
     }
 
     @Test
     public void testMultiply() {
-        Money usd = Money.from(new BigDecimal("5.00"), "USD");
+        Money usd = Money.from(new BigDecimal("5.00"), "USD", bank);
         Money result = usd.multiply(new BigDecimal("2"));
         assertInstanceOf(Money.class, result);
-        assertEquals(Money.from(new BigDecimal("10.00"), "USD"), result);
+        assertEquals(Money.from(new BigDecimal("10.00"), "USD", bank), result);
     }
 
     @Test
     public void testDivide() {
-        Money usd = Money.from(new BigDecimal("5.00"), "USD");
+        Money usd = Money.from(new BigDecimal("5.00"), "USD", bank);
         Money result = usd.divide(new BigDecimal("2"));
         assertInstanceOf(Money.class, result);
-        assertEquals(Money.from(new BigDecimal("2.50"), "USD"), result);
+        assertEquals(Money.from(new BigDecimal("2.50"), "USD", bank), result);
     }
 }

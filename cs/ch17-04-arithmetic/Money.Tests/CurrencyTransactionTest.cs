@@ -2,40 +2,34 @@
 namespace TheSoftwareGorilla.TDD.Money.Tests;
 
 #region TO DO's
-//TODO: Add support for subtracting two Money objects
-//TODO: Clean up the settle() method in CurrencyTransaction
-//TODO: Change the tests to do more assert expected value calculations
-//TODO: Add 5 test cases
-//TODO: Refactor the tests for separating the asserts
 #endregion
 [TestFixture]
 [Description("CurrencyTransactionTest class")]
 public class CurrencyTransactionTest
 {
     
-    // private static Bank bank;
+    private Bank<Money> _bank;
     
     [SetUp]
     public void SetUp()
     {
-        Bank<Money> bank = new Bank<Money>();
-        bank.AddRate("USD", "ZAR", 17.64m);
-        Bank<Money>.DefaultBank = bank;
+        _bank = new Bank<Money>();
+        _bank.AddRate("USD", "ZAR", 17.64m);
     }
 
     [TearDown]
     public void TearDown()
     {
-        Bank<Money>.DefaultBank = new Bank<Money>();
+        _bank = new Bank<Money>();
     }
 
     [TestCase]
     public void TestCurrencyTransaction()
     {
-        var transaction = new CurrencyTransaction(Money.From(1000m, "USD"), "ZAR");
-        transaction.SourceFee = Money.From(35m, "USD");
+        var transaction = new CurrencyTransaction(Money.From(1000m, "USD", _bank), "ZAR");
+        transaction.SourceFee = Money.From(35m, "USD", _bank);
         transaction.TargetCurrencyRateFeePercentage = 0.015m; 
-        transaction.TargetServiceFee = Money.From(150m, "ZAR");
+        transaction.TargetServiceFee = Money.From(150m, "ZAR", _bank);
         transaction.Settle();
         Assert.That(transaction.TargetConversionRate, Is.EqualTo(17.3754m));
         Assert.That(transaction.TargetCurrencyFee.AmountIn("USD"), Is.EqualTo(15.00m));
@@ -55,16 +49,16 @@ public class CurrencyTransactionTest
     [TestCase]
     public void TestUnsettledTransaction()
     {
-        var transaction = new CurrencyTransaction(Money.From(1000m, "USD"), "ZAR");
+        var transaction = new CurrencyTransaction(Money.From(1000m, "USD", _bank), "ZAR");
         Assert.That(transaction.IsSettled, Is.EqualTo(false));
-        Assert.That(transaction.SourceFee, Is.EqualTo( Money.From(0m, "USD")));
+        Assert.That(transaction.SourceFee, Is.EqualTo( Money.From(0m, "USD", _bank)));
         Assert.That(transaction.TargetCurrencyRateFeePercentage, Is.EqualTo(0m)); 
-        Assert.That(transaction.TargetServiceFee, Is.EqualTo( Money.From(0m, "ZAR")));
+        Assert.That(transaction.TargetServiceFee, Is.EqualTo( Money.From(0m, "ZAR", _bank)));
         Assert.That(transaction.TargetConversionRate, Is.EqualTo(0m));
-        Assert.That(transaction.TargetCurrencyFee, Is.EqualTo( Money.From(0m, "ZAR")));
-        Assert.That(transaction.TotalTargetFees, Is.EqualTo( Money.From(0m, "ZAR")));
-        Assert.That(transaction.SettlementAmount, Is.EqualTo( Money.From(0m, "ZAR")));
-        Assert.That(transaction.TotalTransactionFees, Is.EqualTo( Money.From(0m, "ZAR")));
-        Assert.That(transaction.TotalTransactionAmount, Is.EqualTo( Money.From(0m, "USD")));
+        Assert.That(transaction.TargetCurrencyFee, Is.EqualTo( Money.From(0m, "ZAR", _bank)));
+        Assert.That(transaction.TotalTargetFees, Is.EqualTo( Money.From(0m, "ZAR", _bank)));
+        Assert.That(transaction.SettlementAmount, Is.EqualTo( Money.From(0m, "ZAR", _bank)));
+        Assert.That(transaction.TotalTransactionFees, Is.EqualTo( Money.From(0m, "ZAR", _bank)));
+        Assert.That(transaction.TotalTransactionAmount, Is.EqualTo( Money.From(0m, "USD", _bank)));
     }
 }

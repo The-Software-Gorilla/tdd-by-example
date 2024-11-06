@@ -26,12 +26,10 @@ public class MoneyTest {
     @BeforeEach
     public void beforeEachSetUp() {
         bank = BankTest.getBankWithRates();
-        Money.setDefaultBank(bank);
     }
 
     @AfterEach
     public void afterEachTearDown() {
-        Money.setDefaultBank(null);
         bank = null;
     }
 

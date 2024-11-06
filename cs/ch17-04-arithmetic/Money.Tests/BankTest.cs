@@ -11,16 +11,17 @@ namespace TheSoftwareGorilla.TDD.Money.Tests;
 [Description("BankTest class")]
 public class BankTest
 {
+    private Bank<Money> _bank;
     [SetUp]
     public void SetUp()
     {
-        Bank<Money>.DefaultBank = GetBankWithRates();
+        _bank = GetBankWithRates();
     }
 
     [TearDown]
     public void TearDown()
     {
-        Bank<Money>.DefaultBank = new Bank<Money>();
+        _bank = new Bank<Money>();
     }
 
     public static Bank<Money> GetBankWithRates()
@@ -54,8 +55,8 @@ public class BankTest
     [Category("rates")]
     public void TestReduce(string from, decimal fromAmt, string to, decimal expected)
     {
-        Money result = GetBankWithRates().Convert(Money.From(fromAmt, from), to);
-        Assert.That(result, Is.EqualTo(Money.From(expected, to)));
+        Money result = GetBankWithRates().Convert(Money.From(fromAmt, from, _bank), to);
+        Assert.That(result, Is.EqualTo(Money.From(expected, to, _bank)));
     }
 
     [TestCase("GBP", 1, "ZAR", 20, TestName = "Reduce GBP 1 to ZAR throws key not found exception")]
@@ -64,7 +65,7 @@ public class BankTest
     [Category("rates")]
     public void TestReduceDivisionByZero(string from, decimal fromAmt, string to, decimal toRate)
     {
-        Exception ex = Assert.Throws<InvalidOperationException>(() => GetBankWithRates().Convert(Money.From(fromAmt, from), to));
+        Exception ex = Assert.Throws<InvalidOperationException>(() => GetBankWithRates().Convert(Money.From(fromAmt, from, _bank), to));
         Assert.That(ex.Message, Is.EqualTo($"No rate found for {from} to {to}"));
     }
 

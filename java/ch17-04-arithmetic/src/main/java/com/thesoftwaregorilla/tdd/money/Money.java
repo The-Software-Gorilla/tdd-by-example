@@ -8,30 +8,14 @@ import java.util.function.BiFunction;
 
 public class Money implements ICurrencyHolder<Money>, IExpression<Money> {
 
-    public static Money from(BigDecimal amount, String currency) {
-        return new Money(amount, currency);
-    }
 
     public static Money from(BigDecimal amount, String currency, Bank<Money> bank) {
         return new Money(amount, currency, bank);
     }
 
-
-    private static Bank<Money> BANK = new Bank<Money>();
-    public static Bank<Money> getDefaultBank() {
-        return BANK;
-    }
-    public static void setDefaultBank(Bank<Money> bank) {
-        Money.BANK = bank;
-    }
-
     private final BigDecimal amount;
     private final String currency;
     private final Bank<Money> bank;
-
-    private Money(BigDecimal amount, String currency) {
-        this(amount, currency, Money.getDefaultBank());
-    }
 
     private Money(BigDecimal amount, String currency, Bank<Money> bank) {
         this.amount = amount.setScale(2, RoundingMode.HALF_UP);

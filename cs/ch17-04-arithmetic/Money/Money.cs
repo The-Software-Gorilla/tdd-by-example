@@ -4,10 +4,6 @@ namespace TheSoftwareGorilla.TDD.Money;
 
 public class Money : ICurrencyHolder<Money>, IExpression<Money>
 {
-    public static Money From(Decimal amount, String currency)
-    {
-        return new Money(amount, currency);
-    }
 
     public static Money From(Decimal amount, String currency, Bank<Money> bank)
     {
@@ -18,13 +14,7 @@ public class Money : ICurrencyHolder<Money>, IExpression<Money>
 
     public string Currency { get; }
 
-    public Bank<Money> Bank { get; } = Bank<Money>.DefaultBank;
-
-    private Money(decimal amount, string currency)
-    {
-        Amount = Math.Round(amount, 2, MidpointRounding.AwayFromZero);
-        Currency = currency;
-    }
+    public Bank<Money> Bank { get; }
 
     private Money(decimal amount, string currency, Bank<Money> bank)
     {

@@ -150,7 +150,5 @@ at this point in a TDD process.
 ## TODO's
 - Create a CurrencyHolder base class with most of the implementation of Money, or make the methods virtual.
 - Figure out if IExpression needs a base class or an impl. Still on the fence.
-- Clean up the Bank.getDefaultBank() thing... We need it to be a function that something can implement.
-It does not belon in Bank or Money.
 - Clean up the tests. They're a mess.
 - Decide if we need a getReciprocalCurrency() in the Bank.

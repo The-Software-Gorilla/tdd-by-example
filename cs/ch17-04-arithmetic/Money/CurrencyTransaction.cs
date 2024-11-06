@@ -14,19 +14,19 @@ public class CurrencyTransaction
         SourceAmount = sourceAmount;
         TargetCurrency = targetCurrency;
         IsSettled = false;
-        SourceFee = Money.From(0m, SourceAmount.Currency);
+        SourceFee = Money.From(0m, SourceAmount.Currency, SourceAmount.Bank);
         TargetCurrencyRateFeePercentage = 0m;
-        TargetServiceFee = Money.From(0m, targetCurrency);
+        TargetServiceFee = Money.From(0m, targetCurrency, SourceAmount.Bank);
         TargetConversionRate = 0m;
         TargetCurrencyRateFeePercentage = 0m;
-        TargetServiceFee = Money.From(0m, targetCurrency);
+        TargetServiceFee = Money.From(0m, targetCurrency, SourceAmount.Bank);
         TargetConversionRate = 0m;
-        TargetCurrencyFee = Money.From(0m, targetCurrency);
-        TotalTargetFees = Money.From(0m, targetCurrency);
-        SettlementAmount = Money.From(0m, targetCurrency);
-        TotalTransactionFees = Money.From(0m, targetCurrency);
-        TotalTransactionAmount = Money.From(0m, SourceAmount.Currency);
-        TargetAmountAfterRateFee = Money.From(0m, targetCurrency);
+        TargetCurrencyFee = Money.From(0m, targetCurrency, SourceAmount.Bank);
+        TotalTargetFees = Money.From(0m, targetCurrency, SourceAmount.Bank);
+        SettlementAmount = Money.From(0m, targetCurrency, SourceAmount.Bank);
+        TotalTransactionFees = Money.From(0m, targetCurrency, SourceAmount.Bank);
+        TotalTransactionAmount = Money.From(0m, SourceAmount.Currency, SourceAmount.Bank);
+        TargetAmountAfterRateFee = Money.From(0m, targetCurrency, SourceAmount.Bank);
     }
 
     public Money SourceFee { get; set; }

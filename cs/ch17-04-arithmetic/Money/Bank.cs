@@ -4,8 +4,6 @@ namespace TheSoftwareGorilla.TDD.Money;
 
 public class Bank<T> : ICurrencyConverter<T> where T : ICurrencyHolder<T>
 {
-    public static Bank<T> DefaultBank { get; set; } = new Bank<T>();
-
     private readonly Dictionary<CurrencyPair, decimal> _rates = new Dictionary<CurrencyPair, decimal>();
     public int RateCount => _rates.Count;
 
