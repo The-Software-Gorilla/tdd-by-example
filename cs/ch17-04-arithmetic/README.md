@@ -129,6 +129,11 @@ TotalTransactionFees = SourceFee.Convert(TargetCurrency) + TotalTargetFees;
 Note that the ```TotalTransactionFees``` need to be in the target currency, but the ```SourceFee``` is
 in the source currency, so I call the ```Convert``` method before the addition to make sure I get it
 back in the target currency.
+
+## Reciprocal Exchange Rates
+I added functionality to the ```Bank.addRate()``` method to add a reciprocal rate so that we can exchange currencies
+in both directions. Reciprocal rates are automatically created, but they can be overridden by adding a new rate.
+
 ## What I learned/proved
 1. The language you choose to implement a solution can have a big impact on the final solution.
 2. The Command pattern is a good way to handle arithmetic operations.

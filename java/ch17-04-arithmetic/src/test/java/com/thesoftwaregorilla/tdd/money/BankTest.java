@@ -32,11 +32,9 @@ public class BankTest {
 
     public static Bank<Money> getBankWithRates() {
         Bank<Money> bank = new Bank<Money>();
-        bank.addRate("CHF", "USD", BigDecimal.valueOf(0.5)); // 1 CHF = 0.5 USD
-        bank.addRate("ZAR", "USD", BigDecimal.valueOf(0.0588235)); // 1 ZAR = 0.0588 USD
-        bank.addRate("ZAR", "CHF", BigDecimal.valueOf(0.05)); // 1 ZAR = 0.05 CHF
-        bank.addRate("USD", "CHF", BigDecimal.valueOf(2)); // 1 CHF = 0.5 USD
-        bank.addRate("USD", "ZAR", BigDecimal.valueOf(17)); // 1 ZAR = 0.0588 USD
+        bank.addRate("USD", "CHF", BigDecimal.valueOf(2));
+        bank.addRate("USD", "ZAR", BigDecimal.valueOf(17));
+        bank.addRate("CHF", "ZAR", BigDecimal.valueOf(20));
         return bank;
     }
 
@@ -47,10 +45,10 @@ public class BankTest {
             "CHF, CHF, 1.00000000",
             "ZAR, ZAR, 1.00000000",
             "USD, CHF, 2.00000000",
-            "CHF, ZAR, 0E-8",
+            "CHF, ZAR, 20.00000000",
             "GBP, ZAR, 0E-8",
             "CHF, USD, 0.50000000",
-            "ZAR, USD, 0.05882350",
+            "ZAR, USD, 0.05882353",
             "USD, ZAR, 17.00000000",
             "ZAR, CHF, 0.05000000"
     })

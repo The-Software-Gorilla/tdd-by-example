@@ -167,7 +167,7 @@ public class MoneyTest {
                     "ZAR, 20.00, CHF, 10.00, 11.00",
                     "ZAR, 5.00, USD, 0.00, 0.29",
                     "USD, 1.00, ZAR, 20.00, 37.00",
-                    "CHF, 5.00, ZAR, 5.00, 10.00"
+                    "CHF, 5.00, ZAR, 5.00, 105.00"
             })
             public void testMixedAddition(String from, BigDecimal fromAmt, String to, BigDecimal toAmt, BigDecimal expected) {
                 testReduceHarness(from, fromAmt, to, toAmt, expected,
@@ -181,7 +181,7 @@ public class MoneyTest {
                     "ZAR, 20.00, CHF, 10.00, 21.00",
                     "ZAR, 34.00, USD, 5.00, 12.00",
                     "USD, 1.00, ZAR, 20.00, 57.00",
-                    "CHF, 5.00, ZAR, 5.00, 10.00"
+                    "CHF, 5.00, ZAR, 5.00, 110.00"
             })
             public void testSumPlusMoney(String from, BigDecimal fromAmt, String to, BigDecimal toAmt, BigDecimal expected) {
                 testReduceHarness(from, fromAmt, to, toAmt, expected,
@@ -196,7 +196,7 @@ public class MoneyTest {
                     "ZAR, 20.00, CHF, 10.00, 22.00",
                     "ZAR, 85.00, USD, 5.00, 20.00",
                     "USD, 5.00, ZAR, 20.00, 210.00",
-                    "CHF, 5.00, ZAR, 5.00, 10.00"
+                    "CHF, 5.00, ZAR, 5.00, 210.00"
             })
             public void testSumTimes(String from, BigDecimal fromAmt, String to, BigDecimal toAmt, BigDecimal expected) {
                 testReduceHarness(from, fromAmt, to, toAmt, expected,

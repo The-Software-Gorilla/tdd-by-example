@@ -20,7 +20,6 @@ public class CurrencyTransactionTest
     {
         Bank<Money> bank = new Bank<Money>();
         bank.AddRate("USD", "ZAR", 17.64m);
-        bank.AddRate("ZAR", "USD", 0.056689m);
         Bank<Money>.DefaultBank = bank;
     }
 
@@ -45,7 +44,7 @@ public class CurrencyTransactionTest
         Assert.That(transaction.TargetServiceFee.AmountIn("ZAR"), Is.EqualTo(150.00m));
         Assert.That(transaction.TotalTargetFees.AmountIn("USD"), Is.EqualTo(23.50m));
         Assert.That(transaction.TotalTargetFees.AmountIn("ZAR"), Is.EqualTo(414.60m));
-        Assert.That(transaction.SettlementAmount.AmountIn("USD"), Is.EqualTo(976.49m));
+        Assert.That(transaction.SettlementAmount.AmountIn("USD"), Is.EqualTo(976.50m));
         Assert.That(transaction.SettlementAmount.AmountIn("ZAR"), Is.EqualTo(17225.40m));
         Assert.That(transaction.TotalTransactionFees.AmountIn("USD"), Is.EqualTo(58.50m));
         Assert.That(transaction.TotalTransactionFees.AmountIn("ZAR"), Is.EqualTo(1032.00m));

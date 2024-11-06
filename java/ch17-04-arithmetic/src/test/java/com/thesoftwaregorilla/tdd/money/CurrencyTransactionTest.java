@@ -18,7 +18,6 @@ public class CurrencyTransactionTest {
     public static void beforeAllSetUp() {
         bank = new Bank<Money>();
         bank.addRate("USD", "ZAR",new BigDecimal("17.64"));
-        bank.addRate("ZAR", "USD",new BigDecimal("0.056689"));
     }
 
     @Test
@@ -36,7 +35,7 @@ public class CurrencyTransactionTest {
         assertEquals(new BigDecimal("150.00"), transaction.getTargetServiceFee().getAmountIn("ZAR"));
         assertEquals(new BigDecimal("23.50"), transaction.getTotalTargetFees().getAmountIn("USD"));
         assertEquals(new BigDecimal("414.60"), transaction.getTotalTargetFees().getAmountIn("ZAR"));
-        assertEquals(new BigDecimal("976.49"), transaction.getSettlementAmount().getAmountIn("USD"));
+        assertEquals(new BigDecimal("976.50"), transaction.getSettlementAmount().getAmountIn("USD"));
         assertEquals(new BigDecimal("17225.40"), transaction.getSettlementAmount().getAmountIn("ZAR"));
         assertEquals(new BigDecimal("58.50"), transaction.getTotalTransactionFees().getAmountIn("USD"));
         assertEquals(new BigDecimal("1032.00"), transaction.getTotalTransactionFees().getAmountIn("ZAR"));

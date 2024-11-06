@@ -26,20 +26,18 @@ public class BankTest
     public static Bank<Money> GetBankWithRates()
     {
         Bank<Money> bank = new Bank<Money>();
-        bank.AddRate("CHF", "USD", 0.5m);
-        bank.AddRate("ZAR", "USD", 0.0588235m);
-        bank.AddRate("ZAR", "CHF", 0.05m);
         bank.AddRate("USD", "CHF", 2);
         bank.AddRate("USD", "ZAR", 17);
+        bank.AddRate("CHF", "ZAR", 20);
         return bank;
     }
 
     [TestCase("USD", "USD", 1, TestName = "Rate USD to USD returns 1")]
     [TestCase("CHF", "CHF", 1, TestName = "Rate CHF to CHF returns 1")]
     [TestCase("ZAR", "ZAR", 1, TestName = "Rate ZAR to ZAR returns 1")]
-    [TestCase("CHF", "ZAR", 0, TestName = "Rate CHF to ZAR missing")]   
+    [TestCase("CHF", "ZAR", 20, TestName = "Rate CHF to ZAR returns 20")]   
     [TestCase("CHF", "USD", 0.5, TestName = "Rate CHF to USD returns rate 0.5")]
-    [TestCase("ZAR", "USD", 0.0588235, TestName = "Rate ZAR to USD returns rate 0.0588235")]
+    [TestCase("ZAR", "USD", 0.05882353, TestName = "Rate ZAR to USD returns rate 0.05882353")]
     [TestCase("ZAR", "CHF", 0.05, TestName = "Rate ZAR to CHF returns rate 0.05")]
     [TestCase("USD", "CHF", 2, TestName = "Rate USD to CHF returns rate 2")]
     [TestCase("USD", "ZAR", 17, TestName = "Rate USD to ZAR returns rate 17")]
@@ -60,7 +58,6 @@ public class BankTest
         Assert.That(result, Is.EqualTo(Money.From(expected, to)));
     }
 
-    [TestCase("CHF", 1, "ZAR", 20, TestName = "Reduce CHF 1 to ZAR 20 throws invalid operation exception")]
     [TestCase("GBP", 1, "ZAR", 20, TestName = "Reduce GBP 1 to ZAR throws key not found exception")]
     [TestCase("INR", 1, "ZAR", 20, TestName = "Reduce INR 1 to CHF throws key not found exception")]
     [TestCase("FRF", 1, "CHF", 0, TestName = "Reduce FRF 1 to CHF throws key not found exception")]

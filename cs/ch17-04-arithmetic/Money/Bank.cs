@@ -31,7 +31,18 @@ public class Bank<T> : ICurrencyConverter<T> where T : ICurrencyHolder<T>
 
     public void AddRate(string from, string to, decimal rate)
     {
-        _rates.Add(new CurrencyPair(from, to), Math.Round(rate, 8, MidpointRounding.AwayFromZero));
+        if (!_rates.ContainsKey(new CurrencyPair(from, to)))
+        {
+            _rates.Add(new CurrencyPair(from, to), Math.Round(rate, 8, MidpointRounding.AwayFromZero));
+        } 
+        else
+        {
+            _rates[new CurrencyPair(from, to)] = Math.Round(rate, 8, MidpointRounding.AwayFromZero);
+        }
+        if (!_rates.ContainsKey(new CurrencyPair(to, from)))
+        {
+            _rates.Add(new CurrencyPair(to, from), Math.Round(1 / rate, 8, MidpointRounding.AwayFromZero));
+        }
     }
 
 }
