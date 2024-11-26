@@ -1,7 +1,5 @@
 # Test Driven Development Example Code
 
-**NOTE:** This repository requires an SSH token and SSH URL to clone.
-
 Back in 2004, I was working for a company that had one of the most extensive test suites I have ever seen (to this day). The majority of 
 the codebase was written in C/C++ and even though we were using Rational Clearcase for version control, we had a very strict build
 process that regression-tested all code during the nightly-build. 
@@ -53,10 +51,12 @@ I have created separate examples for each chapter and I have also provided code 
 - As the book is based on Java and JUnit, I had to take some liberties with the C# code because of the subtle differences between C#, Java, NUnit and JUnit.
 - Bear in mind the book was written in 2002, so the Java and JUnit versions it was based on did not have support for lambdas, anonymous functions, etc. We're talking Java 1.4-ish. That said, the concepts are still as relevant today as they were 20-some years ago.
 
-### 'ch17' and 'money' folders
-Chapter 17 of the book is a retrospective on the Money example. In it, Kent suggests a refactor of the Expression interface into a class. I decided to give that a try to see if I can resolve the "plus" duplication. He also suggested a refactor of the unit tests to leverage fixtures. I took that on in the Chapter 17 code.
-
-The 'money' folder contains some additional changes I wanted to experiment with that do not relate to the book at all. I decided to add functionality to the application to fetch realtime currency values from an API at [FreecurrencyAPI](https://freecurrencyapi.com/). I wanted to be able to use the example to retrieve the exchange rates from the API in realtime and do the real conversions. This meant quite a bit of refactoring of currency values to support decimal-based conversions. I also used this section to create a command line utility to convert, add, and multiply currency, and I built some REST service endpoints to enable a web/mobile front-end. I may add the front-end later.
+### 'ch17' folders
+Chapter 17 of the book is a retrospective on the Money example. In it, Kent suggests a refactor of the Expression interface into a class. I decided to give that a try to see if I can resolve the "plus" duplication. He also suggested a refactor of the unit tests to leverage fixtures. I took that on in the Chapter 17 code. There are therefore 4 distict ch17 folders:
+1. **ch17-01-tests:** This folder contains refactored unit tests that get to 100% code coverage.
+2. **ch17-02-plus:** This folder contains the code after the refactor to fix the duplicae plus issue. There are significant changes in both Java and C# that made it possible to create very clean code that was not possible in 2002.
+3. **ch17-03-decimal:** This folder contains the code after I refactored the Money object to return decimal values instead of integers. It also contains contains the CurrencyTransaction class that was modeled on the foreign wire transfers that I do for family from time to time. 
+4. **ch17-04-arithmetic:** This folder extends the currency arithmetic to support subraction and division as well. It also changed the addRate() method on the Bank class to enable reciprocal exchange rates.
 
 ## Key Concepts from the Book
 
