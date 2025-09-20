@@ -8,6 +8,7 @@ public class DollarTests
     [SetUp]
     public void Setup()
     {
+        // No setup required for these tests
     }
 
 }

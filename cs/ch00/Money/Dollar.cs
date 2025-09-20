@@ -2,4 +2,5 @@
 
 public class Dollar
 {
+    // To be implemented
 }
