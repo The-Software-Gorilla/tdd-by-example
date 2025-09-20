@@ -2,13 +2,13 @@ namespace TheSoftwareGorilla.TDD.Money;
 
 public abstract class Money
 {
-    public int Amount { get; }
+    protected int amount;
 
     public string Currency { get; }
 
     protected Money(int amount, string currency)
     {
-        Amount = amount;
+        this.amount = amount;
         Currency = currency;
     }
 
@@ -26,7 +26,7 @@ public abstract class Money
 
     public override bool Equals(object? obj)
     {
-        return obj is Money money && GetType().Equals(obj.GetType()) && Amount == money.Amount;
+        return obj is Money money && GetType().Equals(obj.GetType()) && amount == money.amount;
     }
 
 

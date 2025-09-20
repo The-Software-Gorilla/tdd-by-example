@@ -13,31 +13,31 @@ public class Money
         return new Franc(amount, "CHF");
     }
 
-    public int Amount { get; }
+    protected int amount;
 
     public string Currency { get; }
 
-    public Money(int amount, string currency)
+    protected Money(int amount, string currency)
     {
-        Amount = amount;
+        this.amount = amount;
         Currency = currency;
     }
 
     public virtual Money Times(int multiplier)
     {
-        return new Money(Amount * multiplier, Currency);
+        return new Money(amount * multiplier, Currency);
     }
 
     public override bool Equals(object? obj)
     {
         return obj is Money money 
-            && Amount == money.Amount 
+            && amount == money.amount 
             && Currency == money.Currency;
     }
 
     public override string ToString()
     {
-        return Amount + " " + Currency;
+        return amount + " " + Currency;
     }
 
 

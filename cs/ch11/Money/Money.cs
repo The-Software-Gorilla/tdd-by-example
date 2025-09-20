@@ -1,5 +1,3 @@
-using System.Net;
-
 namespace TheSoftwareGorilla.TDD.Money;
 
 public class Money
@@ -21,31 +19,31 @@ public class Money
         return new Money(amount, "ZAR");
     }
 
-    public int Amount { get; }
+    protected int amount;
 
     public string Currency { get; }
 
     private Money(int amount, string currency)
     {
-        Amount = amount;
+        this.amount = amount;
         Currency = currency;
     }
 
     public virtual Money Times(int multiplier)
     {
-        return new Money(Amount * multiplier, Currency);
+        return new Money(amount * multiplier, Currency);
     }
 
     public override bool Equals(object? obj)
     {
         return obj is Money money 
-            && Amount == money.Amount 
+            && amount == money.amount 
             && Currency == money.Currency;
     }
 
     public override string ToString()
     {
-        return Amount + " " + Currency;
+        return amount + " " + Currency;
     }
 
 
