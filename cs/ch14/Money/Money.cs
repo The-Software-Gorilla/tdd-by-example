@@ -1,5 +1,3 @@
-using System.Net;
-
 namespace TheSoftwareGorilla.TDD.Money;
 
 public class Money : Expression
@@ -25,7 +23,7 @@ public class Money : Expression
 
     public string Currency { get; }
 
-    public Money(int amount, string currency)
+    internal Money(int amount, string currency)
     {
         Amount = amount;
         Currency = currency;

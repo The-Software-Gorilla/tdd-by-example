@@ -1,5 +1,3 @@
-using System.Net;
-
 namespace TheSoftwareGorilla.TDD.Money;
 
 public class CurrencyPair
@@ -15,6 +13,8 @@ public class CurrencyPair
 
     public override bool Equals(object? obj)
     {
+        obj = obj ?? throw new ArgumentNullException(nameof(obj));
+        if (obj.GetType() != typeof(CurrencyPair)) return false;
         CurrencyPair pair = (CurrencyPair)obj;
         return _from.Equals(pair._from) && _to.Equals(pair._to);
     }

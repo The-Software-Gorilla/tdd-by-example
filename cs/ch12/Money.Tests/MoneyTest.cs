@@ -1,12 +1,9 @@
-using NUnit.Framework;
-using TheSoftwareGorilla.TDD.Money;
-
 namespace TheSoftwareGorilla.TDD.Money.Tests;
 
 public class MoneyTests
 {
     //TODO: $5 + 10 CHF = $10 if rate is 2:1
-    //TODO: $5 + $5 = $10 - DONE
+    //TODO: $5 + $5 = $10
     //TODO: Money rounding?
     //TODO: hashCode()
     //TODO: Equal null
