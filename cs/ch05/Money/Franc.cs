@@ -2,20 +2,20 @@ namespace TheSoftwareGorilla.TDD.Money;
 
 public class Franc
 {
-    public int Amount { get; }
+    private int amount;
 
     public Franc(int amount)
     {
-        Amount = amount;
+        this.amount = amount;
     }
 
     public Franc Times(int multiplier)
     {
-        return new Franc(Amount * multiplier);
+        return new Franc(amount * multiplier);
     }
 
     public override bool Equals(object? obj)
     {
-        return obj is Franc franc && Amount == franc.Amount;
+        return obj is Franc franc && amount == franc.amount;
     }
 }

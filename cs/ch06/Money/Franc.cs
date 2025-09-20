@@ -5,12 +5,12 @@ public class Franc : Money
 
     public Franc(int amount)
     {
-        Amount = amount;
+        this.amount = amount;
     }
 
     public Franc Times(int multiplier)
     {
-        return new Franc(Amount * multiplier);
+        return new Franc(amount * multiplier);
     }
 
 }

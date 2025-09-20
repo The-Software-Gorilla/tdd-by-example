@@ -2,20 +2,20 @@
 
 public class Dollar
 {
-    public int Amount { get; }
+    private int amount;
 
     public Dollar(int amount)
     {
-        Amount = amount;
+        this.amount = amount;
     }
 
     public Dollar Times(int multiplier)
     {
-        return new Dollar(Amount * multiplier);
+        return new Dollar(amount * multiplier);
     }
 
     public override bool Equals(object? obj)
     {
-        return obj is Dollar dollar && Amount == dollar.Amount;
+        return obj is Dollar dollar && amount == dollar.amount;
     }
 }

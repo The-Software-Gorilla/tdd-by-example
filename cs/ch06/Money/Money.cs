@@ -2,11 +2,11 @@ namespace TheSoftwareGorilla.TDD.Money;
 
 public class Money
 {
-    public int Amount { get; protected set; }
+    protected int amount;
 
     public override bool Equals(object? obj)
     {
-        return obj is Money money && Amount == money.Amount;
+        return obj is Money money && amount == money.amount;
     }
 
 
