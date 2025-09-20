@@ -25,7 +25,7 @@ public class DollarTests
     [Test]
     public void TestConstruction()
     {
-        var five = new Dollar(5);
+        Dollar five = new Dollar(5);
         Assert.That(five, Is.Not.Null);
         Assert.That(five, Is.InstanceOf<Dollar>());
         Assert.That(five, Is.EqualTo(new Dollar(5)));

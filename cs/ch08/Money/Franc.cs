@@ -3,14 +3,14 @@ namespace TheSoftwareGorilla.TDD.Money;
 public class Franc : Money
 {
 
-    public Franc(int amount)
+    internal Franc(int amount)
     {
-        Amount = amount;
+        this.amount = amount;
     }
 
     public override Money Times(int multiplier)
     {
-        return new Franc(Amount * multiplier);
+        return new Franc(amount * multiplier);
     }
 
 }

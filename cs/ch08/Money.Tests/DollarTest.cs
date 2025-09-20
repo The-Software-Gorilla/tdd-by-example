@@ -5,20 +5,20 @@ namespace TheSoftwareGorilla.TDD.Money.Tests;
 
 public class DollarTests
 {
+    
     [SetUp]
     public void Setup()
     {
+        // No setup required for these tests
     }
 
     [Test]
     public void TestConstruction()
     {
-        var five = Money.Dollar(5);
-        Assert.IsNotNull(five);
-        Assert.That(five.Amount, Is.EqualTo(5));
-        var ten = Money.Dollar(10);
-        Assert.IsNotNull(ten);
-        Assert.That(ten.Amount, Is.EqualTo(10));
+        Money five = Money.Dollar(5);
+        Assert.That(five, Is.Not.Null);
+        Assert.That(five, Is.InstanceOf<Dollar>());
+        Assert.That(five, Is.EqualTo(Money.Dollar(5)));
     }
 
     [Test]

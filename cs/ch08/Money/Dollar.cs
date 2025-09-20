@@ -3,14 +3,14 @@
 public class Dollar : Money
 {
 
-    public Dollar(int amount)
+    internal Dollar(int amount) 
     {
-        Amount = amount;
+        this.amount = amount;
     }
 
     public override Money Times(int multiplier)
     {
-        return new Dollar(Amount * multiplier);
+        return new Dollar(amount * multiplier);
     }
 
 }

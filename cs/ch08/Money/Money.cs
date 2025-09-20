@@ -2,7 +2,7 @@ namespace TheSoftwareGorilla.TDD.Money;
 
 public abstract class Money
 {
-    public int Amount { get; protected set; }
+    protected int amount;
 
     public static Money Dollar(int amount)
     {
@@ -18,7 +18,7 @@ public abstract class Money
 
     public override bool Equals(object? obj)
     {
-        return obj is Money money && GetType().Equals(obj.GetType()) && Amount == money.Amount;
+        return obj is Money money && GetType().Equals(obj.GetType()) && amount == money.amount;
     }
 
 

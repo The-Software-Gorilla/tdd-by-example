@@ -20,7 +20,7 @@ public class DollarTests
     [Test]
     public void TestConstruction()
     {
-        var five = new Dollar(5);
+        Dollar five = new Dollar(5);
         Assert.That(five, Is.Not.Null);
         Assert.That(five.Amount, Is.EqualTo(5));
         var ten = new Dollar(10);

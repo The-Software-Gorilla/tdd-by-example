@@ -26,19 +26,28 @@ By the end of the chapter, that list has grown to this, and only the second item
 - [ ] Money rounding?
 
 ### Key points from the chapter
-The disparity between C# & Java really showed up in this chapter. The `Amount` property in the `Dollar` class is a 
-member in Java, but in C# it could easily be implemented as a read-only property. In fact, my natural inclination was 
-to make it a read-only property, but the book needs it as a member until we set it private in Chapter 4. The reality 
-is that in C#, I would start with this as a read-only property, but I was trying to stay true to the book and deal with 
-the disparity between Java and C#.
-
-Another one was operator overloading. In Java, you cannot overload operators, but in C# you can. I resisted the 
-temptation to overload the `+` and `*` operators in the `Dollar` class as I knew it would remove obstacles that the
-book illustrates in later chapters.
-
 The book was written in 2002 and the examples are in Java. Both Java and C# have matured since then. Things like
 anonymous classes, generics and lambdas were not available in 2002, and operator overloading has never been available
 in Java.
+
+The disparity between C# & Java really showed up in this chapter. The `Amount` property in the `Dollar` class is a
+member in Java, but in C# it could easily be implemented as a read-only property. In fact, my natural inclination was
+to make it a read-only property, but the book needs it as a member until we set it private in Chapter 4. The reality
+is that in C#, I would start with this as a read-only property, but I was trying to stay true to the book and deal with
+the disparity between Java and C#.
+
+Another one was operator overloading. In Java, you cannot overload operators, but in C# you can. I resisted the
+temptation to overload the `+` and `*` operators in the `Dollar` class as I knew it would remove obstacles that the
+book illustrates in later chapters.
+
+Another feature that is available in both Java and C# is the ability to declare variables without specifying the type. 
+In both languages you can use the `var` keyword and the compiler infers the type from the expression on the right-hand 
+side of the assignment. The problem is that there is a lot of code in the book that uses very strong typing to help with 
+refactoring later, so I deliberately avoided using `var` in this solution. This decision is debatable, but I felt it was 
+more important to stay true to the book in the example code. There are definitely pros and cons to both approaches:
+- Using `var` can make the code cleaner and easier to read, especially when the type is obvious from the context.
+- Using explicit types can make the code more verbose, but it can also make it clearer what the type of a variable is,
+which can be helpful with the refactoring to make sure your type changes are intentional.
 
 For the sake of fidelity to the book, I have not used any of these features in this solution until we get to
 Chapter 17. Like me, you'll probably look at the solution and think "I would have done that differently now," but I

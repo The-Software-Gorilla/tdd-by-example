@@ -1,24 +1,21 @@
-using NUnit.Framework;
-using TheSoftwareGorilla.TDD.Money;
-
 namespace TheSoftwareGorilla.TDD.Money.Tests;
 
 public class FrancTests
 {
+    
     [SetUp]
     public void Setup()
     {
+        // No setup required for these tests
     }
 
     [Test]
     public void TestConstruction()
     {
-        var five = Money.Franc(5);
-        Assert.IsNotNull(five);
-        Assert.That(five.Amount, Is.EqualTo(5));
-        var ten = Money.Franc(10);
-        Assert.IsNotNull(ten);
-        Assert.That(ten.Amount, Is.EqualTo(10));
+        Money five = Money.Franc(5);
+        Assert.That(five, Is.Not.Null);
+        Assert.That(five, Is.InstanceOf<Franc>());
+        Assert.That(five, Is.EqualTo(Money.Franc(5)));
     }
 
     [Test]

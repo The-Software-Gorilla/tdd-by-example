@@ -27,6 +27,9 @@ public class MoneyTests
     [Test]
     public void TestEquality()
     {
+        // In NUnit, the lines that follow these variable declarations will not compile if we inline the constructor  
+        // calls (e.g., Assert.That(new Dollar(5), Is.EqualTo(new Dollar(5))); because Is.EqualTo type-checks
+        // its argument.
         Dollar fived = new Dollar(5);
         Dollar sixd = new Dollar(6);
         Franc fivef = new Franc(5);

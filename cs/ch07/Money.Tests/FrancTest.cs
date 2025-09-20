@@ -13,7 +13,7 @@ public class FrancTests
     [Test]
     public void TestConstruction()
     {
-        var five = new Franc(5);
+        Franc five = new Franc(5);
         Assert.That(five, Is.Not.Null);
         Assert.That(five, Is.InstanceOf<Franc>());
         Assert.That(five, Is.EqualTo(new Franc(5)));
