@@ -3,14 +3,14 @@
 public class Dollar : Money
 {
 
-    public Dollar(int amount)
+    public Dollar(int amount) 
     {
-        Amount = amount;
+        this.amount = amount;
     }
 
     public Dollar Times(int multiplier)
     {
-        return new Dollar(Amount * multiplier);
+        return new Dollar(amount * multiplier);
     }
 
 }
