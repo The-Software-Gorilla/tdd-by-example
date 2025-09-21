@@ -56,6 +56,11 @@ public class Money : Expression
             && Currency == money.Currency;
     }
 
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(Amount, Currency);
+    }
+
     public override string ToString()
     {
         return Amount + " " + Currency;

@@ -6,7 +6,33 @@ namespace TheSoftwareGorilla.TDD.Money.Tests;
 [Description("MoneyTest class")]
 public class MoneyTest
 {
+    //TODO: Return Money from $5 + $5 - DONE
+    //TODO: Money Rounding?
     
+    //DONE items:
+    //TODO: 100% Code Coverage - DONE
+    //TODO: hashCode() - DONE
+    //TODO: Equal null - DONE
+    //TODO: Equal object - DONE
+    //TODO: Sum.Plus - DONE
+    //TODO: Expression.Times - DONE
+    //TODO: $5 + 10 CHF = $10 if rate is 2:1 - DONE
+    //TODO: $5 + $5 = $10 - DONE
+    //TODO: Bank.Reduce(Money) - DONE
+    //TODO: Reduce Money with conversion -DONE
+    //TODO: Reduce (Bank, String) - DONE
+    //TODO: equals() -DONE
+    //TODO: $5 * 2 = $10 - DONE 
+    //TODO: Make "amount" private - DONE
+    //TODO: Dollar side-effects? - DONE
+    //TODO: 5 CHF * 2 = 10 CHF - DONE
+    //TODO: Dollar/Franc duplication - DONE
+    //TODO: Common equals - DONE
+    //TODO: Common Times - DONE
+    //TODO: Compare Francs with Dollars - DONE
+    //TODO: Currency? - DONE
+    //TODO: Delete `testFrancMultiplication()` - DONE
+
     private static readonly Dictionary<String, Func<int, Money>> _currencyFactories = new Dictionary<string, Func<int, Money>>
     {
         { "USD", Money.Dollar },

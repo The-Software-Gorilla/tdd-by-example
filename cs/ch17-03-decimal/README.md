@@ -1,5 +1,21 @@
-# Decimal Floating Point Arithmetic - ch17-03-decimal
-Once I completed the action items at the beginning of Chapter 17, I started thinking about 
+# Test-Driven Development - C# - Chapter 17 Part 3
+
+In Chapter 17 of the book ["Test-Driven Development By Example" by Kent Beck](https://a.co/d/1sr05eT), Kent writes a retrospective on the
+development of the example application in the previous chapters. He tasks the reader with going back and doing a few
+things:
+- Make the tests more comprehensive - Done in ch17-01
+- Fix the "Return `Money` from \$5 + \$5" TODO item - Done in ch17-02
+- Review the design decisions made
+
+This is solution is the second part of a four-part series that addresses these tasks. This part focuses on fixing Sum.
+
+For information on how to set up the repository, please see the [README in the ch00](../ch00/README.md) folder.
+
+## Chapter 17 - Part 3 - Decimal Floating Point Arithmetic
+Once I completed the action items at the beginning of Chapter 17, there was one item left I had to fix - Money rounding.
+This was the point at which I really needed to fix the decimal issue, too. 
+
+I started thinking about a very real-world problem and how it applies to this example -
 how I send money back to family in South Africa. It's a foreign wire transfer and there are
 a number of charges associated with the transaction on both sides. I thought it would be good
 to try and come up with a way to calculate the total cost of the transaction, itemizing all the 
@@ -11,41 +27,41 @@ implementation used integers. I needed to change the contained data type of mone
 to decimal.
 2. I needed to subtract some of the charges from the original transaction amount. The initial 
 implementation does not have support for subtraction.
-3. The rate tables work backwards to what I expected. That's because the ```reduce()``` method
+3. The rate tables work backwards to what I expected. That's because the `reduce()` method
 in the Money class divides the amount by the rate rather than multiplying it. I changed this
 to multiply the amount by the rate, but that meant changing the rate tables in the test too.
 
-## Decimals 
-I dealt with the first problem by changing the data type of the transaction to BigDecimal in Java, 
-but C# has a much more elegant implementation - ```decimal```. Syntactically it's an intrinsic data type
-like ```int, long, float, etc``` This was still a very intrusive change that impacted virtually every 
+### Decimals 
+I dealt with the first problem by changing the data type of the transaction to `BigDecimal` in Java, 
+but C# has a much more elegant implementation - `decimal`. Syntactically it's an intrinsic data type
+like `int`, `long`, `float`, etc. This was still a very intrusive change that impacted virtually every 
 part of the code, but given we had working unit tests, it was literally just a search and replace of
-```int``` to ```decimal```, which was much easier than the changes in the Java code.
+`int` to `decimal`, which was much easier than the changes in the Java code.
 
-I did end up changing some of the unit tests so that I could validate the arithmetic with decimal values,
+I did end up changing some of the unit tests so that I could validate the arithmetic with `decimal` values,
 but that was more additional testing rather than broken tests because of the data type change, which 
 is what I ended up with for the Java code.
 
-## Subtraction
+### Subtraction
 The second problem was a little more difficult and I needed to have real examples to work with before
 I figured out how to solve it, so I deferred solving the subtraction issue until I had real examples 
 of CurrencyTransactions to work with. I ended up solving the subtraction issue in the 
-CurrencyTransaction class, which is not where it should be solved. This code will be refactored later.
+CurrencyTransaction class, which is not where it should be solved. This code will be refactored in ch17-04.
 
 Every time I work on this code in C#, I can't help but think I need to make operator overloading work 
-for the Money object so that ```new Money(20, "USD") + new Money(85, "ZAR")``` returns 
-a ```new Money(25, "USD")```. IOW, give me a Money object in the same currency as the first operand in
+for the Money object so that `new Money(20, "USD") + new Money(85, "ZAR")` returns 
+a `new Money(25, "USD")`. IOW, give me a Money object in the same currency as the first operand in
 an operator override. We'll get there.
 
-## ValueIn
+### ValueIn
 One of the things I love with C# is that properties are just part of the language. Java needs getter and 
 setters that make it a function call to get the value of a property. As I was writing the tests for 
 CurrencyTransaction, I realized it would be really nice to have a money object value in a specific currency
-without calling the Reduce function to do it. So I added an ```ValueIn()``` method that takes the target currency
+without calling the Reduce function to do it. So I added an `ValueIn()` method that takes the target currency
 for the conversion and the bank object and returns a decimal value with the amount. Just a neat helper 
 to make the code more readable. This also made me refactor the Java code to make it more readable.
 
-## Currency Transactions
+### Currency Transactions
 I created a new class called CurrencyTransaction to perform the calculations for the 
 transaction. I created a new test class called CurrencyTransactionTest that tests the
 CurrencyTransaction class.
@@ -97,7 +113,7 @@ Putting that in table form:
 | Settlement amount                         |      $976.49 |   R17,225.40 |
 | Total transaction amount                  |     $1035.00 |   R18,257.40 |
 
-### CurrencyTransaction Class
+#### CurrencyTransaction Class
 With TDD, you start with the end in mind. I wrote a test in the new class called CurrencyTransactionTest.
 
 Here's the process I followed:
@@ -114,7 +130,7 @@ There are 13 asserts in the test, which is too many and it definitely needs to b
 it allowed me to figure out how to implement the entire CurrencyTransaction class and then figure
 out how to refactor it, and provide working code.
 
-#### Notes
+### Notes
 1. You may be wondering why I added a settle() method. Well the example above is pretty simple.
 In the real world, the money is sent on one day, and settled on a later day and the exchange
 rate may have changed. The settle() method allows you to calculate the settlement amount
@@ -128,4 +144,39 @@ wasn't sure what properties I need for that so the first step is just to get the
 code to C# before I did the subtraction, on the expression because C# allows operator overloading and 
 I'm starting to think that the Expression class is trying to do too much.
 
+### TODO list at the end of the chapter
+By the end of the chapter, the TODO list looks like this:
+- [ ] Review the design decisions made
+- [X] Money rounding?
+- [x] Return `Money` from \$5 + \$5
+- [x] 100% code coverage
+- [x] `hashCode()`
+- [x] Equal null
+- [x] Equal object
+- [x] `Sum.plus`
+- [x] `Expression.times`
+- [x] \$5 + 10 CHF = $10 if rate is 2:1
+- [x] \$5 + \$5 = $10
+- [x] Reduce `Money` with conversion
+- [x] `Reduce (Bank, String)`
+- [x] `Bank.Reduce(Money)`
+- [x] \$5 * 2 = $10
+- [x] Make "amount" private
+- [x] Dollar side-effects?
+- [x] `equals()`
+- [x] 5 CHF * 2 = 10 CHF
+- [x] Dollar/Franc duplication
+- [x] Common Equals
+- [x] Common Times
+- [x] Compare Francs with Dollars
+- [X] Currency?
+- [x] Delete `testFrancMultiplication()`
 
+## Last Update
+I try and keep this code up to date with the latest versions. I generally wait until a new version of .NET SDK is
+released and I only update it for Long Term Support (LTS) versions. .NET 8 is the latest LTS version as of this writing.
+
+This repository was last updated in September 2025.
+- .NET SDK version 8
+- NUnit version 4.4.0
+- JetBrains Rider version 2025.2.2
