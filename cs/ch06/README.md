@@ -1,14 +1,14 @@
 # Test-Driven Development - C# - Chapter 06
 
-This solution contains a code for Chapter 6 of the book ["Test-Driven Development By Example" by 
+This solution contains code for Chapter 6 of the book ["Test-Driven Development By Example" by 
 Kent Beck](https://a.co/d/1sr05eT). The code is written in C# and uses the NUnit testing framework for the tests. 
 
 For information on how to set up the repository, please see the [README in the ch00](../ch00/README.md) folder.
 
 ## Chapter 6 - Equality for All, Redux
-The outcome of this chappter is relatively minor, but the real value is working through the process that Kent goes 
+The outcome of this chapter is relatively minor, but the real value is working through the process that Kent goes 
 through getting to the end state. That's been true of some of the earlier chapters too, but this is the point where
-TDD really starts showing its value because you're fundeamentally changing the design of the code.
+TDD really starts showing its value because you're fundamentally changing the design of the code.
 
 A key outcome for this chapter is that I moved all the `//TODO` items to the `MoneyTest` class because that's where
 they'll ultimately be implemented. `Dollar` and `Franc` will be removed.

@@ -1,6 +1,6 @@
 # Test-Driven Development - Java - Chapter 03
 
-This solution contains a code for Chapter 3 of the book ["Test-Driven Development By Example" by 
+This solution contains code for Chapter 3 of the book ["Test-Driven Development By Example" by 
 Kent Beck](https://a.co/d/1sr05eT). The code is written in Java and uses the JUnit testing framework for the tests. 
 
 For information on how to set up the repository, please see the [README in the ch00](../ch00/README.md) folder.
