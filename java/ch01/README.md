@@ -1,13 +1,13 @@
-# Test-Driven Development - C# - Chapter 01
+# Test-Driven Development - Java - Chapter 01
 
-This solution contains a code for Chapter 1 of the book ["Test-Driven Development By Example" by 
-Kent Beck](https://a.co/d/1sr05eT). The code is written in C# and uses the NUnit testing framework for the tests.
+This solution contains code for Chapter 1 of the book ["Test-Driven Development By Example" by 
+Kent Beck](https://a.co/d/1sr05eT). The code is written in Java and uses the JUnit testing framework for the tests.
 
 For information on how to set up the repository, please see the [README in the ch00](../ch00/README.md) folder.
 
 ## Chapter 1 - The Multi-Currency Money Example
 Kent starts this chapter with the process you should follow for TDD:
-1. Quicky add a test.
+1. Quickly add a test.
 2. Run all tests and see the new one fail.
 3. Make a little change.
 4. Run all tests and see them all pass.
@@ -17,7 +17,7 @@ He then starts out with a TODO list:
 - [ ] \$5 + 10 CHF = $10 if rate is 2:1
 - [ ] \$5 * 2 = $10
 
-These TODO's are then added into the Money.Tests DollarTest class and we write the tests from there.
+These TODO's are then added into the DollarTest class and we write the tests from there.
 By the end of the chapter, that list has grown to this, and only the second item has been completed:
 - [ ] \$5 + 10 CHF = $10 if rate is 2:1
 - [x] \$5 * 2 = $10
@@ -55,7 +55,7 @@ found that when I diverged from the book, large sections became unnecessary. I m
 as the concepts of TDD that each chapter introduces are more important than the implementation.
 
 ### A note about TODO comments in the code
-JetBrains Rider has a TODO window that shows all the TODO comments in the code and I use it extensively in real world 
+JetBrains IntelliJ has a TODO window that shows all the TODO comments in the code and I use it extensively in real world 
 code. I normally delete the TODO comments when I finish the task, but in this case I have left them in to show the
 progression of the chapter and I have marked them as "- DONE" when they are completed.
 
@@ -68,10 +68,11 @@ Another thing to note is that when I am working on a user story, the TODO commen
 tracking system (ADO or Jira) and I delete the TODO comments when I finish the task.
 
 ## Last Update
-I try and keep this code up to date with the latest versions. I generally wait until a new version of .NET SDK is 
-released and I only update it for Long Term Support (LTS)versions. .NET 8 is the latest LTS version as of this writing.
+I try and keep this code up to date with the latest versions. I generally wait until a new version of the JDK or Maven is 
+released and I only update it for major versions. JDK 25 is the latest version as of this writing, and the POM is set to
+use JDK 25 and JUnit 5.13.4.
 
 This repository was last updated in September 2025.
-- .NET SDK version 8
-- NUnit version 4.4.0
-- JetBrains Rider version 2025.2.2
+- Java JDK version 25
+- JUnit version 5.13.4
+- JetBrains IntelliJ IDEA Ultimate version 2025.2.2

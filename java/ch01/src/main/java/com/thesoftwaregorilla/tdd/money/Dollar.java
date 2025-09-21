@@ -3,7 +3,7 @@ package com.thesoftwaregorilla.tdd.money;
 public class Dollar {
     int amount;
 
-    public Dollar(int amount) {
+    Dollar(int amount) {
         this.amount = amount;
     }
 

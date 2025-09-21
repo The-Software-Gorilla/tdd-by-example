@@ -1,7 +1,7 @@
-# Test-Driven Development - C# - Chapter 05
+# Test-Driven Development - Java - Chapter 05
 
-This solution contains a code for Chapter 5 of the book ["Test-Driven Development By Example" by 
-Kent Beck](https://a.co/d/1sr05eT). The code is written in C# and uses the NUnit testing framework for the tests. 
+This solution contains code for Chapter 5 of the book ["Test-Driven Development By Example" by 
+Kent Beck](https://a.co/d/1sr05eT). The code is written in Java and uses the JUnit testing framework for the tests. 
 
 For information on how to set up the repository, please see the [README in the ch00](../ch00/README.md) folder.
 
@@ -29,10 +29,11 @@ By the end of the chapter, the TODO list looks like this:
 - [ ] Common Times
 
 ## Last Update
-I try and keep this code up to date with the latest versions. I generally wait until a new version of .NET SDK is 
-released and I only update it for Long Term Support (LTS)versions. .NET 8 is the latest LTS version as of this writing.
+I try and keep this code up to date with the latest versions. I generally wait until a new version of the JDK or Maven is 
+released and I only update it for major versions. JDK 25 is the latest version as of this writing, and the POM is set to
+use JDK 25 and JUnit 5.13.4.
 
 This repository was last updated in September 2025.
-- .NET SDK version 8
-- NUnit version 4.4.0
-- JetBrains Rider version 2025.2.2
+- Java JDK version 25
+- JUnit version 5.13.4
+- JetBrains IntelliJ IDEA Ultimate version 2025.2.2

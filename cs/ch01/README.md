@@ -1,13 +1,13 @@
 # Test-Driven Development - C# - Chapter 01
 
-This solution contains a code for Chapter 1 of the book ["Test-Driven Development By Example" by 
+This solution contains code for Chapter 1 of the book ["Test-Driven Development By Example" by 
 Kent Beck](https://a.co/d/1sr05eT). The code is written in C# and uses the NUnit testing framework for the tests.
 
 For information on how to set up the repository, please see the [README in the ch00](../ch00/README.md) folder.
 
 ## Chapter 1 - The Multi-Currency Money Example
 Kent starts this chapter with the process you should follow for TDD:
-1. Quicky add a test.
+1. Quickly add a test.
 2. Run all tests and see the new one fail.
 3. Make a little change.
 4. Run all tests and see them all pass.

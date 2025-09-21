@@ -1,7 +1,7 @@
 # Test-Driven Development - Java - Introduction and Base Solution
 
 This folder contains a base solution for the book ["Test-Driven Development By Example" by 
-Kent Beck](https://a.co/d/1sr05eT). The code is written in C# and uses the NUnit testing framework for the tests. 
+Kent Beck](https://a.co/d/1sr05eT). The code is written in Java and uses the JUnit testing framework for the tests. 
 I use this solution as the starting point for each chapter from the book.
 
 **To be clear:** The README's in these folders do not contain the content of the chapters. They just contain a summary 

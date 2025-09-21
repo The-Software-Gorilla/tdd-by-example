@@ -12,8 +12,7 @@ public class Franc {
     }
 
     public boolean equals(Object object) {
-        Franc dollar = (Franc) object;
-        return amount == dollar.amount;
+        return object instanceof Franc franc && this.amount == franc.amount;
     }
 
     public int getAmount() {
