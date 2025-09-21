@@ -2,7 +2,7 @@ namespace TheSoftwareGorilla.TDD.Money;
 
 public class Bank
 {
-    private Dictionary<CurrencyPair, int> _rates = new Dictionary<CurrencyPair, int>();
+    private readonly Dictionary<CurrencyPair, int> _rates = new Dictionary<CurrencyPair, int>();
     public Money Reduce(Expression source, string to)
     {
         return source.Reduce(this, to);

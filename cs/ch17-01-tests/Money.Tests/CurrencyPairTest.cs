@@ -1,3 +1,5 @@
+using System.Diagnostics.CodeAnalysis;
+
 namespace TheSoftwareGorilla.TDD.Money.Tests;
 
 #region TO DO's
@@ -12,6 +14,7 @@ public class CurrencyPairTest
     [TestCase("ZAR", "USD", TestName = "CurrencyPair ZAR to USD are equal")]
     [TestCase("CHF", "USD", false, TestName = "CurrencyPair CHF to USD != USD to CHF")]
     [TestCase("ZAR", "USD", false, TestName = "CurrencyPair ZAR to USD != USD to ZAR")]
+    [SuppressMessage("csharpsquid", "S2234", Justification = "Intentional parameter order inversion for inequality assertions.")]
     public void TestCurrencyPairs(string from, string to, bool isEqual = true)
     {
         var pair = new CurrencyPair(from, to);
@@ -34,8 +37,8 @@ public class CurrencyPairTest
     public void TestEdgeCases(string from, string to)
     {
         var pair = new CurrencyPair(from, to);
-        Assert.That(pair, Is.Not.EqualTo(null));
+        Assert.That(pair, Is.Not.Null);
         Assert.That(pair, Is.Not.EqualTo(new object()));
-        Assert.That(pair, Is.EqualTo(pair));
+        Assert.That(pair, Is.EqualTo(new CurrencyPair(from, to)));
     }
 }

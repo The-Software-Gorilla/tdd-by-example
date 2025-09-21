@@ -1,5 +1,3 @@
-
-
 namespace TheSoftwareGorilla.TDD.Money;
 
 public class Operation<T> : IOperation<T> where T : ICurrencyHolder<T>
@@ -22,7 +20,7 @@ public class Operation<T> : IOperation<T> where T : ICurrencyHolder<T>
         _toCurrency = toCurrency;
     }
 
-    public virtual T Evaluate()
+    public virtual T Apply()
     {
         T left = LeftOperand.Convert(_toCurrency);
         T right = RightOperand.Convert(_toCurrency); 

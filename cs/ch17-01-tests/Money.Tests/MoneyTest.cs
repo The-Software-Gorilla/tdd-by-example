@@ -53,18 +53,10 @@ public class MoneyTest
         return _currencyFactories[currency];
     }
 
-    private Money? _fiveDollar;
-    
     [SetUp]
     public void Setup()
     {
-        _fiveDollar = Money.Dollar(5);
-    }
-
-    [TearDown]
-    public void TearDown()
-    {
-        _fiveDollar = null;
+        // No setup needed.
     }
 
     [TestCase("USD", 5, 5, TestName = "construct USD 5")]

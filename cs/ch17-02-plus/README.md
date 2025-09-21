@@ -7,7 +7,7 @@ things:
 - Fix the "Return `Money` from \$5 + \$5" TODO item
 - Review the design decisions made
 
-This is solution is the second part of a four-part series that addresses these tasks. This part focuses on fixing Sum.
+This solution is the second part of a four-part series that addresses these tasks. This part focuses on fixing Sum.
 
 For information on how to set up the repository, please see the [README in the ch00](../ch00/README.md) folder.
 

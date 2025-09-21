@@ -1,6 +1,3 @@
-using System.Runtime;
-using TheSoftwareGorilla.TDD.Money;
-
 namespace TheSoftwareGorilla.TDD.Money;
 public interface ICurrencyHolder<T> where T : ICurrencyHolder<T>
 

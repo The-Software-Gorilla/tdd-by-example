@@ -7,11 +7,12 @@ things:
 - Fix the "Return `Money` from \$5 + \$5" TODO item - Done in ch17-02
 - Review the design decisions made
 
-This is solution is the second part of a four-part series that addresses these tasks. This part focuses on fixing Sum.
+This solution is the third part of a four-part series that addresses these tasks. This part focuses on converting
+the `Money.Amount` property to a `decimal` and building the `CurrencyTransaction`.
 
 For information on how to set up the repository, please see the [README in the ch00](../ch00/README.md) folder.
 
-## Chapter 17 - Part 3 - Decimal Floating Point Arithmetic
+## Chapter 17 - Part 3 - Switching to `decimal` Amounts
 Once I completed the action items at the beginning of Chapter 17, there was one item left I had to fix - Money rounding.
 This was the point at which I really needed to fix the decimal issue, too. 
 

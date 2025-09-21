@@ -1,6 +1,3 @@
-using System.Net;
-using System.Runtime.InteropServices.Marshalling;
-
 namespace TheSoftwareGorilla.TDD.Money;
 
 public class Money : ICurrencyHolder<Money>, IExpression<Money>
@@ -70,7 +67,7 @@ public class Money : ICurrencyHolder<Money>, IExpression<Money>
     protected virtual Money InvokeOperator(Money other, Func<Money, Money, Money> operation)
     {
         Operation<Money> operationInstance = new Operation<Money>(this, other, Bank, Currency, operation);
-        return operationInstance.Evaluate();
+        return operationInstance.Apply();
     }
 
     public virtual Money Convert(string to)

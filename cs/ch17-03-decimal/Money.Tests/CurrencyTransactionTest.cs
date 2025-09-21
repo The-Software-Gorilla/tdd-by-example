@@ -1,13 +1,6 @@
 
 namespace TheSoftwareGorilla.TDD.Money.Tests;
 
-#region TO DO's
-//TODO: Add support for subtracting two Money objects
-//TODO: Clean up the settle() method in CurrencyTransaction
-//TODO: Change the tests to do more assert expected value calculations
-//TODO: Add 5 test cases
-//TODO: Refactor the tests for separating the asserts
-#endregion
 [TestFixture]
 [Description("CurrencyTransactionTest class")]
 public class CurrencyTransactionTest

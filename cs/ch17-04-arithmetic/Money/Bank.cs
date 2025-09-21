@@ -1,4 +1,4 @@
-using System.Net;
+using System.Diagnostics.CodeAnalysis;
 
 namespace TheSoftwareGorilla.TDD.Money;
 
@@ -27,6 +27,7 @@ public class Bank<T> : ICurrencyConverter<T> where T : ICurrencyHolder<T>
         return rate;
     }
 
+    [SuppressMessage("csharpsquid", "S2234", Justification = "Intentional parameter order inversion for inequality assertions.")]
     public void AddRate(string from, string to, decimal rate)
     {
         if (!_rates.ContainsKey(new CurrencyPair(from, to)))
