@@ -1,33 +1,49 @@
-# Arithmetic Fixes - ch17-04-arithmetic
-Now that I have the ability to perform Currency Transactions, I need to fix the arithmetic problem.
-I want to be able to add, subtract, multiply, and divide Money objects. 
+# Test-Driven Development - C# - Chapter 17 Part 4
 
-## Thoughts on how to solve the problem
+In Chapter 17 of the book ["Test-Driven Development By Example" by Kent Beck](https://a.co/d/1sr05eT), Kent writes a retrospective on the
+development of the example application in the previous chapters. He tasks the reader with going back and doing a few
+things:
+- Make the tests more comprehensive - Done in ch17-01
+- Fix the "Return `Money` from \$5 + \$5" TODO item - Done in ch17-02
+- Review the design decisions made
+
+This solution is the fourth part of a four-part series that addresses these tasks. This part focuses on cleaning
+up the design of the arithmetic operations on `Money` objects. In the C# code, it uses operator overloading to make the
+arithmetic operations more natural.
+
+For information on how to set up the repository, please see the [README in the ch00](../ch00/README.md) folder.
+
+## Chapter 17 - Part 4 - Fixing Arithmetic
+Now that I have the ability to perform Currency Transactions, I need to fix the arithmetic problem.
+I want to be able to add, subtract, multiply, and divide `Money` objects. 
+
+### Thoughts on how to solve the problem
 As I started working through the arithmetic problem, I jotted down some notes on how I thought I would approach it:
 - Refactor the Expression class (Rethink this completely):
-  - Rename it to Reduceable
-  - Methods:
-    - Add
-    - Subtract
-    - Multiply
-    - Divide
-    - Reduce
-  - Supports generics that all implement IReduceable
-  - All methods return a <T implements IReduceable> T and accept <T implements IReduceable> T parameters
-  - The idea with "Sum" is that it is an expression that can be chained. Two things about this implementation are weird:
-    1. Reduce actually does the addition. Reduce is therefore doing 2 things:
-       - Converting to the target currency, and 
-       - Adding items together.
-    2. Reduce needs to be split into two functions. - Convert, and apply.
-    3. Sum contains two operations - Plus & Times. Each operation should be its own class.
-  - Another thing about Sum is that Generics did not exist when this code was written. This is a strong case for generics.
-  - Also, in C# we have operator overloading, so we should be able to just say:
-  ```c#
+  - Make it an inteface again
+    - Methods:
+      - Add
+      - Subtract
+      - Multiply
+      - Divide
+      - Reduce
+- Separate the arithmetic operations from the conversion operation and create an interface for each.
+- Create a class that converts to the base currency and do all the arithmetic operations.
+- The idea with "Sum" is that it is an expression that can be chained. Two things about this implementation are weird:
+  1. Reduce actually does the addition. Reduce is therefore doing 2 things:
+     - Converting to the target currency, and 
+     - Adding items together.
+  2. Reduce needs to be split into two functions. - Convert, and apply.
+  3. Sum contains two operations - Plus & Times. Each operation should be its own class.
+- Another thing about Sum is that Generics and Lambdas did not exist when this code was written. This is a strong case 
+for generics and lambdas.
+- Also, in C# we have operator overloading, so we should be able to just say:
+```c#
     Money a = new Money(20m, "USD");
     Money b = new Money(10m, "CHF")
     Money add = a + b;
-    Assert.That(new Money(25m, "USD), Is.EqualTo(add));
-  ```
+    Assert.That(add, Is.EqualTo(new Money(25m, "USD")));
+```
 ## C# vs Java
 I implemented this solution in C# first because there are a couple key differences between Java and C# that
 have a direct impact on how I solved this problem:
@@ -41,45 +57,46 @@ same thing. Also, C# allows static generic methods, which Java does not.
 These two differences had a direct impact on the final implementation in each language.
 
 ## What I ended up with
-The thought process I went through to get here was useful, but I hit the wall pretty quickly. I went back to the
-Gang of Four design patterns and concluded that I had one of two options in terms of patterns:
-1. Visitor pattern. Treat each operation as a visit. I didn't like how this would lose the encapsulation.
-2. Command pattern. Treat each operation as a command, which is really what it is.
+The thought process I went through to get here was useful and I went back to the 
+[Gang of Four design patterns](https://a.co/d/ceaOxVK) and concluded that I had one of two options in terms of patterns:
+1. **Visitor pattern.** Treat each operation as a visit. I didn't like how this would lose the encapsulation.
+2. **Command pattern.** Treat each operation as a command, which is really what it is.
 
 I opted for the command pattern.
 
-To do so, I needed a clear contract for the Money objecct, so I created several interfaces:
-- ```ICurrencyHolder``` encapsulates the behavior for a currency container. It also
-  requires a ```Bank``` property that contains the Bank object that the Money object was
-  created against. It is needed to avoid having to pass a Bank with each arithmetic
-  operation.
-- ```ICurrencyConverter``` contains the ```Convert``` method that takes a currency holder and a target currency.
-- ```IOperation``` contains an ```Apply``` method to handle the actual operation.
-- ```IExpression``` contains the ```Add```, ```Subtract```, ```Divide``` and ```Multiply``` methods.
+To do so, I needed a clear contract for the Money object, so I created several interfaces:
+- `ICurrencyHolder` encapsulates the behavior for a currency container. It also 
+requires a `Bank` property that contains the Bank object that the Money object was 
+created against. It is needed to avoid having to pass a Bank with each arithmetic 
+operation.
+- `ICurrencyConverter` contains the `Convert` method that takes a currency holder and a target currency.
+- `IOperation` contains an `Apply` method to handle the actual operation.
+- `IExpression` contains the `Add`, `Subtract`, `Divide` and `Multiply` methods.
 
 Additionally, I added the following class:
-- ```Operation``` encapsulates the behavior for an operation an ostensibly replaces Sum
+- `Operation` encapsulates the behavior for an operation and replaces Sum
 
 Finally, I did away with the following classes:
-- ```Sum``` - not needed because Operation replaces it and the operation implementation
-  can be done with lambda expressions
-- ```SumTest``` - not needed because the Sum class was deprecated
-- ```Expression``` - not needed because there is no base functinality to override. I may add it back.
+- `Sum` - not needed because Operation replaces it and the operation implementation 
+can be done with lambda expressions
+- `SumTest` - not needed because the Sum class was deprecated
+- `Expression` - not needed because there is no base functinality to override. 
 
-I replaced the ```Reduce()``` method with ```Convert()``` because I wanted to distinguish
-converting currency from the expression evaluation. There are two versions of ```Convert```:
-1. In the ```ICurrencyHolder``` where it only takes the target currency as a parameter.
-2. In the ```ICurrencyConverter``` where it takes an ```ICurrencyHolder``` and a string for the target currency as parameters.
+I replaced the `Reduce()` method with `Convert()` because I wanted to distinguish converting currency from the 
+expression evaluation. Also, the word "Reduce" in this context did not make grammatical sense to me. There are two 
+versions of `Convert`:
+1. In the `ICurrencyHolder` where it only takes the target currency as a parameter.
+2. In the `ICurrencyConverter` where it takes an `ICurrencyHolder` and a string for the target currency as parameters.
 
 For clarity:
-- ```Money``` now implements ```ICurrencyHolder``` and ```IExpression```; and
-- ```Bank``` now implements ```ICurrencyConverter```.
+- `Money` now implements `ICurrencyHolder` and `IExpression`; and
+- `Bank` now implements `ICurrencyConverter`.
 
 One of the things I love about .NET that I miss in Java is operator overloading. When I implemented ```IExpression``` 
 in ```Money```, I also added operator overloading in the C# code for ```+```, ```-```, ```*```, ```/```, ```==```, 
 and ```!=```.
 
-This is where things got interesting. To add two ```Money``` objects together, I had to be
+This is where things got interesting. To add two `Money` objects together, I had to be 
 convert them both to the same currency. I made the decision that with operator overloading,
 I would use the currency of the first operator in the expression as the target currency. So:
 ```c#
@@ -87,7 +104,7 @@ I would use the currency of the first operator in the expression as the target c
   Money zar = Money.For(17m, "ZAR");
   Money result = usd + zar;
 ```
-results in a value of ```21 USD``` in ```result``` assuming the exchange rate is 17:1.
+results in a value of `21 USD` in `result` assuming the exchange rate is 17:1. 
 
 This decision has implications in the Java code too, because it initially broke the unit tests. This test:
 ```java
@@ -111,28 +128,70 @@ had to be changed so that the order of the operands in the lambda were swapped:
                       (aug, add) -> add.add(aug));
       }
 ```
-so that the result is returned in the ```to``` currency, not the ```from``` currency.
+so that the result is returned in the `to` currency, not the `from` currency.
 
 It also had impacts in the ```CurrencyTransaction``` class. As an example:
 ```java
 this.totalTransactionFees = sourceFee.convert(targetCurrency).add(totalTargetFees);
 ```
-Note that the ```TotalTransactionFees``` need to be in the target currency, but the ```SourceFee``` is in the source 
-currency, so I call the ```Convert``` method before the addition to make sure I get it back in the target currency.
+Note that the `TotalTransactionFees` need to be in the target currency, but the `SourceFee` is
+in the source currency, so I call the `Convert` method before the addition to make sure I get it
+back in the target currency.
 
 ## Reciprocal Exchange Rates
-I added functionality to the ```Bank.addRate()``` method to add a reciprocal rate so that we can exchange currencies
+I added functionality to the `Bank.addRate()` method to add a reciprocal rate so that we can exchange currencies
 in both directions. Reciprocal rates are automatically created, but they can be overridden by adding a new rate.
 
 ## What I learned/proved
 1. The language you choose to implement a solution can have a big impact on the final solution.
 2. The Command pattern is a good way to handle arithmetic operations.
 3. Operator overloading is a powerful feature that can make code more readable and easier to understand.
-4. The decision to use the currency of the first operand as the target currency for the operation has implications in 
+4. The decision to use the currency of the first operand as the target currency for the operation has implications in
 both code bases' existing tests.
 5. The Money solution has been implemented as an API library. The idea is that the library can be reused. Getting to a
 point where the library's contracts won't change is important as existing tests were broken. This is a good example of
 how the Open/Closed Principle can be applied to a library. Up until this point, the library was open for both extension
-and modification. Now that the contracts are stable, the library is closed for modification but open for extension. The 
+and modification. Now that the contracts are stable, the library is closed for modification but open for extension. The
 Open/Closed Principle is the "O" of the SOLID principles of object-oriented design. The question is how you know you're
 at this point in a TDD process.
+
+## TODO list at the end of the chapter
+By the end of the chapter, the TODO list is finally complete! 
+
+Well... For now at least. 
+
+Here is the final list:
+- [x] Review the design decisions made
+- [X] Money rounding?
+- [x] Return `Money` from \$5 + \$5
+- [x] 100% code coverage
+- [x] `hashCode()`
+- [x] Equal null
+- [x] Equal object
+- [x] `Sum.plus`
+- [x] `Expression.times`
+- [x] \$5 + 10 CHF = $10 if rate is 2:1
+- [x] \$5 + \$5 = $10
+- [x] Reduce `Money` with conversion
+- [x] `Reduce (Bank, String)`
+- [x] `Bank.Reduce(Money)`
+- [x] \$5 * 2 = $10
+- [x] Make "amount" private
+- [x] Dollar side-effects?
+- [x] `equals()`
+- [x] 5 CHF * 2 = 10 CHF
+- [x] Dollar/Franc duplication
+- [x] Common Equals
+- [x] Common Times
+- [x] Compare Francs with Dollars
+- [X] Currency?
+- [x] Delete `testFrancMultiplication()`
+
+## Last Update
+I try and keep this code up to date with the latest versions. I generally wait until a new version of .NET SDK is
+released and I only update it for Long Term Support (LTS) versions. .NET 8 is the latest LTS version as of this writing.
+
+This repository was last updated in September 2025.
+- .NET SDK version 8
+- NUnit version 4.4.0
+- JetBrains Rider version 2025.2.2

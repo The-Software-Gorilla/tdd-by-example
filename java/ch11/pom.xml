@@ -3,16 +3,16 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.thesoftwaregorilla</groupId>
-  <artifactId>learn-tdd</artifactId>
+  <artifactId>tdd-by-example</artifactId>
   <packaging>jar</packaging>
   <version>1.0-SNAPSHOT</version>
-  <name>learn-tdd</name>
+  <name>tdd-by-example</name>
   <url>http://maven.apache.org</url>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <java.version>23</java.version>
-    <junit.version>5.11.3</junit.version>
-    <surefire.version>3.3.1</surefire.version>
+    <java.version>25</java.version>
+    <junit.version>5.13.4</junit.version>
+    <surefire.version>3.5.4</surefire.version>
     <resource.delimiter>@</resource.delimiter>
     <maven.compiler.source>${java.version}</maven.compiler.source>
     <maven.compiler.target>${java.version}</maven.compiler.target>

@@ -1,5 +1,22 @@
-# Decimal Floating Point Arithmetic - ch17-03-decimal
-Once I completed the action items at the beginning of Chapter 17, I started thinking about 
+# Test-Driven Development - C# - Chapter 17 Part 3
+
+In Chapter 17 of the book ["Test-Driven Development By Example" by Kent Beck](https://a.co/d/1sr05eT), Kent writes a retrospective on the
+development of the example application in the previous chapters. He tasks the reader with going back and doing a few
+things:
+- Make the tests more comprehensive - Done in ch17-01
+- Fix the "Return `Money` from \$5 + \$5" TODO item - Done in ch17-02
+- Review the design decisions made
+
+This solution is the third part of a four-part series that addresses these tasks. This part focuses on converting
+the `Money.Amount` property to a `decimal` and building the `CurrencyTransaction`.
+
+For information on how to set up the repository, please see the [README in the ch00](../ch00/README.md) folder.
+
+## Chapter 17 - Part 3 - Switching to `decimal` Amounts
+Once I completed the action items at the beginning of Chapter 17, there was one item left I had to fix - Money rounding.
+This was the point at which I really needed to fix the decimal issue, too. 
+
+I started thinking about a very real-world problem and how it applies to this example -
 how I send money back to family in South Africa. It's a foreign wire transfer and there are
 a number of charges associated with the transaction on both sides. I thought it would be good
 to try and come up with a way to calculate the total cost of the transaction, itemizing all the 
@@ -11,7 +28,7 @@ implementation used integers. I needed to change the contained data type of mone
 to decimal.
 2. I needed to subtract some of the charges from the original transaction amount. The initial 
 implementation does not have support for subtraction.
-3. The rate tables work backwards to what I expected. That's because the ```reduce()``` method
+3. The rate tables work backwards to what I expected. That's because the `reduce()` method
 in the Money class divides the amount by the rate rather than multiplying it. I changed this
 to multiply the amount by the rate, but that meant changing the rate tables in the test too.
 
@@ -29,21 +46,21 @@ That means that the CsvSource annotations in the tests had to change as follows:
 The internals of the Money and Bank classes dealt with the precision internally, but tests fail if
 the string value doesn't match on return.
 
-## Subtraction
+### Subtraction
 The second problem was a little more difficult and I needed to have real examples to work with before
 I figured out how to solve it, so I deferred solving the subtraction issue until I had real examples 
 of CurrencyTransactions to work with. I ended up solving the subtraction issue in the 
-CurrencyTransaction class, which is not where it should be solved. This code will be refactored later.
+CurrencyTransaction class, which is not where it should be solved. This code will be refactored in ch17-04.
 
 ## ValueIn
 One of the things I love with C# is that properties are just part of the language. Java needs getter and
 setters that make it a function call to get the value of a property. As I was writing the tests for
 CurrencyTransaction, I realized it would be really nice to have a money object value in a specific currency
-without calling the Reduce function to do it. So I added an ```ValueIn()``` method that takes the target currency
-for the conversion and the bank object and returns a decimal value with the amount. Just a neat helper
+without calling the Reduce function to do it. So I added an `ValueIn()` method that takes the target currency
+for the conversion and the bank object and returns a decimal value with the amount. Just a neat helper 
 to make the code more readable. This also made me refactor the Java code to make it more readable.
 
-## Currency Transactions
+### Currency Transactions
 I created a new class called CurrencyTransaction to perform the calculations for the 
 transaction. I created a new test class called CurrencyTransactionTest that tests the
 CurrencyTransaction class.
@@ -95,7 +112,7 @@ Putting that in table form:
 | Settlement amount                         |      $976.49 |   R17,225.40 |
 | Total transaction amount                  |     $1035.00 |   R18,257.40 |
 
-### CurrencyTransaction Class
+#### CurrencyTransaction Class
 With TDD, you start with the end in mind. I wrote a test in the new class called CurrencyTransactionTest.
 
 Here's the process I followed:
@@ -112,7 +129,7 @@ There are 13 asserts in the test, which is too many and it definitely needs to b
 it allowed me to figure out how to implement the entire CurrencyTransaction class and then figure
 out how to refactor it, and provide working code.
 
-#### Notes
+### Notes
 1. You may be wondering why I added a settle() method. Well the example above is pretty simple.
 In the real world, the money is sent on one day, and settled on a later day and the exchange
 rate may have changed. The settle() method allows you to calculate the settlement amount
