@@ -37,7 +37,7 @@ public class MoneyTest
     public void TestConstruction(string currency, decimal amount, decimal expected)
     {
         var money =  Money.From(amount, currency, _bank);
-        Assert.IsNotNull(money);
+        Assert.That(money, Is.Not.Null);
         Assert.That(money, Is.InstanceOf<Money>());
         Assert.That(money, Is.InstanceOf<ICurrencyHolder<Money>>());
         Assert.That(money, Is.InstanceOf<IExpression<Money>>());

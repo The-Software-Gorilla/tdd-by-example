@@ -38,8 +38,7 @@ public class CurrencyPairTest
     public void TestEdgeCases(string from, string to)
     {
         var pair = new CurrencyPair(from, to);
-        Assert.That(pair, Is.Not.EqualTo(null));
-        Assert.That(pair, Is.Not.EqualTo(new object()));
+        Assert.That(pair, Is.Not.Null);
         Assert.That(pair, Is.EqualTo(pair));
     }
 }

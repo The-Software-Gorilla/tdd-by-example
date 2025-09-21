@@ -1,8 +1,3 @@
-using Microsoft.VisualStudio.TestPlatform.ObjectModel;
-using NUnit.Framework;
-using NUnit.Framework.Internal;
-using TheSoftwareGorilla.TDD.Money;
-
 namespace TheSoftwareGorilla.TDD.Money.Tests;
 
 #region TO DO's
@@ -38,7 +33,7 @@ public class MoneyTest
     public void TestConstruction(string currency, decimal amount, decimal expected)
     {
         var money = _currencyFactories[currency].Invoke(amount);
-        Assert.IsNotNull(money);
+        Assert.That(money, Is.Not.Null);
         Assert.That(money.Amount, Is.EqualTo(expected));
         Assert.That(money.Currency, Is.EqualTo(currency));
     }

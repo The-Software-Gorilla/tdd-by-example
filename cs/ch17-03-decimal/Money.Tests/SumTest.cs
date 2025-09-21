@@ -38,12 +38,12 @@ public class SumTest
         var result = baseMoney.Plus(targetMoney);
         if (baseMoney.Currency == targetMoney.Currency)
         {
-            Assert.IsInstanceOf<Money>(result);
+            Assert.That(result, Is.InstanceOf<Money>());
             Assert.That(result, Is.EqualTo(MoneyTest.GetCurrencyFactory(baseCurrency).Invoke(amount + amount)));
         } 
         else
         { 
-            Assert.IsInstanceOf<Sum>(result);
+            Assert.That(result, Is.InstanceOf<Sum>());
             Sum sum = (Sum) result;
             Assert.That(sum.Augend, Is.EqualTo(baseMoney));
             Assert.That(sum.Addend, Is.EqualTo(targetMoney));

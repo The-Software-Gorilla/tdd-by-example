@@ -26,7 +26,7 @@ public class OperatorTest
         Money usd = Money.From(5, "USD", _bank);
         Money zar = Money.From(17, "ZAR", _bank);
         Money result = usd.Subtract(zar);
-        Assert.IsInstanceOf<Money>(result);
+        Assert.That(result, Is.InstanceOf<Money>());
         Assert.That(result, Is.EqualTo(Money.From(4, "USD", _bank)));
         Assert.That(result, Is.EqualTo(usd - zar));
     }
@@ -36,7 +36,7 @@ public class OperatorTest
         Money usd = Money.From(5, "USD", _bank);
         Money zar = Money.From(17, "ZAR", _bank);
         Money result = usd.Add(zar);
-        Assert.IsInstanceOf<Money>(result);
+        Assert.That(result, Is.InstanceOf<Money>());
         Assert.That(result, Is.EqualTo(Money.From(6, "USD", _bank)));
         Assert.That(result, Is.EqualTo(usd + zar));
 
@@ -46,7 +46,7 @@ public class OperatorTest
     public void TestMultiply() {
         Money usd = Money.From(5, "USD", _bank);
         Money result = usd.Multiply(2);
-        Assert.IsInstanceOf<Money>(result);
+        Assert.That(result, Is.InstanceOf<Money>());
         Assert.That(result, Is.EqualTo(Money.From(10, "USD", _bank)));
         Assert.That(result, Is.EqualTo(usd * 2));
     }
@@ -55,7 +55,7 @@ public class OperatorTest
     public void TestDivide() {
         Money usd = Money.From(5, "USD", _bank);
         Money result = usd.Divide(2);
-        Assert.IsInstanceOf<Money>(result);
+        Assert.That(result, Is.InstanceOf<Money>());
         Assert.That(result, Is.EqualTo(Money.From(2.5m, "USD", _bank)));
         Assert.That(result, Is.EqualTo(usd / 2));
     }
@@ -64,12 +64,12 @@ public class OperatorTest
     public void TestEqualityOperators() {
         Money usd = Money.From(5, "USD", _bank);
         Money zar = Money.From(5, "ZAR", _bank);
-        Assert.True(usd == Money.From(5, "USD", _bank));
-        Assert.False(usd == Money.From(4, "USD", _bank));
-        Assert.False(zar == usd);
-        Assert.True(usd != zar);
-        Assert.True(usd != Money.From(4, "USD", _bank));
-        Assert.False(usd != Money.From(5, "USD", _bank));
+        Assert.That(usd == Money.From(5, "USD", _bank), Is.True);
+        Assert.That(usd == Money.From(4, "USD", _bank), Is.False);
+        Assert.That(zar == usd, Is.False);
+        Assert.That(usd != zar, Is.True);
+        Assert.That(usd != Money.From(4, "USD", _bank), Is.True);
+        Assert.That(usd != Money.From(5, "USD", _bank), Is.False);
     }
     
 }

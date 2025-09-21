@@ -1,5 +1,3 @@
-using System.Net;
-
 namespace TheSoftwareGorilla.TDD.Money;
 
 public class Money : Expression

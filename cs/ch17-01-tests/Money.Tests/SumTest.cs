@@ -1,8 +1,3 @@
-using System.Runtime.ConstrainedExecution;
-using Microsoft.VisualStudio.TestPlatform.ObjectModel;
-using NUnit.Framework;
-using TheSoftwareGorilla.TDD.Money;
-
 namespace TheSoftwareGorilla.TDD.Money.Tests;
 
 #region TO DO's
@@ -35,7 +30,7 @@ public class SumTest
     {
         var money = MoneyTest.GetCurrencyFactory(currency).Invoke(amount);
         var result = money.Plus(money);
-        Assert.IsInstanceOf<Sum>(result);
+        Assert.That(result, Is.InstanceOf<Sum>());
         Sum sum = (Sum) result;
         Assert.That(sum.Augend, Is.EqualTo(money));
         Assert.That(sum.Addend, Is.EqualTo(money));
@@ -51,7 +46,7 @@ public class SumTest
         var money = MoneyTest.GetCurrencyFactory(currency).Invoke(amount);
         var sum = new Sum(money, money);
         var result = sum.Plus(money);
-        Assert.IsInstanceOf<Sum>(result);
+        Assert.That(result, Is.InstanceOf<Sum>());
         Assert.That(result.Reduce(BankTest.GetBankWithRates(), currency), Is.EqualTo(MoneyTest.GetCurrencyFactory(currency).Invoke(expected)));
     }
 
@@ -65,7 +60,7 @@ public class SumTest
         var money = MoneyTest.GetCurrencyFactory(currency).Invoke(amount);
         var sum = new Sum(money, money);
         var result = sum.Times(multiplier);
-        Assert.IsInstanceOf<Sum>(result);
+        Assert.That(result, Is.InstanceOf<Sum>());
         Assert.That(result.Reduce(BankTest.GetBankWithRates(), currency), Is.EqualTo(MoneyTest.GetCurrencyFactory(currency).Invoke(expected)));
     }    
     
