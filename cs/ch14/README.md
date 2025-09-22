@@ -1,14 +1,14 @@
 # Test-Driven Development - C# - Chapter 14
 
-This solution contains a code for Chapter 14 of the book ["Test-Driven Development By Example" by 
+This solution contains code for Chapter 14 of the book ["Test-Driven Development By Example" by 
 Kent Beck](https://a.co/d/1sr05eT). The code is written in C# and uses the NUnit testing framework for the tests. 
 
 For information on how to set up the repository, please see the [README in the ch00](../ch00/README.md) folder.
 
 ## Chapter 14 - Change
 This chapter introduces the `CurrencyPair` class to represent currency pairs for exchange rates. The `Bank` class
-is modified to use `CurrencyPair` as the key in its exchange rate dictionary. The `AddRate` method in the `Bank` class
-now takes two currency strings and an integer rate. The `GetRate` method in the `Bank` class is updated to use the
+is modified to use `CurrencyPair` as the key in its exchange rate dictionary. The `AddRate()` method in the `Bank` class
+now takes two currency strings and an integer rate. The `Rate()` method in the `Bank` class is updated to use the
 `CurrencyPair` class to look up rates.
 
 ### Key point from the chapter

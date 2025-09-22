@@ -1,6 +1,6 @@
 # Test-Driven Development - C# - Chapter 16
 
-This solution contains a code for Chapter 16 of the book ["Test-Driven Development By Example" by 
+This solution contains code for Chapter 16 of the book ["Test-Driven Development By Example" by 
 Kent Beck](https://a.co/d/1sr05eT). The code is written in C# and uses the NUnit testing framework for the tests. 
 
 For information on how to set up the repository, please see the [README in the ch00](../ch00/README.md) folder.
@@ -17,7 +17,7 @@ Kent makes a key point about TDD in this chapter. He says:
 There are a couple of things about this to bear in mind:
 1. The tests are not just for verifying the code works. They are also a form of documentation. They show how the code is 
 intended to be used and what the expected behavior is.
-2. These tests are part of a code base that requires continued maintenance. As additonal features are added, the tests 
+2. These tests are part of a code base that requires continued maintenance. As additional features are added, the tests 
 will help ensure that existing functionality is not broken, and they will need to be adjusted to cater for new 
 functionality.
 

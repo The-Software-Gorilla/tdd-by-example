@@ -51,8 +51,7 @@ public class Money extends Expression {
 
     @Override
     public boolean equals(Object object) {
-        Money money = (Money) object;
-        return getAmount().equals(money.getAmount()) && getCurrency().equals(money.getCurrency());
+        return object instanceof Money money && this.getAmount().equals(money.getAmount()) && this.getCurrency().equals(money.getCurrency());
     }
 
     @Override
