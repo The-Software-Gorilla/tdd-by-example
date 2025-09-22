@@ -14,8 +14,8 @@ import java.util.function.Function;
 import static org.junit.jupiter.api.Assertions.*;
 
 //<editor-fold desc="TO DO List">
+// We're done!!!
 //</editor-fold>
-
 
 @DisplayName("Money Class Tests")
 public class MoneyTest {

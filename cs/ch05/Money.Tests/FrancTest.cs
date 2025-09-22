@@ -2,7 +2,6 @@ namespace TheSoftwareGorilla.TDD.Money.Tests;
 
 public class FrancTests
 {
-    //TODO: 5 CHF * 2 = 10 CHF - DONE
     
     [SetUp]
     public void Setup()

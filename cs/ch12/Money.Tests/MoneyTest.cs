@@ -1,26 +1,30 @@
 namespace TheSoftwareGorilla.TDD.Money.Tests;
 
+#region TODO List
+//TODO: $5 + 10 CHF = $10 if rate is 2:1
+//TODO: $5 + $5 = $10
+//TODO: Money rounding?
+//TODO: hashCode()
+//TODO: Equal null
+//TODO: Equal object
+#endregion
+
+#region DONE List
+//TODO: equals() -DONE
+//TODO: $5 * 2 = $10 - DONE 
+//TODO: Make "amount" private - DONE
+//TODO: Dollar side-effects? - DONE
+//TODO: 5 CHF * 2 = 10 CHF - DONE
+//TODO: Dollar/Franc duplication - DONE
+//TODO: Common equals - DONE
+//TODO: Common Times - DONE
+//TODO: Compare Francs with Dollars - DONE
+//TODO: Currency? - DONE
+//TODO: Delete `testFrancMultiplication()` - DONE
+#endregion
+
 public class MoneyTests
 {
-    //TODO: $5 + 10 CHF = $10 if rate is 2:1
-    //TODO: $5 + $5 = $10
-    //TODO: Money rounding?
-    //TODO: hashCode()
-    //TODO: Equal null
-    //TODO: Equal object
-
-    //DONE items:
-    //TODO: equals() -DONE
-    //TODO: $5 * 2 = $10 - DONE 
-    //TODO: Make "amount" private - DONE
-    //TODO: Dollar side-effects? - DONE
-    //TODO: 5 CHF * 2 = 10 CHF - DONE
-    //TODO: Dollar/Franc duplication - DONE
-    //TODO: Common equals - DONE
-    //TODO: Common Times - DONE
-    //TODO: Compare Francs with Dollars - DONE
-    //TODO: Currency? - DONE
-    //TODO: Delete `testFrancMultiplication()` - DONE
 
     private Money _fiveDollar;
 

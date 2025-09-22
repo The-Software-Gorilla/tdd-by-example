@@ -3,13 +3,16 @@ using TheSoftwareGorilla.TDD.Money;
 
 namespace TheSoftwareGorilla.TDD.Money.Tests;
 
+#region TODO List
+//TODO: $5 + 10 CHF = $10 if rate is 2:1
+//TODO: $5 * 2 = $10 - DONE 
+//TODO: Make "amount" private
+//TODO: Dollar side-effects?
+//TODO: Money rounding?
+#endregion
+
 public class DollarTests
 {
-    //TODO: $5 + 10 CHF = $10 if rate is 2:1
-    //TODO: $5 * 2 = $10 - DONE 
-    //TODO: Make "amount" private
-    //TODO: Dollar side-effects?
-    //TODO: Money rounding?
     
     [SetUp]
     public void Setup()
