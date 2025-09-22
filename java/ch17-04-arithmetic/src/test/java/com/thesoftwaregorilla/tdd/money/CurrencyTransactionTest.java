@@ -7,8 +7,6 @@ import java.math.BigDecimal;
 import static org.junit.jupiter.api.Assertions.*;
 
 //<editor-fold desc="TO DO List">
-//TODO: Add 5 test cases
-//TODO: Refactor the tests for separating the asserts
 //</editor-fold>
 
 public class CurrencyTransactionTest {

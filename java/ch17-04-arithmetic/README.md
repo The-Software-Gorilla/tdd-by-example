@@ -1,4 +1,4 @@
-# Test-Driven Development - C# - Chapter 17 Part 4
+# Test-Driven Development - Java - Chapter 17 Part 4
 
 In Chapter 17 of the book ["Test-Driven Development By Example" by Kent Beck](https://a.co/d/1sr05eT), Kent writes a retrospective on the
 development of the example application in the previous chapters. He tasks the reader with going back and doing a few
@@ -92,9 +92,8 @@ For clarity:
 - `Money` now implements `ICurrencyHolder` and `IExpression`; and
 - `Bank` now implements `ICurrencyConverter`.
 
-One of the things I love about .NET that I miss in Java is operator overloading. When I implemented ```IExpression``` 
-in ```Money```, I also added operator overloading in the C# code for ```+```, ```-```, ```*```, ```/```, ```==```, 
-and ```!=```.
+One of the things I love about .NET that I miss in Java is operator overloading. When I implemented `IExpression` in 
+`Money`, I also added operator overloading for `+`, `-`, `*`, `/`, `==`, and `!=`.
 
 This is where things got interesting. To add two `Money` objects together, I had to be 
 convert them both to the same currency. I made the decision that with operator overloading,
@@ -162,7 +161,7 @@ Well... For now at least.
 
 Here is the final list:
 - [x] Review the design decisions made
-- [X] Money rounding?
+- [x] Money rounding?
 - [x] Return `Money` from \$5 + \$5
 - [x] 100% code coverage
 - [x] `hashCode()`
@@ -188,10 +187,11 @@ Here is the final list:
 - [x] Delete `testFrancMultiplication()`
 
 ## Last Update
-I try and keep this code up to date with the latest versions. I generally wait until a new version of .NET SDK is
-released and I only update it for Long Term Support (LTS) versions. .NET 8 is the latest LTS version as of this writing.
+I try and keep this code up to date with the latest versions. I generally wait until a new version of the JDK or Maven is 
+released and I only update it for major versions. JDK 25 is the latest version as of this writing, and the POM is set to
+use JDK 25 and JUnit 5.13.4.
 
 This repository was last updated in September 2025.
-- .NET SDK version 8
-- NUnit version 4.4.0
-- JetBrains Rider version 2025.2.2
+- Java JDK version 25
+- JUnit version 5.13.4
+- JetBrains IntelliJ IDEA Ultimate version 2025.2.2

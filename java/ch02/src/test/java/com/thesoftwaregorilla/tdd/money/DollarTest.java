@@ -3,11 +3,13 @@ package com.thesoftwaregorilla.tdd.money;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
+//<editor-fold desc="TO DO List">
 //TODO: $5 + 10 CHF = $10 if rate is 2:1
 //TODO: $5 * 2 = $10 - DONE 
 //TODO: Make "amount" private
 //TODO: Dollar side-effects? - DONE
 //TODO: Money rounding?
+//</editor-fold>
 
 public class DollarTest {
 

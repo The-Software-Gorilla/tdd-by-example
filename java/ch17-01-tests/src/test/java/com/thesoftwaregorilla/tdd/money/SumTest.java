@@ -7,10 +7,6 @@ import org.junit.jupiter.params.provider.CsvSource;
 import static org.junit.jupiter.api.Assertions.*;
 
 //<editor-fold desc="TO DO List">
-//TODO: Look into refactoring the code in Sum to use BinaryOperator and/or UnaryOperator instead of Expression.
-// (see issue #1)
-//TODO: Refactor the testPlus and testTimes methods to use a single method with parameters for the operation type.
-// (needs to wait for plus cleanup)
 //</editor-fold>
 
 @DisplayName("Sum Class Tests")

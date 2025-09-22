@@ -3,6 +3,7 @@ package com.thesoftwaregorilla.tdd.money;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
+//<editor-fold desc="TO DO List">
 //TODO: $5 + 10 CHF = $10 if rate is 2:1
 //TODO: $5 + $5 = $10
 //TODO: Return Money from $5 + $5
@@ -13,8 +14,9 @@ import static org.junit.jupiter.api.Assertions.*;
 //TODO: hashCode()
 //TODO: Equal null
 //TODO: Equal object
+//</editor-fold>
 
-//DONE items:
+//<editor-fold desc="DONE List">
 //TODO: equals() -DONE
 //TODO: $5 * 2 = $10 - DONE 
 //TODO: Make "amount" private - DONE
@@ -26,6 +28,7 @@ import static org.junit.jupiter.api.Assertions.*;
 //TODO: Compare Francs with Dollars - DONE
 //TODO: Currency? - DONE
 //TODO: Delete `testFrancMultiplication()` - DONE
+//</editor-fold>
 
 public class MoneyTest {
 

@@ -1,4 +1,4 @@
-# Test-Driven Development - C# - Chapter 17 Part 2
+# Test-Driven Development - Java - Chapter 17 Part 2
 
 In Chapter 17 of the book ["Test-Driven Development By Example" by Kent Beck](https://a.co/d/1sr05eT), Kent writes a retrospective on the
 development of the example application in the previous chapters. He tasks the reader with going back and doing a few 
@@ -64,10 +64,11 @@ By the end of the chapter, the TODO list looks like this:
 - [x] Delete `testFrancMultiplication()`
 
 ## Last Update
-I try and keep this code up to date with the latest versions. I generally wait until a new version of .NET SDK is 
-released and I only update it for Long Term Support (LTS) versions. .NET 8 is the latest LTS version as of this writing.
+I try and keep this code up to date with the latest versions. I generally wait until a new version of the JDK or Maven is 
+released and I only update it for major versions. JDK 25 is the latest version as of this writing, and the POM is set to
+use JDK 25 and JUnit 5.13.4.
 
 This repository was last updated in September 2025.
-- .NET SDK version 8
-- NUnit version 4.4.0
-- JetBrains Rider version 2025.2.2
+- Java JDK version 25
+- JUnit version 5.13.4
+- JetBrains IntelliJ IDEA Ultimate version 2025.2.2

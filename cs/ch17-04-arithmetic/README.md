@@ -171,7 +171,7 @@ Well... For now at least.
 
 Here is the final list:
 - [x] Review the design decisions made
-- [X] Money rounding?
+- [x] Money rounding?
 - [x] Return `Money` from \$5 + \$5
 - [x] 100% code coverage
 - [x] `hashCode()`

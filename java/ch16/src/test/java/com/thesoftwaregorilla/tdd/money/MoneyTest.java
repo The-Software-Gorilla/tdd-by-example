@@ -5,6 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
+//<editor-fold desc="TO DO List">
 //TODO: Return Money from $5 + $5 - No good way to do this in the book.
 //TODO: Sum.Plus - DONE
 //TODO: Expression.Times - DONE
@@ -12,8 +13,9 @@ import static org.junit.jupiter.api.Assertions.*;
 //TODO: hashCode()
 //TODO: Equal null
 //TODO: Equal object
+//</editor-fold>
 
-//DONE items:
+//<editor-fold desc="DONE List">
 //TODO: $5 + 10 CHF = $10 if rate is 2:1 - DONE
 //TODO: $5 + $5 = $10 - DONE
 //TODO: Bank.Reduce(Money) - DONE
@@ -30,6 +32,7 @@ import static org.junit.jupiter.api.Assertions.*;
 //TODO: Compare Francs with Dollars - DONE
 //TODO: Currency? - DONE
 //TODO: Delete `testFrancMultiplication()` - DONE
+//</editor-fold>
 
 public class MoneyTest {
 

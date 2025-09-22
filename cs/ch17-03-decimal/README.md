@@ -145,10 +145,10 @@ wasn't sure what properties I need for that so the first step is just to get the
 code to C# before I did the subtraction, on the expression because C# allows operator overloading and 
 I'm starting to think that the Expression class is trying to do too much.
 
-### TODO list at the end of the chapter
+## TODO list at the end of the chapter
 By the end of the chapter, the TODO list looks like this:
 - [ ] Review the design decisions made
-- [X] Money rounding?
+- [x] Money rounding?
 - [x] Return `Money` from \$5 + \$5
 - [x] 100% code coverage
 - [x] `hashCode()`

@@ -1,4 +1,4 @@
-# Test-Driven Development - C# - Chapter 17 Part 3
+# Test-Driven Development - Java - Chapter 17 Part 3
 
 In Chapter 17 of the book ["Test-Driven Development By Example" by Kent Beck](https://a.co/d/1sr05eT), Kent writes a retrospective on the
 development of the example application in the previous chapters. He tasks the reader with going back and doing a few
@@ -32,7 +32,7 @@ implementation does not have support for subtraction.
 in the Money class divides the amount by the rate rather than multiplying it. I changed this
 to multiply the amount by the rate, but that meant changing the rate tables in the test too.
 
-## Decimals 
+### Decimals 
 I dealt with the first problem by changing the data type of the transaction to BigDecimal. This was a
 very intrusive change that impacted virtually every part of the code. It didn't require new unit tests, 
 but it did require changes to the existing unit tests to support decimal data types.
@@ -52,7 +52,7 @@ I figured out how to solve it, so I deferred solving the subtraction issue until
 of CurrencyTransactions to work with. I ended up solving the subtraction issue in the 
 CurrencyTransaction class, which is not where it should be solved. This code will be refactored in ch17-04.
 
-## ValueIn
+### ValueIn
 One of the things I love with C# is that properties are just part of the language. Java needs getter and
 setters that make it a function call to get the value of a property. As I was writing the tests for
 CurrencyTransaction, I realized it would be really nice to have a money object value in a specific currency
@@ -143,4 +143,40 @@ wasn't sure what properties I need for that so the first step is just to get the
 code to C# before I did the subtraction, on the expression because C# allows operator overloading and 
 I'm starting to think that the Expression class is trying to do too much.
 
+## TODO list at the end of the chapter
+By the end of the chapter, the TODO list looks like this:
+- [ ] Review the design decisions made
+- [x] Money rounding?
+- [x] Return `Money` from \$5 + \$5
+- [x] 100% code coverage
+- [x] `hashCode()`
+- [x] Equal null
+- [x] Equal object
+- [x] `Sum.plus`
+- [x] `Expression.times`
+- [x] \$5 + 10 CHF = $10 if rate is 2:1
+- [x] \$5 + \$5 = $10
+- [x] Reduce `Money` with conversion
+- [x] `Reduce (Bank, String)`
+- [x] `Bank.Reduce(Money)`
+- [x] \$5 * 2 = $10
+- [x] Make "amount" private
+- [x] Dollar side-effects?
+- [x] `equals()`
+- [x] 5 CHF * 2 = 10 CHF
+- [x] Dollar/Franc duplication
+- [x] Common Equals
+- [x] Common Times
+- [x] Compare Francs with Dollars
+- [X] Currency?
+- [x] Delete `testFrancMultiplication()`
 
+## Last Update
+I try and keep this code up to date with the latest versions. I generally wait until a new version of the JDK or Maven is 
+released and I only update it for major versions. JDK 25 is the latest version as of this writing, and the POM is set to
+use JDK 25 and JUnit 5.13.4.
+
+This repository was last updated in September 2025.
+- Java JDK version 25
+- JUnit version 5.13.4
+- JetBrains IntelliJ IDEA Ultimate version 2025.2.2
