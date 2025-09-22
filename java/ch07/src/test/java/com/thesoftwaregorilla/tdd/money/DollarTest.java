@@ -3,6 +3,7 @@ package com.thesoftwaregorilla.tdd.money;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
+
 public class DollarTest {
 
     // This code is not in the book, but my regular tests always have a construction test

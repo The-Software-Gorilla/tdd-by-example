@@ -25,8 +25,7 @@ public class Money {
 
     @Override
     public boolean equals(Object object) {
-        Money money = (Money) object;
-        return getAmount() == money.getAmount() && getCurrency().equals(money.getCurrency());
+        return object instanceof Money money && this.amount == money.amount && this.currency.equals(money.currency);
     }
 
     public String toString() {

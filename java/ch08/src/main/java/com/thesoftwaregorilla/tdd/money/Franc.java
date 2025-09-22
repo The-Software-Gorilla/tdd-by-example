@@ -2,7 +2,7 @@ package com.thesoftwaregorilla.tdd.money;
 
 public class Franc extends Money {
 
-    public Franc(int amount) {
+    Franc(int amount) {
         this.amount = amount;
     }
 

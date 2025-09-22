@@ -23,8 +23,7 @@ public abstract class Money {
 
     @Override
     public boolean equals(Object object) {
-        Money money = (Money) object;
-        return getClass().equals(object.getClass()) && amount == money.amount;
+        return object instanceof Money money && getClass().equals(object.getClass()) && this.amount == money.amount;
     }
 
     // See my note in the MoneyTest class. I added a getter for amount because I had a constructor test.

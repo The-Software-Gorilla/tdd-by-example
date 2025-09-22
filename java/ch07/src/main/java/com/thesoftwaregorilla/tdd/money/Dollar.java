@@ -2,7 +2,7 @@ package com.thesoftwaregorilla.tdd.money;
 
 public class Dollar extends Money {
 
-    public Dollar(int amount) {
+    Dollar(int amount) {
         this.amount = amount;
     }
 
