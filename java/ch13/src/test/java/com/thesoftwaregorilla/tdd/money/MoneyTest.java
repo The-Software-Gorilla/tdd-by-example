@@ -3,6 +3,30 @@ package com.thesoftwaregorilla.tdd.money;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
+//TODO: $5 + 10 CHF = $10 if rate is 2:1
+//TODO: $5 + $5 = $10
+//TODO: Return Money from $5 + $5
+//TODO: Bank.Reduce(Money) - DONE
+//TODO: Reduce Money with conversion
+//TODO: Reduce (Bank, String)
+//TODO: Money rounding?
+//TODO: hashCode()
+//TODO: Equal null
+//TODO: Equal object
+
+//DONE items:
+//TODO: equals() -DONE
+//TODO: $5 * 2 = $10 - DONE 
+//TODO: Make "amount" private - DONE
+//TODO: Dollar side-effects? - DONE
+//TODO: 5 CHF * 2 = 10 CHF - DONE
+//TODO: Dollar/Franc duplication - DONE
+//TODO: Common equals - DONE
+//TODO: Common Times - DONE
+//TODO: Compare Francs with Dollars - DONE
+//TODO: Currency? - DONE
+//TODO: Delete `testFrancMultiplication()` - DONE
+
 public class MoneyTest {
 
     private final Money fiveDollar = Money.dollar(5);

@@ -1,7 +1,7 @@
-# Test-Driven Development - C# - Chapter 13
+# Test-Driven Development - Java - Chapter 13
 
-This solution contains a code for Chapter 13 of the book ["Test-Driven Development By Example" by 
-Kent Beck](https://a.co/d/1sr05eT). The code is written in C# and uses the NUnit testing framework for the tests. 
+This solution contains code for Chapter 13 of the book ["Test-Driven Development By Example" by 
+Kent Beck](https://a.co/d/1sr05eT). The code is written in Java and uses the JUnit testing framework for the tests. 
 
 For information on how to set up the repository, please see the [README in the ch00](../ch00/README.md) folder.
 
@@ -12,14 +12,12 @@ now returns a 'Sum' object. The 'Bank' class is introduced to handle currency co
 given currency.
 
 ### Key point from the chapter
-Two big code changes had to happen in my code in this chapter had to happen:
-1. The `amount` field in the `Money` class needed to be exposed as a property so that it could be accessed from the `Sum`
-   class.
-2. The constructor in the `Money` class needed to be changed to `internal` so that it could be accessed from the `Sum`
-   class.
-   I have a rule that I never want to expose anything that is not absolutely necessary, so I my own TDD approach to this
-   would have been to have more explicit intention about the `Amount` property, and refactor the factory methods in `Money`
-   for the specific implementations. I changed the code here so that the `Amount` property is `public` but `set` is `private`.
+The `amount` field in the `Money` class needed to be exposed as a property so that it could be accessed from the `Sum`
+class. For the Java version of the code, I did that a while back.
+
+I have a rule that I never want to expose anything that is not absolutely necessary, so I my own TDD approach to this
+would have been to have more explicit intention about the `amount` property, and refactor the factory methods in `Money`
+for the specific implementations. I changed the code here so that the `amount` property is `public` but `set` is `private`.
 
 ### My thoughts on the chapter
 This is one of the worst chapters in the book. No matter how many times I read it, I don't understand the premise that
@@ -56,10 +54,11 @@ By the end of the chapter, the TODO list looks like this:
 - [x] Delete `testFrancMultiplication()`
 
 ## Last Update
-I try and keep this code up to date with the latest versions. I generally wait until a new version of .NET SDK is 
-released and I only update it for Long Term Support (LTS) versions. .NET 8 is the latest LTS version as of this writing.
+I try and keep this code up to date with the latest versions. I generally wait until a new version of the JDK or Maven is 
+released and I only update it for major versions. JDK 25 is the latest version as of this writing, and the POM is set to
+use JDK 25 and JUnit 5.13.4.
 
 This repository was last updated in September 2025.
-- .NET SDK version 8
-- NUnit version 4.4.0
-- JetBrains Rider version 2025.2.2
+- Java JDK version 25
+- JUnit version 5.13.4
+- JetBrains IntelliJ IDEA Ultimate version 2025.2.2
