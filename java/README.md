@@ -48,5 +48,7 @@ directory contains two folder structure for the code:
   the code in that chapter.
 - `src/main/java`: The main project contains the implementation code.
 - `src/test/java`: The test project contains the unit tests for the implementation code.
-Under those folders, code is organized by package. The package structure for this solution is 
+Under those folders, code is organized by package. 
+
+The package structure for this solution is 
 `com.thesoftwaregorilla.tdd.money`.
