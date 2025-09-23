@@ -17,17 +17,17 @@ the official [.NET website](https://dotnet.microsoft.com/download) or use a pack
 install it.
 2. You will also want the .NET CLI tools for running tests and managing projects. These are included with the .NET SDK.
 3. Create a working directory for yourself and clone this repository to your local machine using Git:
-```bash
-    git clone https://github.com/The-Software-Gorilla/tdd-by-example.git
- ```
-This will pull down the entire repository, including the C# and Java examples.
+    ```bash
+        git clone https://github.com/The-Software-Gorilla/tdd-by-example.git
+     ```
+    This will pull down the entire repository, including the C# and Java examples.
 4. Navigate to the `cs` directory and one of the chapter directories to explore the code examples.
 5. Open the solution file (`.sln`) in your preferred C# IDE to explore the code and run the tests.
 6. You can run the tests using your IDE's built-in test runner or by using the .NET CLI. To run the tests from the
 command line, navigate to the test project directory and execute:
-```bash
-    dotnet test
-```
+    ```bash
+        dotnet test
+    ```
 7. In Rider, you can also right-click on the `Money.Tests` project and select "Run Unit Tests" to execute the tests.
 
 ## Code Structure
